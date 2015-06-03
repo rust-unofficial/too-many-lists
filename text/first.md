@@ -45,13 +45,13 @@ Noooooooo!!!! Functional programmers tricked us! That made us do something *ille
 
 ...
 
-I'm ok now. Are you ok now? If we actually check out the error message (instead of getting ready to flee the country, as \*ahem\* *some* of us did), we can see that rustc is actually telling us exactly how to solve this problem: 
+I'm ok now. Are you ok now? If we actually check out the error message (instead of getting ready to flee the country, as \*ahem\* *some* of us did), we can see that rustc is actually telling us exactly how to solve this problem:
 
 > illegal recursive enum type; wrap the inner value in a box to make it representable
 
 Alright, `box`. What's that? Let's google `rust box`...
 
-> [std::boxed::Box - Rust](https://doc.rust-lang.org/std/boxed/struct.Box.html) 
+> [std::boxed::Box - Rust](https://doc.rust-lang.org/std/boxed/struct.Box.html)
 
 Lesse here...
 
@@ -67,7 +67,7 @@ Lesse here...
 > Examples
 >
 > Creating a box:
-> 
+>
 > `let x = Box::new(5);`
 >
 > Creating a recursive data structure:
@@ -78,7 +78,9 @@ enum List<T> {
     Cons(T, Box<List<T>>),
     Nil,
 }
-
+```
+>
+```
 fn main() {
     let list: List<i32> = List::Cons(1, Box::new(List::Cons(2, Box::new(List::Nil))));
     println!("{:?}", list);
@@ -88,7 +90,7 @@ fn main() {
 > This will print `Cons(1, Box(Cons(2, Box(Nil))))`.
 >
 > Recursive structures must be boxed, because if the definition of Cons looked like this:
-> 
+>
 > `Cons(T, List<T>),`
 >
 > It wouldn't work. This is because the size of a List depends on how many elements are in the list, and so we don't know how much memory to allocate for a Cons. By introducing a Box, which has a defined size, we know how big Cons needs to be.
@@ -109,7 +111,7 @@ pub enum List {
 
 Hey it built!
 
-...but this is actually a really stupid definition of a List. In particular, we're allocating the `Empty` at the end of every list *on the heap*. This is a strong sign that we're doing something silly. 
+...but this is actually a really stupid definition of a List. In particular, we're allocating the `Empty` at the end of every list *on the heap*. This is a strong sign that we're doing something silly.
 
 So how do we write our List? Well, we could do something like:
 
@@ -121,7 +123,7 @@ pub enum List {
 }
 ```
 
-but not only is this really complicating things, it's preventing Rust's sweet null pointer optimization! 
+but not only is this really complicating things, it's preventing Rust's sweet null pointer optimization!
 
 In general, if we have an enum like:
 
@@ -136,7 +138,7 @@ enum Foo {
 
 it will require `max(sizeof(T1), sizeof(T2), ... sizeof(Tn)) + sizeof_smallest_primitive_to_store(n)` space. The `max` part is of course entirely necessary; we can't use less space than the biggest variant! The extra amount we add on is to store the *tag* of the enum (almost always, this will be a byte, but data alignment makes this worse), which specifies which variant the the rest of the bits are supposed to represent. However, if we have a special kind of enum:
 
-```rust 
+```rust
 enum Foo {
     A,
     B(ContainsANonNullPtr),
@@ -159,7 +161,7 @@ pub enum List {
 }
 ```
 
-Let's check our priorities: 
+Let's check our priorities:
 * tail of a list never allocates: check!
 * enum is in delicious null-pointer form: check!
 
@@ -238,7 +240,7 @@ impl List {
 }
 ```
 
-`&mut` is a *mutable reference* or *borrow*. For now, all you need to know is that it's how you mutate stuff without moving it around. 
+`&mut` is a *mutable reference* or *borrow*. For now, all you need to know is that it's how you mutate stuff without moving it around.
 
 So first thing's first, we need to make a node to store our element in:
 
