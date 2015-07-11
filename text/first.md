@@ -369,7 +369,7 @@ error: aborting due to previous error
 Could not compile `lists`.
 ```
 
-Whoops, `pop` has to return a value, and we're not doing that yet. We *could* return `None`, but in this case it's probably a better idea to return `unimplemented!()`, to indicate that we aren't done implementing the function. `unimplemented!()` is a macro (`!` indicates a macro) that panics (basically just crashes) the program when we get to it. Unconditional panics have a special type that unifies with any other type, so we can "return" it where an Option is expected.
+Whoops, `pop` has to return a value, and we're not doing that yet. We *could* return `None`, but in this case it's probably a better idea to return `unimplemented!()`, to indicate that we aren't done implementing the function. `unimplemented!()` is a macro (`!` indicates a macro) that panics (basically just crashes) the program when we get to it.
 
 ```
     pub fn pop(&mut self) -> Option<T> {
@@ -384,6 +384,8 @@ Whoops, `pop` has to return a value, and we're not doing that yet. We *could* re
         unimplemented!()
     }
 ```
+
+Unconditional panics are an example of a [diverging function](http://doc.rust-lang.org/reference.html#diverging-functions). Diverging functions never return to the caller, so they may used in places where a value of any type is expected. Here, `unimplemented!()` is being used in place of a value of type `Option<T>`.
 
 Note also that we don't need to write `return` in our program. The last statement in a function is implicitly its return value.
 
