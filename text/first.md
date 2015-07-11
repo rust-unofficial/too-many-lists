@@ -369,7 +369,7 @@ error: aborting due to previous error
 Could not compile `lists`.
 ```
 
-Whoops, `pop` has to return a value, and we're not doing that yet. We *could* return `None`, but in this case it's probably a better idea to return `unreachable!()`, to indicate that we aren't done implementing the function. `unreachable!()` is a macro (`!` indicates a macro) that panics (basically just crashes) the program when we get to it. Unconditional panics have a special type that unifies with any other type, so we can "return" it where an Option is expected.
+Whoops, `pop` has to return a value, and we're not doing that yet. We *could* return `None`, but in this case it's probably a better idea to return `unimplemented!()`, to indicate that we aren't done implementing the function. `unimplemented!()` is a macro (`!` indicates a macro) that panics (basically just crashes) the program when we get to it. Unconditional panics have a special type that unifies with any other type, so we can "return" it where an Option is expected.
 
 ```
     pub fn pop(&mut self) -> Option<T> {
@@ -381,7 +381,7 @@ Whoops, `pop` has to return a value, and we're not doing that yet. We *could* re
                 // TODO
             }
         };
-        unreachable!()
+        unimplemented!()
     }
 ```
 
@@ -430,7 +430,7 @@ to avoid that, we use the `ref` keyword to indicate that we want to bind the `no
                 // TODO
             }
         };
-        unreachable!()
+        unimplemented!()
     }
 ```
 
