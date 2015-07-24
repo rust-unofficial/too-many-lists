@@ -306,7 +306,7 @@ Could not compile `lists`.
 
 No dice. In principle, this is something Rust could actually accept, but it's not (for various reasons). We need some way to get the head without Rust noticing that it's gone. For advice, we turn to infamous Rust Hacker Indiana Jones:
 
-![Indy Prepares to mem::swap](indy.gif)
+![Indy Prepares to mem::replace](indy.gif)
 
 Ah yes, Indy suggests the `mem::replace` maneuver. This incredibly useful function lets us steal a value out of a borrow by *replacing* it with another value. Let's just pull in `std::mem` at the top of the file, so that `mem` is in local scope:
 
