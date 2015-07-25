@@ -1,4 +1,6 @@
-Alright, 6000 words later, here' all the code we managed to actually write:
+% The Final Code
+
+Alright, 6000 words later, here's all the code we managed to actually write:
 
 ```rust
 use std::mem;
