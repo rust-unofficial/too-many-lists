@@ -56,7 +56,7 @@ Whoops, `pop` has to return a value, and we're not doing that yet. We *could*
 return `None`, but in this case it's probably a better idea to return
 `unimplemented!()`, to indicate that we aren't done implementing the function.
 `unimplemented!()` is a macro (`!` indicates a macro) that panics (basically
-just crashes in a controller manner) the program when we get to it.
+just crashes in a controlled manner) the program when we get to it.
 
 ```rust
 pub fn pop(&mut self) -> Option<i32> {
@@ -73,7 +73,7 @@ pub fn pop(&mut self) -> Option<i32> {
 ```
 
 Unconditional panics are an example of a [diverging function][diverging].
-Diverging functions never return to the caller, so they may used in places
+Diverging functions never return to the caller, so they may be used in places
 where a value of any type is expected. Here, `unimplemented!()` is being
 used in place of a value of type `Option<T>`.
 
@@ -241,7 +241,7 @@ value to return, but actually we didn't need to do that at all! Just as a
 function evaluated to its last expression, every block also evaluates to
 its last expression. Normally we supress this behaviour with semi-colons,
 which instead makes the block evaluate to the empty tuple, `()`. This is
-actually the value what functions that don't declare a return value -- like
+actually the value that functions that don't declare a return value -- like
 `push` -- return.
 
 So instead, we can write `pop` as:

@@ -36,7 +36,7 @@ A few notes on this:
   not repeating yourself!
 * We create an instance of a struct in much the same way we declare it, except
   instead of providing the types of its fields, we initialize them with values.
-* We refer to variants of an enum using `::`, which is the namespacing operator
+* We refer to variants of an enum using `::`, which is the namespacing operator.
 * The last expression of a function is implicitly returned.
   This makes simple functions a little neater. You can still use `return`
   to return early like other C-like languages.
