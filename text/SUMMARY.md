@@ -8,6 +8,7 @@
     * [Pop](first-pop.md)
     * [Testing](first-test.md)
     * [Drop](first-drop.md)
+    * [Final Code](first-final.md)
 * [An Ok Stack](second.md)
 * [A Queue](third.md)
 * [A Persistent Stack](fourth.md)
