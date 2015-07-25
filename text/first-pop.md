@@ -348,4 +348,4 @@ future.
 
 
 
-[ownership][first-ownership.html]
+[ownership]: first-ownership.html

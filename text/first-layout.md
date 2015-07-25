@@ -113,8 +113,10 @@ pub enum List {
 }
 ```
 
+```text
 > cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/lists)
+```
 
 Hey it built!
 
