@@ -1,5 +1,8 @@
 % Learning Rust With Entirely Too Many Linked Lists
 
+Got any issues or want to check out all the final code at once?
+[Everything's on Github!][github]
+
 I fairly frequently get asked how to implement a linked list in Rust. The
 answer honestly depends on what your requirements are, and it's obviously not
 super easy to answer the question on the spot. As such I've decided to write
@@ -73,5 +76,7 @@ to develop the project. Cargo isn't necessary to write a Rust program, but it's
 We'll put each list in a separate file so that we don't lose any of our work.
 
 
+
 [rust-std-list]: https://doc.rust-lang.org/std/collections/struct.LinkedList.html
 [cpp-std-list]: http://en.cppreference.com/w/cpp/container/list
+[github]: https://github.com/Gankro/too-many-lists
