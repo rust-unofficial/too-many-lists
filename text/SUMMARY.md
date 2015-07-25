@@ -16,6 +16,7 @@
     * [IntoIter](second-into-iter.md)
     * [Iter](second-iter.md)
     * [IterMut](second-iter-mut.md)
+    * [Final Code](second-final.md)
 * [A Persistent Stack](third.md)
 * [A Safe Deque](fourth.md)
 * [An Unsafe Queue](fifth.md)

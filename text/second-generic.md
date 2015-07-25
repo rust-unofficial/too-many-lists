@@ -119,4 +119,4 @@ Also of interest, we don't write `List<T>` when we construct an instance of
 list. That part's inferred for us based on the fact that we're returning it
 from a function that expects a `List<T>`.
 
-Alright, let's move on to iteration!
+Alright, let's move on to totally new *behaviour*!
