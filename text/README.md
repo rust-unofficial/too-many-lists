@@ -75,6 +75,13 @@ to develop the project. Cargo isn't necessary to write a Rust program, but it's
 
 We'll put each list in a separate file so that we don't lose any of our work.
 
+It should be noted that the *authentic* Rust learning experience involves
+writing code, having the compiler scream at you, and trying to figure out
+what the heck that means. I will be carefully ensuring that this occurs as
+frequently as possible. Learning to read and understand Rust's generally
+excellent compiler errors is *incredibly* important to being a productive
+Rust programmer.
+
 
 
 [rust-std-list]: https://doc.rust-lang.org/std/collections/struct.LinkedList.html
