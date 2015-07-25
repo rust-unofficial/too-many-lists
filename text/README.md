@@ -10,9 +10,10 @@ entirely by having you implement linked lists 7 times. In doing so, you should
 learn:
 
 * The following pointer types: `&`, `&mut`, `Box`, `Rc`, `Arc`, `*const`, `*mut`
-* Ownership, borrowing, inherited mutability, interior mutability
+* Ownership, borrowing, inherited mutability, interior mutability, Copy
 * All The Keywords: struct, enum, fn, pub, impl, use, ...
-* pattern matching, generics
+* Pattern matching, generics, destructors
+* Testing
 * Unsafe Rust
 
 Yes, linked lists are so truly awful that you deal with all of these concepts in
