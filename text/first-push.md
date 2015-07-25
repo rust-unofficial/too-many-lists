@@ -11,7 +11,7 @@ impl List {
 }
 ```
 
-First thing's first, we need to make a node to store our element in:
+First things first, we need to make a node to store our element in:
 
 ```rust,ignore
     pub fn push(&mut self, elem: i32) {

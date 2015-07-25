@@ -124,7 +124,7 @@ Hey it built!
 we're allocating the `Empty` at the end of every list *on the heap*. This is
 a strong sign that we're doing something silly.
 
-So how do we write our List? Well, we could do something like:
+So how do we rewrite our List? Well, we could do something like:
 
 ```rust
 pub enum List {
@@ -202,7 +202,7 @@ pub enum List {
 Let's check our priorities:
 
 * tail of a list never allocates: check!
-* enum is in delicious null-pointer form: check!
+* enum is in delicious null-pointer-optimized form: check!
 
 Alright!
 

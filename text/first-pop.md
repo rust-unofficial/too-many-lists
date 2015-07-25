@@ -189,7 +189,7 @@ Could not compile `lists`.
 
 Now we have two *different* errors. First, we're trying to move out of `node`
 when all we have is a shared reference to it. Second, we're trying to mutate
-`self.head` while we've reborrowed it to get the reference to `node`!
+`self.head` while we've already borrowed it to get the reference to `node`!
 
 This is a tangled mess.
 
@@ -241,7 +241,7 @@ value to return, but actually we didn't need to do that at all! Just as a
 function evaluated to its last expression, every block also evaluates to
 its last expression. Normally we supress this behaviour with semi-colons,
 which instead makes the block evaluate to the empty tuple, `()`. This is
-actually the value that functions that don't declare a return value -- like
+actually the value that functions which don't declare a return value -- like
 `push` -- return.
 
 So instead, we can write `pop` as:
@@ -337,7 +337,7 @@ language that the compiler lets you do some stuff that nothing else can do. We
 actually have been doing one such thing this whole time: `DerefMove`. Whenever
 you have a pointer type you can derefence it with `*` or `.` to get at its
 contents. Usually you can get a `Deref` or maybe even a `DerefMut`,
-corresponding to a shared and mutable references respectively.
+corresponding to a shared or mutable reference respectively.
 
 However because Box totally owns its contents, you can actually *move out of*
 a dereference. This is total magic, because there's no way for any other type
