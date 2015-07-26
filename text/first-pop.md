@@ -30,7 +30,7 @@ pub fn pop(&mut self) -> Option<i32> {
         Link::Empty => {
             // TODO
         }
-        Link::More(Node) => {
+        Link::More(node) => {
             // TODO
         }
     };

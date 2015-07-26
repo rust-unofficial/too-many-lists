@@ -39,7 +39,7 @@ just implement IntoIter as a newtype wrapper around List:
 pub struct IntoIter<T>(List<T>);
 
 impl<T> List<T> {
-    fn into_iter(self) -> IntoIter<T> {
+    pub fn into_iter(self) -> IntoIter<T> {
         IntoIter(self)
     }
 }
