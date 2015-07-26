@@ -2,7 +2,7 @@
 
 Alright, so we've got `push` and `pop` written, now we can actually test out
 our stack! Rust and cargo support testing as a first-class feature, so this
-will be super easy. All we have to do is write function, and annotate it with
+will be super easy. All we have to do is write a function, and annotate it with
 `#[test]`.
 
 Generally, we try to keep our tests next to the code that its testing in the
