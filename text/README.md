@@ -179,6 +179,33 @@ nice*.
 
 
 
+## Linked lists are great for building concurrent data structures!
+
+Yes! Although writing a concurrent data structure is really a whole different
+beast, and isn't something that should be taken lightly. Certainly not something
+many people will even *consider* doing. Once one's been written, you're also not
+really choosing to use a linked list. You're choosing to use an MPSC queue or
+whatever. The implementation strategy is pretty far removed in this case!
+
+But yes, linked lists are the defacto heroes of the dark world of lock-free
+concurrency.
+
+
+
+
+## Mumble mumble kernel embedded something something intrusive.
+
+It's niche. You're talking about a situation where you're not even using
+your language's *runtime*. Is that not a red flag that you're doing something
+strange?
+
+It's also wildly unsafe.
+
+But sure. Build your awesome zero-allocation lists on the stack.
+
+
+
+
 # Take a Breath
 
 Ok. That's out of the way. Let's write a bajillion linked lists.
