@@ -45,7 +45,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 Yay our do-nothing test passed! Let's make it not-do-nothing. We'll do that
 with the `assert_eq!` macro. This isn't some special testing magic. All it
 does is compare the two things you give it, and panic the program if they don't
-match. Yep, you inidicate failure to the test harness by freaking out!
+match. Yep, you indicate failure to the test harness by freaking out!
 
 ```rust
 mod test {
