@@ -349,3 +349,4 @@ future.
 
 
 [ownership]: first-ownership.html
+[diverging]: http://doc.rust-lang.org/nightly/book/functions.html#diverging-functions
