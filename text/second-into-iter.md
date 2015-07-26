@@ -1,7 +1,7 @@
 % IntoIter
 
 Collections are iterated in Rust using the *Iterator* trait. It's a bit more
-complicated that `Drop`:
+complicated than `Drop`:
 
 ```rust
 pub trait Iterator {
