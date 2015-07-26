@@ -25,9 +25,9 @@ owns the value, and the old location can no longer access it. For this reason
 most methods don't want `self` -- it would be pretty lame if trying to work with
 a list made it go away!
 
-A mutable reference represents temporary *exlusive access* to a value that you
+A mutable reference represents temporary *exclusive access* to a value that you
 don't own. You're allowed to do absolutely anything you want to a value you
-have to a mutable reference as long as when your loan expires, wherever you
+have a mutable reference to as long as when your loan expires, wherever you
 loaned it from still sees a valid value. This means you can actually completely
 overwrite the value. A really useful special case of this is *swapping* a value
 out for another, which we'll be using a lot. The only thing you can't do with an
