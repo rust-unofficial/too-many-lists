@@ -187,8 +187,8 @@ many people will even *consider* doing. Once one's been written, you're also not
 really choosing to use a linked list. You're choosing to use an MPSC queue or
 whatever. The implementation strategy is pretty far removed in this case!
 
-But yes, linked lists are the defacto heroes of the dark world of lock-free
-concurrency.
+*But yes, linked lists are the defacto heroes of the dark world of lock-free
+concurrency.*
 
 
 
@@ -201,7 +201,29 @@ strange?
 
 It's also wildly unsafe.
 
-But sure. Build your awesome zero-allocation lists on the stack.
+*But sure. Build your awesome zero-allocation lists on the stack.*
+
+
+
+
+
+## Iterators don't get invalidated by unrelated insertions/removals
+
+That's a delicate dance you're playing. Especially if you don't have
+a garbage collector. I might argue that your control flow and ownership
+patterns are probably a bit too tangled, depending on the details.
+
+*But yes, you can do some really cool crazy stuff with cursors.*
+
+
+
+
+
+## They're simple and great for teaching!
+
+Well, yeah. You're reading a book dedicated to that premise.
+Well, singly linked lists are pretty simple. Doubly linked lists
+can get kinda gnarly.
 
 
 
