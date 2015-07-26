@@ -1,5 +1,7 @@
 % A Safe Doubly-Linked Deque
 
+# This Chapter is Under Construction And I Didn't Feel Like Making a Git Branch
+
 Now that we've seen Rc, and heard about interior mutability, this gives an
 interesting thought... maybe we *can* mutate through an Rc. And it *that's*
 the case, maybe we can implement a *doubly* linked list totally safely!
