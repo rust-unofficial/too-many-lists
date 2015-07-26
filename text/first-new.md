@@ -24,7 +24,7 @@ normal function inside an `impl`:
 
 ```rust
 impl List {
-    fn new() -> Self {
+    pub fn new() -> Self {
         List { head: Link::Empty }
     }
 }

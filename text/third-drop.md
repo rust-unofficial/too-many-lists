@@ -34,12 +34,13 @@ list whenever we drop it.
 The second way is if we could identify that we're the last list that knows
 about this node, we could in *principle* actually move the Node out of the Rc.
 Then we could also know when to stop: whenver we *can't* hoist out the Node.
-For reference, the unstable function is called `make_unique`.
+For reference, the unstable function is called `try_unwrap`.
 
 Rc actually lets you do this... but only in nightly Rust. Honestly, I'd rather
 risk blowing the stack sometimes than iterate every list whenever it gets
 dropped. In particular this implies building a list is an O(n<sup>2</sup>)
-operation. Still if you'd rather not blow the stack, here's the code:
+operation (really really really really bad). Still if you'd rather not blow the
+stack, here's the first solution:
 
 ```
 impl<T> Drop for List<T> {
@@ -51,3 +52,21 @@ impl<T> Drop for List<T> {
     }
 }
 ```
+
+and here's the second solution (only works on nightly):
+
+```
+impl<T> Drop for List<T> {
+    fn drop(&mut self) {
+        let mut head = self.head.take();
+        while let Some(node) = head {
+            if let Ok(mut node) = Rc::try_unwrap(node) {
+                head = node.next.take();
+            } else {
+                break;
+            }
+        }
+    }
+}
+```
+
