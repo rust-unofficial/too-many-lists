@@ -175,6 +175,15 @@ and it will all be done just as lazily. Slices can be coerced to an iterator.
 *But yes, if you're limited to immutable semantics, linked lists can be very
 nice*.
 
+Note that I'm not saying that functional programming is necessarily weak or
+bad. However it *is* fundamentally semantically limited: you're largely only
+allowed to talk about how things *are*, and not how they should be *done*. This
+is actually a *feature*, because it enables the compiler to do tons of [exotic
+transformations][ghc] and potentially figure out the *best* way to do things
+without you having to worry about it. However this comes at the cost of being
+*able* to worry about it. There are usually escape hatches, but at some limit
+you're just writing procedural code again.
+
 
 
 
@@ -259,3 +268,4 @@ Rust programmer.
 [bjarne]: https://www.youtube.com/watch?v=YQs6IC-vgmo
 [slices]: https://doc.rust-lang.org/book/slice-patterns.html
 [iterators]: https://doc.rust-lang.org/std/iter/trait.Iterator.html
+[ghc]: https://wiki.haskell.org/GHC_optimisations#Fusion

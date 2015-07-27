@@ -106,6 +106,31 @@ fn next(&mut self) -> Option<Self::Item> {
 
 ```text
 > cargo build
+src/second.rs:65:25: 65:34 error: cannot borrow immutable field `self.head` as mutable
+src/second.rs:65         IterMut { next: self.head.as_mut().map(|node| &mut **node) }
+                                         ^~~~~~~~~
+error: aborting due to previous error
+```
+
+Uh... what? Looks we messed up mutability somewhere in `iter_mut`:
+
+```rust
+pub fn iter_mut(&self) -> IterMut<T> {
+    IterMut { next: self.head.as_mut().map(|node| &mut **node) }
+}
+```
+
+Classic copy-paste error. `self` is a shared reference! We can't
+get mutable references out of that!
+
+```rust
+pub fn iter_mut(&mut self) -> IterMut<T> {
+    IterMut { next: self.head.as_mut().map(|node| &mut **node) }
+}
+```
+
+```text
+> cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
 ```
 
