@@ -232,7 +232,7 @@ patterns are probably a bit too tangled, depending on the details.
 
 Well, yeah. You're reading a book dedicated to that premise.
 Well, singly linked lists are pretty simple. Doubly linked lists
-can get kinda gnarly.
+can get kinda gnarly, as we'll see.
 
 
 
