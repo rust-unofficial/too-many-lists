@@ -10,7 +10,8 @@ The only way to do this correctly is to [build Rust from source](https://github.
 However it needs to be a slight deviation from the normal process:
 
 * You should do `./configure --enable-rpath` instead of `./configure` 
-* You don't need to `install` (I don't think rustbook will use that)
+* You don't need to `install` (I don't think rustbook will use that -- although 
+  maybe I'm wrong and make install will install rustbook too -- happy to be wrong!)
 
 Once built, rustbook will be somewhere deep in the build target
 directories. This is a bit platform-specific, to be honest. On my
