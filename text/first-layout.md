@@ -120,22 +120,34 @@ pub enum List {
 
 Hey it built!
 
-...but this is actually a really stupid definition of a List. In particular,
-we're allocating the `Empty` at the end of every list *on the heap*. This is
-a strong sign that we're doing something silly.
+...but this is actually a really stupid definition of a List, for a few reasons.
 
-So how do we rewrite our List? Well, we could do something like:
+Consider a list with two elements:
 
-```rust
-pub enum List {
-    Empty,
-    ElemThenEmpty(i32),
-    ElemThenNotEmpty(i32, Box<List>),
-}
+```text
+[] = Stack
+() = Heap
+
+[Elem A, ptr] -> (Elem B, ptr) -> (Empty *junk*)
 ```
 
-but not only is this really complicating things, it's preventing Rust's sweet
-null pointer optimization!
+There are two key issues:
+
+* We're allocating a node that just says "I'm not actually a Node"
+* One of our nodes isn't allocated at all.
+
+On the surface, these two seem to cancel each-other out. We allocate an
+extra node, but one of our nodes doesn't need to be allocated at all.
+However, consider the following potential layout for our list:
+
+```text
+[ptr] -> (Elem A, ptr) -> (Elem B, *null*)
+```
+
+In this layout we now unconditionally heap allocate our nodes. The
+key difference is the absence of the *junk* from our first layout. What is
+this junk? To understand that, we'll need to look at how an enum is laid out
+in memory.
 
 In general, if we have an enum like:
 
@@ -153,7 +165,73 @@ represents (`D1`, `D2`, .. `Dn`). This is the *tag* of the enum. It will also
 need enough space to store the *largest* of `T1`, `T2`, .. `Tn` (plus some extra
 space to satisfy alignment requirements).
 
-However, if we have a special kind of enum:
+The big takeaway here is that even though `Empty` is a single bit of
+information, it necessarily consumes enough space for a pointer and an element,
+because it has to be ready to become an `Elem` at any time. Therefore the first
+layout heap allocates an extra element that's just full of junk, consuming a
+bit more space than the second layout.
+
+One of our nodes not being allocated at all is also, perhaps surprisingly,
+*worse* than always allocating it. This is because it gives us a *non-uniform*
+node layout. This doesn't have much of an appreciable effect on pushing and
+popping nodes, but it does have an effect on splitting and merging lists.
+
+Consider splitting a list in both layouts:
+
+```text
+layout 1:
+
+[Elem A, ptr] -> (Elem B, ptr) -> (Elem C, ptr) -> (Empty *junk*)
+
+split off C:
+
+[Elem A, ptr] -> (Elem B, ptr) -> (Empty *junk*)
+[Elem C, ptr] -> (Empty *junk*)
+```
+
+```text
+layout 2:
+
+[ptr] -> (Elem A, ptr) -> (Elem B, ptr) -> (Elem C, *null*)
+
+split off C:
+
+[ptr] -> (Elem A, ptr) -> (Elem B, *null*)
+[ptr] -> (Elem C, *null*)
+```
+
+Layout 2's split involves just copying B's pointer to the stack and nulling
+the old value out. Layout 1 ultimately does the same thing, but also has to
+copy C from the heap to the stack. Merging is the same process in reverse.
+
+One of the few nice things about a linked list is that you can construct the
+element in the node itself, and then freely shuffle it around lists without
+ever moving it. You just fiddle with pointers and stuff gets "moved". Layout 1
+trashes this property.
+
+Alright, I'm reasonably convinced Layout 1 is bad. How do we rewrite our List?
+Well, we could do something like:
+
+```rust
+pub enum List {
+    Empty,
+    ElemThenEmpty(i32),
+    ElemThenNotEmpty(i32, Box<List>),
+}
+```
+
+Hopefully this seems like an even worse idea to you. For one, this really
+complicates our logic. In particular, there is now a completely invalid state:
+`ElemThenNotEmpty(0, Box(Empty))`. It also *still* suffers from non-uniformly
+allocating our elements.
+
+However it does have *one* interesting property: it totally avoids allocating
+the Empty case, reducing the total number of heap allocations by 1. Unfortunately,
+in doing so it manages to waste *even more space*! This is because the previous
+layout took advantage of the *null pointer optimization*.
+
+We previously saw that every enum has to store a *tag* to specify which variant
+of the enum its bits represent. However, if we have a special kind of enum:
 
 ```rust
 enum Foo {
@@ -162,30 +240,30 @@ enum Foo {
 }
 ```
 
-we get the *null pointer* optimization, which *eliminates the space needed for
+the null pointer optimization kicks in, which *eliminates the space needed for
 the tag*. If the variant is A, the whole enum is set to all `0`'s. Otherwise,
 the variant is B. This works because B can never be all `0`'s, since it contains
 a non-zero pointer. Slick!
 
 Can you think of other enums and types that could do this kind of optimization?
 There's actually a lot! This is why Rust leaves enum layout totally unspecified.
-Sadly the null-pointer optimization is the only one implemented today -- though
+Sadly the null pointer optimization is the only one implemented today -- though
 it's pretty important! It means `&`, `&mut`, `Box`, `Rc`, `Arc`, `Vec`, and
 several other important types in Rust have no overhead when put in an `Option`!
 (We'll get to most of these in due time).
 
-So how do we avoid the extra allocation *and* get that sweet null-pointer
-optimization? We need to better separate out the idea of having an element from
-allocating another list. To do this, we have to think a little more
+So how do we avoid the extra junk, uniformly allocate, *and* get that sweet
+null-pointer optimization? We need to better separate out the idea of having an
+element from allocating another list. To do this, we have to think a little more
 C-like: structs!
 
 While enums let us declare a type that can contain *one* of several values,
 structs let us declare a type that contains *many* values at once. Let's break
-our List into two types: A List, and a Node. As before, a List is either Empty,
-or has an element followed by another List. However we represent the latter
-case by an entirely separate type, so that we may put it behind the Box.
+our List into two types: A List, and a Node.
 
-
+As before, a List is either Empty or has an element followed by another List.
+However by representing the "has an element followed by another List" case by an
+entirely separate type, we can hoist the Box to be in a more optimal position:
 
 ```rust
 struct Node {
@@ -201,10 +279,13 @@ pub enum List {
 
 Let's check our priorities:
 
-* tail of a list never allocates: check!
-* enum is in delicious null-pointer-optimized form: check!
+* Tail of a list never allocates extra junk: check!
+* `enum` is in delicious null-pointer-optimized form: check!
+* All elements are uniformly allocated: check!
 
-Alright!
+Alright! We actually just constructed exactly the layout that we used to
+demonstrate that our first layout (as suggested by the official Rust
+documentation) was problematic.
 
 ```text
 > cargo build
