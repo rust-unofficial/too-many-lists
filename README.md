@@ -10,11 +10,11 @@ A mirror of the rustbook code can be found [here](https://github.com/steveklabni
 This requires a nightly version of the Rust compiler, as well as Cargo:
 
 ```sh
-cd <rustbook-dir>
+cd rustbook/
 cargo build --release
 ```
 
-Once built, the binary can be found at `<rustbook-dir>/target/release/`.
+Once built, the binary can be found at `rustbook/target/release/rustbook`.
 
 ---
 
@@ -42,6 +42,6 @@ Now just copy or link rustbook to be somewhere on your path.
 Once you have the rustbook binary, you just need to do:
 
 ```sh
-cd <too-many-lists-dir>
+cd too-many-lists/
 rm -rf book/ && rustbook build text/ book/
 ```
