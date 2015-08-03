@@ -13,7 +13,7 @@ cd <rustbook-dir>
 cargo build --release
 ```
 
-Once built, the binary can be found at `<rustbook-dir>/target/bin/rustbook`.
+Once built, the binary can be found at `<rustbook-dir>/target/release/`.
 Now just copy or link rustbook to be somewhere on your path.
 
 Once you have, you just need to do:
