@@ -37,6 +37,7 @@ several great use cases for a linked list:
 * You're writing a kernel/embedded thing and want to use an intrusive list.
 * You're using a pure functional language and the limited semantics and absence
   of mutation makes linked lists easier to work with.
+* ... and more!
 
 But all of these cases are *super rare* for anyone writing a Rust program. 99%
 of the time you should just use a Vec (array stack), and 99% of the other 1%
@@ -53,16 +54,17 @@ linked list. It's the only niche collection
 [*the* list in C++][cpp-std-list]!
 
 We should all as a community say *no* to linked lists as a "standard" data
-structure. It's a fine data structure with several great usecases, but those
+structure. It's a fine data structure with several great use cases, but those
 use cases are *exceptional*, not common.
 
 Several people apparently read the first paragraph of this PSA and then stop
-reading. Like, literally they'll try rebut my argument by listing one of the
+reading. Like, literally they'll try to rebut my argument by listing one of the
 things in my list of *great use cases*. The thing right after the first
 paragraph!
 
 Just so I can link directly to a detailed argument, here are several attempts
-at counter-arguments I have seen, and my response to them
+at counter-arguments I have seen, and my response to them. Feel free to skip
+to [the end](#take-a-breath) if you just want to learn some Rust!
 
 
 
@@ -184,6 +186,12 @@ without you having to worry about it. However this comes at the cost of being
 *able* to worry about it. There are usually escape hatches, but at some limit
 you're just writing procedural code again.
 
+Edit: Several Haskell programmers have informed me that even in Haskell,
+`Data.List` (the classic functional singly-linked list) is shunned in favour
+of actually using problem-appropriate data structures like Sequence, Vector,
+Array, Text, etc. When actually using it as a data structure, and not just a
+control-flow mechanism (iterator). I sadly don't have any good resources on
+this claim.
 
 
 
