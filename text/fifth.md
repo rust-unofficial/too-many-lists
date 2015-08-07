@@ -23,4 +23,6 @@ pub mod fifth;
 ```
 
 Our code is largely going to be derived from second.rs, since a queue is
-mostly an augmentation of a stack in the world of linked lists. Sti
+mostly an augmentation of a stack in the world of linked lists. Still, we're
+going to go from scratch because there's some fundamental issues we want to
+address with layout and what-not.
