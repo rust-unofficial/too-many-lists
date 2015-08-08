@@ -345,7 +345,7 @@ mod test {
 }
 ```
 
-```
+```text
 cargo test
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
 src/fifth.rs:68:9: 68:13 error: cannot borrow `list` as mutable more than once at a time

@@ -14,8 +14,8 @@ impl<T> List<T> {
 
 But we're not using Option for the `tail` anymore:
 
-```rust
-cargo build
+```text
+> cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
 src/fifth.rs:15:34: 15:38 error: mismatched types:
  expected `*mut fifth::Node<_>`,
@@ -48,7 +48,7 @@ impl<T> List<T> {
 }
 ```
 
-```
+```text
 cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
 src/fifth.rs:4:5: 4:18 warning: struct field is never used: `head`, #[warn(dead_code)] on by default
