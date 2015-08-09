@@ -73,10 +73,11 @@ fn into_iter() {
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
      Running target/debug/lists-5c71138492ad4b4a
 
-running 3 tests
+running 4 tests
 test first::test::basics ... ok
 test second::test::basics ... ok
 test second::test::into_iter ... ok
+test second::test::peek ... ok
 
 test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured
 

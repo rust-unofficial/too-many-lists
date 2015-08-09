@@ -212,11 +212,12 @@ cargo test
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
      Running target/debug/lists-5c71138492ad4b4a
 
-running 6 tests
+running 7 tests
 test first::test::basics ... ok
 test second::test::basics ... ok
 test second::test::iter ... ok
 test second::test::into_iter ... ok
+test second::test::peek ... ok
 test third::test::basics ... ok
 test third::test::iter ... ok
 

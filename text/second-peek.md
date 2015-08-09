@@ -91,7 +91,16 @@ EZ
 Don't forget to test it:
 
 ```rust
+#[test]
+fn peek() {
+    let mut list = List::new();
+    assert_eq!(list.peek(), None);
+    assert_eq!(list.peek_mut(), None);
+    list.push(1); list.push(2); list.push(3);
 
+    assert_eq!(list.peek(), Some(&3));
+    assert_eq!(list.peek_mut(), Some(&mut 3));
+}
 ```
 
 
@@ -100,12 +109,9 @@ cargo test
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
      Running target/debug/lists-5c71138492ad4b4a
 
-running 14 tests
+running 3 tests
 test first::test::basics ... ok
 test second::test::basics ... ok
-test second::test::iter ... ok
-test second::test::into_iter ... ok
-test second::test::iter_mut ... ok
 test second::test::peek ... ok
 
 test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured
