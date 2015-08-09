@@ -146,12 +146,8 @@ has really blown up here. Our code is at very least not *obviously wrong*.
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
      Running target/debug/lists-5c71138492ad4b4a
 
-running 14 tests
-test fifth::test::into_iter ... ok
-test fifth::test::basics ... ok
-test fifth::test::iter ... ok
+running 10 tests
 test first::test::basics ... ok
-test fifth::test::iter_mut ... ok
 test fourth::test::basics ... ok
 test second::test::basics ... ok
 test fourth::test::peek ... ok
@@ -162,7 +158,7 @@ test second::test::iter_mut ... ok
 test second::test::peek ... ok
 test third::test::basics ... ok
 
-test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured
 
    Doc-tests lists
 
