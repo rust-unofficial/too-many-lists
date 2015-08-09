@@ -12,7 +12,7 @@ and *Unsafe Rust*.
 
 Let's add a new file called `fifth.rs`:
 
-```
+```rust
 // in lib.rs
 
 pub mod first;

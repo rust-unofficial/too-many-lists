@@ -1,7 +1,7 @@
 % Peek
 
-One thing we didn't even bother to implement was peeking. Let's go ahead
-and do that. All we need to do is return a reference to the element in
+One thing we didn't even bother to implement last time was peeking. Let's go
+ahead and do that. All we need to do is return a reference to the element in
 the head of the list, if it exists. Sounds easy, let's try:
 
 ```
@@ -87,3 +87,32 @@ lists::cargo build
 ```
 
 EZ
+
+Don't forget to test it:
+
+```rust
+
+```
+
+
+```
+cargo test
+   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+     Running target/debug/lists-5c71138492ad4b4a
+
+running 14 tests
+test first::test::basics ... ok
+test second::test::basics ... ok
+test second::test::iter ... ok
+test second::test::into_iter ... ok
+test second::test::iter_mut ... ok
+test second::test::peek ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured
+
+   Doc-tests lists
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
+```

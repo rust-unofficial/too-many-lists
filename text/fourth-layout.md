@@ -9,19 +9,19 @@ fn borrow_mut<'a>(&'a self) -> RefMut<'a, T>
 ```
 
 The rules for `borrow` and `borrow_mut` are exactly those of `&` and `&mut`:
-you can call `borrow` as many times as you want, but borrow_mut requires
+you can call `borrow` as many times as you want, but `borrow_mut` requires
 exclusivity.
 
 Rather than enforcing this statically, RefCell enforces them at runtime.
 If you break the rules, RefCell will just panic and crash the program.
 Why does it return these Ref and RefMut things? Well, they basically behave
 like `Rc`s but for borrowing. They keep the RefCell borrowed until they go out
-of scope.
+of scope. We'll get to that later.
 
 Now with Rc and RefCell we can become... an incredibly verbose pervasively
-mutable garbage collected language that can't handle cycles! Y-yaaaaay...
+mutable garbage collected language that can't collect cycles! Y-yaaaaay...
 
-Alright, we want to be *doubly-linked*. This means each node has a pointer to
+Alright, we want to be *doubly linked*. This means each node has a pointer to
 the previous and next node. Also, the list itself has a pointer to the
 first and last node. This gives us fast insertion and removal on *both*
 ends of the list.
