@@ -1,4 +1,4 @@
-% A Safe Doubly-Linked Deque
+% A Bad but Safe Doubly-Linked Deque
 
 Now that we've seen Rc and heard about interior mutability, this gives an
 interesting thought... maybe we *can* mutate through an Rc. And it *that's*

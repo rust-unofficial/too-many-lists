@@ -1,3 +1,3 @@
-% A Unsafe Doubly-Linked Deque
+% An Ok Unsafe Doubly-Linked Deque
 
 Coming Soon!
