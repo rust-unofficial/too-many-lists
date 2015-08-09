@@ -60,7 +60,7 @@ pub struct IterMut<'a, T: 'a> {
 }
 
 impl<T> List<T> {
-    pub fn iter_mut(&mut self) -> IterMut<T> {
+    pub fn iter_mut(&self) -> IterMut<T> {
         IterMut { next: self.head.as_mut().map(|node| &mut **node) }
     }
 }
@@ -80,6 +80,9 @@ impl<'a, T> Iterator for IterMut<'a, T> {
 ```text
 > cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+src/second.rs:96:25: 96:34 error: cannot borrow immutable field `self.head` as mutable
+src/second.rs:96         IterMut { next: self.head.as_mut().map(|node| &mut **node) }
+                                         ^~~~~~~~~
 src/second.rs:104:9: 104:13 error: cannot move out of borrowed content
 src/second.rs:104         self.next.map(|node| {
                           ^~~~
