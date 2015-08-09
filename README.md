@@ -4,13 +4,28 @@ Read the pretty version at http://cglab.ca/~abeinges/blah/too-many-lists/book/
 
 # Building
 
-Building requires an instance of rustbook be set up on your machine. 
-The only way to do this correctly is to [build Rust from source](https://github.com/rust-lang/rust/#building-from-source) 
+Building requires an instance of rustbook be set up on your machine.
+
+A mirror of the rustbook code can be found [here](https://github.com/steveklabnik/rustbook).
+This requires a nightly version of the Rust compiler, as well as Cargo:
+
+```sh
+cd rustbook/
+cargo build --release
+```
+
+Once built, the binary can be found at `rustbook/target/release/rustbook`.
+
+---
+
+If that doesn't work (#13), rustbook can also be built as part of rustc.
+Here's instructions for
+[building Rust from source](https://github.com/rust-lang/rust/#building-from-source).
 
 However it needs to be a slight deviation from the normal process:
 
-* You should do `./configure --enable-rpath` instead of `./configure` 
-* You don't need to `install` (I don't think rustbook will use that -- although 
+* You should do `./configure --enable-rpath` instead of `./configure`
+* You don't need to `install` (I don't think rustbook will use that -- although
   maybe I'm wrong and make install will install rustbook too -- happy to be wrong!)
 
 Once built, rustbook will be somewhere deep in the build target
@@ -22,8 +37,11 @@ like. On windows you may need to look in stage3.
 
 Now just copy or link rustbook to be somewhere on your path.
 
-Once you have, you just need to do:
+---
 
-```
+Once you have the rustbook binary, you just need to do:
+
+```sh
+cd too-many-lists/
 rm -rf book/ && rustbook build text/ book/
 ```
