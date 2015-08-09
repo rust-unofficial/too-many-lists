@@ -38,4 +38,4 @@
     * [Extras](fifth-extras.md)
     * [Final Code](fifth-final.md)
 * [An Unsafe Deque](sixth.md)
-* [????](seventh.md)
+* [A Bunch of Silly](seventh.md)
