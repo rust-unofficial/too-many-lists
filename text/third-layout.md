@@ -43,7 +43,7 @@ So how do we do reference counted garbage collection? `Rc`! Rc is just like
 Box, but we can duplicate it, and its memory will *only* be freed when *all*
 the Rc's derived from are dropped. Unforuntately, this flexibility comes at
 a serious cost: we can only Deref an Rc. No DerefMut or DerefMove. This means
-we can't every really get data out of one of our lists, nor can we mutate them.
+we can't ever really get data out of one of our lists, nor can we mutate them.
 
 So what's our layout gonna look like? Well, previously we had:
 
