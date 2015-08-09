@@ -1,4 +1,4 @@
-% Fifth Extra Junk
+% Extra Junk
 
 Now that `push` and `pop` are written, everything else is exactly the same
 as the stack case. Only operations that change the length of the list need

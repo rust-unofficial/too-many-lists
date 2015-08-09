@@ -163,7 +163,7 @@ freeing your memory thing is less lame there, *I guess*.
 Anyway, let's see what compiler error we get next (let's face it, there's going
 to be one).
 
-```
+```text
 > cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
 src/fourth.rs:58:38: 58:46 error: no method named `unwrap` found for type `core::result::Result<core::cell::RefCell<fourth::Node<T>>, alloc::rc::Rc<core::cell::RefCell<fourth::Node<T>>>>` in the current scope
