@@ -26,7 +26,7 @@
 * [A Safe Deque](fourth.md)
     * [Layout](fourth-layout.md)
     * [Building](fourth-building.md)
-    * [Pop](fourth-breaking.md)
+    * [Breaking](fourth-breaking.md)
     * [Peek](fourth-peek.md)
     * [Symmetric Cases](fourth-symmetry.md)
     * [Iteration](fourth-iteration.md)

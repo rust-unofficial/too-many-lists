@@ -33,6 +33,36 @@ reference, here's what we're going to be making:
 6) [TODO: An Unsafe Doubly Linked Deque](sixth.md)
 7) [TODO: A Silly Double Linked List](seventh.md)
 
+Just so we're all the same page, I'll be writing out all the commands that I
+feed into my terminal. I'll also be using Rust's standard package manager, Cargo,
+to develop the project. Cargo isn't necessary to write a Rust program, but it's
+*so much* better than using rustc directly. If you just want to futz around you
+can also run some simple programs in the browser via https://play.rust-lang.org/
+though it doesn't support running unit tests.
+
+Let's get started and make our project:
+
+```text
+> cargo new lists
+> cd lists
+```
+
+We'll put each list in a separate file so that we don't lose any of our work.
+
+It should be noted that the *authentic* Rust learning experience involves
+writing code, having the compiler scream at you, and trying to figure out
+what the heck that means. I will be carefully ensuring that this occurs as
+frequently as possible. Learning to read and understand Rust's generally
+excellent compiler errors is *incredibly* important to being a productive
+Rust programmer.
+
+Although actually that's a lie. In writing this I encountered *way* more
+compiler errors than I show. In particular, in the later chapters I won't be
+showing a lot of the random "I typed (read: copy-pasted) bad" errors that you
+expect to encounter in every language. This is a *guided tour* of having the
+compiler scream at us.
+
+
 
 
 # An Obligatory Public Service Announcement
@@ -112,7 +142,7 @@ splitting and merging, you may have gains in a linked list*.
 
 ## I can't afford amortization
 
-You've already entered a pretty niche space, most can afford amortization.
+You've already entered a pretty niche space -- most can afford amortization.
 Still, arrays are amortized *in the worst case*. Just because you're using an
 array, doesn't mean you have amortized costs. If you can predict how many
 elements you're going to store (or even have an upper-bound), you can
@@ -127,7 +157,8 @@ allocator.
 
 How's that for low latency?
 
-*But yes, if you can't predict your load, there are latency savings to be had!*
+*But yes, if you can't predict your load, there are worst-case
+latency savings to be had!*
 
 
 
@@ -169,19 +200,24 @@ decent allocator, there are memory savings to be had!*
 
 Great! Linked lists are super elegant to use in functional languages
 because you can manipulate them without any mutation, can describe them
-recursively, and also work with infinite lists do to laziness.
+recursively, and also work with infinite lists due to the magic of laziness.
+
+Specifically, linked lists are nice because they represent an iteration without
+the need for any mutable state. The next step is just visiting the next sublist.
 
 However it should be noted that Rust can pattern match on arrays and talk
 about sub-arrays [using slices][slices]! It's actually even more expressive
-than a functional list because you can talk about the last element or even
-"the array without the first and last two elements" or whatever you want.
+than a functional list in some regards because you can talk about the last
+element or even "the array without the first and last two elements" or
+whatever other crazy thing you want.
 
 It is true that you can't *build* a list using slices. You can only tear
 them apart.
 
 For laziness we instead have [iterators][]. These can be infinite and you
 can map, filter, reverse, and concatenate them just like a functional list,
-and it will all be done just as lazily. Slices can be coerced to an iterator.
+and it will all be done just as lazily. No surprise here: slices can also be
+coerced to an iterator.
 
 *But yes, if you're limited to immutable semantics, linked lists can be very
 nice*.
@@ -195,14 +231,10 @@ without you having to worry about it. However this comes at the cost of being
 *able* to worry about it. There are usually escape hatches, but at some limit
 you're just writing procedural code again.
 
-Edit: Several Haskell programmers have informed me that even in Haskell,
-`Data.List` (the classic functional singly-linked list) is shunned in favour
-of actually using problem-appropriate data structures like Sequence, Vector,
-Array, Text, etc. When actually using it as a data structure, and not just a
-control-flow mechanism (iterator). I sadly don't have any good resources on
-this claim.
-
-
+Even in functional languages, you should endeavour to use the appropriate data
+structure for the job when you actually need a data structure. Yes, singly
+linked lists are your primary tool for control flow, but they're a really poor
+way to actually store a bunch of data and query it.
 
 
 ## Linked lists are great for building concurrent data structures!
@@ -257,25 +289,6 @@ can get kinda gnarly, as we'll see.
 # Take a Breath
 
 Ok. That's out of the way. Let's write a bajillion linked lists.
-
-Just so we're all the same page, I'll be writing out all the commands that I
-feed into my terminal. I'll be using Rust's standard package manager, Cargo,
-to develop the project. Cargo isn't necessary to write a Rust program, but it's
-*so much* better.
-
-```text
-> cargo new lists
-> cd lists
-```
-
-We'll put each list in a separate file so that we don't lose any of our work.
-
-It should be noted that the *authentic* Rust learning experience involves
-writing code, having the compiler scream at you, and trying to figure out
-what the heck that means. I will be carefully ensuring that this occurs as
-frequently as possible. Learning to read and understand Rust's generally
-excellent compiler errors is *incredibly* important to being a productive
-Rust programmer.
 
 
 
