@@ -28,8 +28,8 @@ reference, here's what we're going to be making:
 1. [A Bad Singly Linked Stack](first.md)
 2. [An Ok Singly Linked Stack](second.md)
 3. [A Persistent Singly Linked Stack](third.md)
-4. [TODO: A Bad But Safe Doubly Linked Deque](fourth.md)
-5. [TODO: An Unsafe Singly Linked Queue](fifth.md)
+4. [A Bad But Safe Doubly Linked Deque](fourth.md)
+5. [An Unsafe Singly Linked Queue](fifth.md)
 6. [TODO: An Unsafe Doubly Linked Deque](sixth.md)
 7. [TODO: A Silly Double Linked List](seventh.md)
 
