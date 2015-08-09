@@ -42,7 +42,8 @@ For reference, the unstable function is called `try_unwrap`.
 
 Rc actually lets you do this... but only in nightly Rust. Honestly, I'd rather
 risk blowing the stack sometimes than iterate every list whenever it gets
-dropped. Still if you'd rather not blow the stack, here's the first solution:
+dropped. Still if you'd rather not blow the stack, here's the first
+(O(n)) solution:
 
 ```rust
 impl<T> Drop for List<T> {
@@ -61,7 +62,7 @@ impl<T> Drop for List<T> {
 }
 ```
 
-and here's the second solution (only works on nightly):
+and here's the second (amortized O(1)) solution (only works on nightly):
 
 ```rust
 impl<T> Drop for List<T> {
