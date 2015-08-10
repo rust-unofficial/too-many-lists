@@ -9,7 +9,7 @@ super easy to answer the question on the spot. As such I've decided to write
 this series of articles to comprehensively answer the question once and for all.
 
 In this series I will teach you basic and advanced Rust programming
-entirely by having you implement linked lists 7 times. In doing so, you should
+entirely by having you implement 6 linked lists. In doing so, you should
 learn:
 
 * The following pointer types: `&`, `&mut`, `Box`, `Rc`, `Arc`, `*const`, `*mut`
@@ -17,7 +17,7 @@ learn:
 * All The Keywords: struct, enum, fn, pub, impl, use, ...
 * Pattern matching, generics, destructors
 * Testing
-* Unsafe Rust
+* Basic Unsafe Rust
 
 Yes, linked lists are so truly awful that you deal with all of these concepts in
 making them real.
@@ -31,7 +31,7 @@ reference, here's what we're going to be making:
 4. [A Bad But Safe Doubly Linked Deque](fourth.md)
 5. [An Unsafe Singly Linked Queue](fifth.md)
 6. [TODO: An Ok Unsafe Doubly Linked Deque](sixth.md)
-7. [TODO: A Bunch of Silly Lists](seventh.md)
+7. [Bonus: A Bunch of Silly Lists](seventh.md)
 
 Just so we're all the same page, I'll be writing out all the commands that I
 feed into my terminal. I'll also be using Rust's standard package manager, Cargo,
@@ -53,14 +53,16 @@ It should be noted that the *authentic* Rust learning experience involves
 writing code, having the compiler scream at you, and trying to figure out
 what the heck that means. I will be carefully ensuring that this occurs as
 frequently as possible. Learning to read and understand Rust's generally
-excellent compiler errors is *incredibly* important to being a productive
-Rust programmer.
+excellent compiler errors and documentation is *incredibly* important to
+being a productive Rust programmer.
 
 Although actually that's a lie. In writing this I encountered *way* more
 compiler errors than I show. In particular, in the later chapters I won't be
 showing a lot of the random "I typed (read: copy-pasted) bad" errors that you
 expect to encounter in every language. This is a *guided tour* of having the
 compiler scream at us.
+
+We will drive very
 
 
 

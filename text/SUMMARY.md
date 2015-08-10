@@ -38,4 +38,5 @@
     * [Extras](fifth-extras.md)
     * [Final Code](fifth-final.md)
 * [An Ok Unsafe Deque](sixth.md)
-* [A Bunch of Silly](seventh.md)
+* [A Bunch of Silly Lists](infinity.md)
+    * [The Double Single](infinity-double-single.md)
