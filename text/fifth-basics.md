@@ -156,7 +156,7 @@ Could not compile `lists`.
 THIS SHOULDN'T BE THIS HARD.
 
 Remember how I said Unsafe Rust is like an FFI language for Safe Rust? Well, the
-compiler wants us to explicitly delimit where we're doign this FFI-ing. We have
+compiler wants us to explicitly delimit where we're doing this FFI-ing. We have
 two options. First, we can mark our *entire* function as unsafe, in which case
 it becomes an Unsafe Rust function and can only be called in an `unsafe`
 context. This isn't great, because we want our list to be safe to use. Second,
