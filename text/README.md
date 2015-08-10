@@ -6,7 +6,7 @@ Got any issues or want to check out all the final code at once?
 I fairly frequently get asked how to implement a linked list in Rust. The
 answer honestly depends on what your requirements are, and it's obviously not
 super easy to answer the question on the spot. As such I've decided to write
-this series of articles to comprehensively answer the question once and for all.
+this book to comprehensively answer the question once and for all.
 
 In this series I will teach you basic and advanced Rust programming
 entirely by having you implement 6 linked lists. In doing so, you should
@@ -62,7 +62,11 @@ showing a lot of the random "I typed (read: copy-pasted) bad" errors that you
 expect to encounter in every language. This is a *guided tour* of having the
 compiler scream at us.
 
-We will drive very
+We're going to be going pretty slow, and I'm honestly not going to be very
+serious pretty much the entire time. I think programming should be fun, dang it!
+If you're the type of person who wants maximally information-dense, serious, and
+formal content, this book is not for you. Nothing I will ever make is for you.
+You are wrong.
 
 
 
