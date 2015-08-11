@@ -52,7 +52,7 @@ impl<T> Drop for List<T> {
         let mut cur_list = self.head.take();
         while let Some(node) = cur_list {
             // Clone the current node's next node.
-            cur_list = cur_list.next.clone();
+            cur_list = node.next.clone();
             // Node dropped here. If the old node had
             // refcount 1, then it will be dropped and freed, but it won't
             // be able to fully recurse and drop its child, because we
