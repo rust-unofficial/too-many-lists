@@ -233,7 +233,7 @@ And really, this is no different from the FFI case. No one needs care
 if some python math library shells out to C as long as it exposes a safe
 interface.
 
-Anyway, let's move on to `push`, which is pretty much verbatim the reference
+Anyway, let's move on to `pop`, which is pretty much verbatim the reference
 version:
 
 ```rust
