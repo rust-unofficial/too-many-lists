@@ -15,7 +15,7 @@ pub struct Iter<T> {
 }
 
 impl<T> List<T> {
-    pub fn iter(&self) -> Iter {
+    pub fn iter(&self) -> Iter<T> {
         Iter { next: self.head.map(|node| &*node) }
     }
 }
