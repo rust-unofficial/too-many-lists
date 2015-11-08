@@ -90,7 +90,7 @@ error: aborting due to previous error
 ```
 
 Oops! I actually accidentally made an error when writing the
-the `iter` impl, but Copy saved the day. `&` is Copy, as we saw before. But
+`iter` impl, but Copy saved the day. `&` is Copy, as we saw before. But
 that also means `Option<&>` is *also* Copy. So when we did `self.next.map` it
 was fine because the Option was just copied. Now we can't do that, because
 `&mut` isn't Copy (if you copied an &mut, you'd have two &mut's to the same
