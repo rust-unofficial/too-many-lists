@@ -79,7 +79,7 @@ test second::test::basics ... ok
 test second::test::into_iter ... ok
 test second::test::peek ... ok
 
-test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured
 
    Doc-tests lists
 
@@ -89,4 +89,3 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 ```
 
 Nice!
-
