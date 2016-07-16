@@ -46,7 +46,7 @@ We could do this today and call it quits, but that would stink! Both of these
 operations walk over the *entire* list. Some would argue that such a queue
 implementation is indeed a queue because it exposes the right interface. However
 I believe that performance guarantees are part of the interface. I don't care
-about precise assymptotic bounds, but rather "fast" and "slow". Queues guarantee
+about precise asymptotic bounds, but rather "fast" and "slow". Queues guarantee
 that push and pop are fast, and walking over the whole list is definitely *not*
 fast.
 
