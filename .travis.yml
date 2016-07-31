@@ -16,4 +16,12 @@ script:
 
 after_success:
   - tree book
-  - zip -r too-many-lists book
+  - zip -r too-many-lists.zip book
+
+deploy:
+  provider: releases
+  api_key: "$GH_DEPLOY_TOKEN"
+  file: "too-many-lists.zip"
+  skip_cleanup: true
+  on:
+    tags: true
