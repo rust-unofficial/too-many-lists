@@ -16,3 +16,4 @@ script:
 
 after_success:
   - tree book
+  - zip -r too-many-lists book
