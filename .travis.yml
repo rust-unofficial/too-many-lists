@@ -4,7 +4,7 @@ rust:
 
 install:
   - git clone --depth 1 https://github.com/steveklabnik/rustbook.git
-  - cargo build --release
+  - cd rustbook && cargo build --release && cd ..
 
 script:
   - rustbook/target/release/rustbook build text/ book/
