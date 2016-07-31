@@ -8,3 +8,4 @@ install:
 
 script:
   - rustbook/target/release/rustbook build text/ book/
+  - tree book
