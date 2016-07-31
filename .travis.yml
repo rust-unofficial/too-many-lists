@@ -2,8 +2,10 @@ language: rust
 rust:
   - nightly
 
-before_install:
-  - apt-get install tree
+addons:
+  apt:
+    packages:
+      - tree
 
 install:
   - git clone --depth 1 https://github.com/steveklabnik/rustbook.git
