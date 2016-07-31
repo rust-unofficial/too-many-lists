@@ -13,4 +13,6 @@ install:
 
 script:
   - rustbook/target/release/rustbook build text/ book/
+
+after_success:
   - tree book
