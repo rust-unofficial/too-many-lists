@@ -1,0 +1,10 @@
+language: rust
+rust:
+  - nightly
+
+install:
+  - git clone --depth 1 https://github.com/steveklabnik/rustbook.git
+  - cargo build --release
+
+script:
+  - rustbook/target/release/rustbook build text/ book/
