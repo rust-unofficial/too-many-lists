@@ -48,13 +48,13 @@ impl Drop for List {
     fn drop(&mut self) {
         // NOTE: you can't actually explicitly call `drop` in real Rust code;
         // we're pretending to be the compiler!
-        list.head.drop(); // tail recursive - good!
+        self.head.drop(); // tail recursive - good!
     }
 }
 
 impl Drop for Link {
     fn drop(&mut self) {
-        match list.head {
+        match *self {
             Link::Empty => {} // Done!
             Link::More(ref mut boxed_node) => {
                 boxed_node.drop(); // tail recursive - good!
