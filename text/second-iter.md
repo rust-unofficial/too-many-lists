@@ -141,7 +141,7 @@ Lifetimes are unecessary in garbage collected languages because the garbage
 collector ensures that everything magically lives as long as it needs to. Most
 data in Rust is *manually* managed, so that data needs another solution. C and
 C++ give us a clear example what happens if you just let people take pointers
-to random data on the stack: pervasive unmangeable unsafety. This can be
+to random data on the stack: pervasive unmanageable unsafety. This can be
 roughly seperated into two classes of error:
 
 * Holding a pointer to something that went out of scope
