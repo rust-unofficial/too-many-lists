@@ -97,7 +97,7 @@ fn basics() {
     // ---- back -----
 
     // Check empty list behaves right
-    assert_eq!(list.pop_front(), None);
+    assert_eq!(list.pop_back(), None);
 
     // Populate list
     list.push_back(1);
