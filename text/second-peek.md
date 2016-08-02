@@ -114,7 +114,7 @@ test first::test::basics ... ok
 test second::test::basics ... ok
 test second::test::peek ... ok
 
-test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured
 
    Doc-tests lists
 
