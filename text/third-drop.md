@@ -38,9 +38,9 @@ really bad).
 The second way is if we could identify that we're the last list that knows
 about this node, we could in *principle* actually move the Node out of the Rc.
 Then we could also know when to stop: whenver we *can't* hoist out the Node.
-For reference, the unstable function is called `try_unwrap`.
+For reference, the function is called `try_unwrap`.
 
-Rc actually lets you do this... but only in nightly Rust. Honestly, I'd rather
+Rc actually lets you do this... Honestly, I'd rather
 risk blowing the stack sometimes than iterate every list whenever it gets
 dropped. Still if you'd rather not blow the stack, here's the first
 (O(n)) solution:
@@ -62,7 +62,7 @@ impl<T> Drop for List<T> {
 }
 ```
 
-and here's the second (amortized O(1)) solution (only works on nightly):
+and here's the second (amortized O(1)) solution:
 
 ```rust
 impl<T> Drop for List<T> {
