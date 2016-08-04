@@ -1,7 +1,7 @@
 % A Bad but Safe Doubly-Linked Deque
 
 Now that we've seen Rc and heard about interior mutability, this gives an
-interesting thought... maybe we *can* mutate through an Rc. And it *that's*
+interesting thought... maybe we *can* mutate through an Rc. And if *that's*
 the case, maybe we can implement a *doubly* linked list totally safely!
 
 In the process we'll become familiar with *interior mutability*, and probably
