@@ -150,9 +150,7 @@ expose access to an `&T`.
 
 Both of those options are *kinda* lame.
 
-Instead, we're going to go deeper down the nightly unstable features hole. This
-one is actually gratuitous since the newtype solution is actually fine. But
-we're already on nightly, and this list already has me deeply depressed. Let's
+Instead, we're going to go deeper down. Let's
 have some *fun*. Our source of fun is *this beast*:
 
 ```rust
@@ -177,29 +175,6 @@ pub fn peek_front(&self) -> Option<Ref<T>> {
         Ref::map(node.borrow(), |node| &node.elem)
     })
 }
-```
-
-```text
-> cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/fourth.rs:64:13: 64:21 error: use of unstable library feature 'cell_extras': recently added
-src/fourth.rs:64             Ref::map(node.borrow(), |node| &node.elem)
-                             ^~~~~~~~
-note: in expansion of closure expansion
-src/fourth.rs:63:32: 65:10 note: expansion site
-src/fourth.rs:64:13: 64:21 help: add #![feature(cell_extras)] to the crate attributes to enable
-src/fourth.rs:1:22: 1:28 warning: unused import, #[warn(unused_imports)] on by default
-src/fourth.rs:1 use std::cell::{Ref, RefMut, RefCell};
-                                     ^~~~~~
-error: aborting due to previous error
-Could not compile `lists`.
-```
-
-*Yeah Yeah...*
-
-```rust
-// in lib.rs
-#![feature(rc_unique, cell_extras)]
 ```
 
 ```text
