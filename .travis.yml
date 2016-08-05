@@ -15,8 +15,8 @@ script:
   - rustbook/target/release/rustbook build text/ book/
 
 after_success:
-  - tree book
-  - zip too-many-lists.zip . -i *.css
+  - tree .
+  - zip too-many-lists.zip rust.css
   - zip -r too-many-lists.zip book
 
 deploy:
