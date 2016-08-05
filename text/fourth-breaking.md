@@ -178,11 +178,7 @@ YES.
 
 *phew*
 
-As one of the people who makes these decisions, I can just say that `try_unwrap`
-is totally going to be stabilized as-is. It's just mixed in with some other
-annoying details that we're hashing out.
-
-But we did it.
+We did it.
 
 We implemented `push` and `pop`.
 
