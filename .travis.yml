@@ -16,6 +16,7 @@ script:
 
 after_success:
   - tree book
+  - zip too-many-lists.zip . -i *.css
   - zip -r too-many-lists.zip book
 
 deploy:
