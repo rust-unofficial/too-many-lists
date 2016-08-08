@@ -114,26 +114,7 @@ reference counted pointers: they're shared!
 
 This was a problem for us when we wanted to implement Drop for our reference
 counted list, because we needed to gain ownership of the nodes to drop them
-one at a time. We saw that only Rust's nightlies expose the tools to do this.
-
-------
-
-So... we're going to use nightly!
-
-My preferred way to use nightly is to use Brian Anderson's *amazing* [multirust].
-It lets you easily update and switch between Rust's stable, beta, and nightly
-channels. Or even make up your own custom toolchains! This is a total godsend
-for me as someone who maintains several libraries which bridge the
-stable-nightly gap. It also lets me easily test out custom builds of the
-compiler and standard library when I'm working on those!
-
-Sadly, its current design doesn't work on Windows. So if you're on Windows or
-otherwise *hate amazing things*. You'll need to grab a nightly from
-[the rust-lang website][downloads].
-
-------
-
-Alright, got the nightly? Great!
+one at a time. 
 
 Now we can use `Rc::try_unwrap`, which moves out the contents of an Rc out
 if its refcount is 1.
@@ -191,51 +172,13 @@ PLEASE.
 ```text
 cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/fourth.rs:58:13: 58:27 error: use of unstable library feature 'rc_unique'
-src/fourth.rs:58             Rc::try_unwrap(old_head).ok().unwrap().into_inner().elem
-                             ^~~~~~~~~~~~~~
-note: in expansion of closure expansion
-src/fourth.rs:48:30: 59:10 note: expansion site
-src/fourth.rs:58:13: 58:27 help: add #![feature(rc_unique)] to the crate attributes to enable
-error: aborting due to previous error
-Could not compile `lists`.
-```
-
-NO.
-
-> add `#![feature(rc_unique)]` to the crate attributes to enable
-
-FINE.
-
-```rust
-// in lib.rs
-#![feature(rc_unique)]
-
-pub mod first;
-pub mod second;
-pub mod third;
-pub mod fourth;
-pub mod fifth;
-```
-
-```text
-cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
 ```
 
 YES.
 
 *phew*
 
-Ok what was that last thing? Rust *really* doesn't want you using unstable
-features, so it makes you explicitly name every single one you do at the top
-of your crate. *shrug*
-
-As one of the people who makes these decisions, I can just say that `try_unwrap`
-is totally going to be stabilized as-is. It's just mixed in with some other
-annoying details that we're hashing out.
-
-But we did it.
+We did it.
 
 We implemented `push` and `pop`.
 
