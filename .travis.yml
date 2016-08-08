@@ -1,0 +1,28 @@
+language: rust
+rust:
+  - nightly
+
+addons:
+  apt:
+    packages:
+      - tree
+
+install:
+  - git clone --depth 1 https://github.com/steveklabnik/rustbook.git
+  - cd rustbook && cargo build --release && cd ..
+
+script:
+  - rustbook/target/release/rustbook build text/ book/
+
+after_success:
+  - tree .
+  - zip too-many-lists.zip rust.css
+  - zip -r too-many-lists.zip book
+
+deploy:
+  provider: releases
+  api_key: "$GH_DEPLOY_TOKEN"
+  file: "too-many-lists.zip"
+  skip_cleanup: true
+  on:
+    tags: true
