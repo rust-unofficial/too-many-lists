@@ -1,4 +1,4 @@
-# Learn Rust by writing Entirely Too Many linked lists
+# Learn Rust by writing Entirely Too Many linked lists [![Build Status](https://travis-ci.org/rust-unofficial/too-many-lists.svg?branch=master)](https://travis-ci.org/rust-unofficial/too-many-lists)
 
 Read the pretty version at http://cglab.ca/~abeinges/blah/too-many-lists/book/
 
