@@ -57,13 +57,13 @@ Wow, Rust is really hard-nosed about actually using fields. It can tell no
 consumer can ever actually observe the use of these fields! Still, we seem good
 so far.
 
-`tail` is the logical inverse of this operation. It takes a list and removes the
+`tail` is the logical inverse of this operation. It takes a list and returns the
 whole list with the first element removed. All that is is cloning the *second*
 element in the list (if it exists). Let's try this:
 
 ```rust
 pub fn tail(&self) -> List<T> {
-    List { head: self.head.map(|node| node.next.clone()) }
+    List { head: self.head.as_ref().map(|node| node.next.clone()) }
 }
 ```
 
