@@ -110,7 +110,7 @@ impl<T> List<T> {
 I'm going a bit faster with the impl details now since we should be pretty
 comfortable with this sort of thing. Not that you should necessarily expect
 to produce this code on the first try. I'm just skipping over some of the
-trail-and-error we've had to deal with before. I actually made a ton of mistakes
+trial-and-error we've had to deal with before. I actually made a ton of mistakes
 writing this code that I'm not showing. You can only see me leave off a `mut` or
 `;` so many times before it stops being instructive. Don't worry, we'll see
 plenty of *other* error messages!
