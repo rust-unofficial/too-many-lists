@@ -86,7 +86,7 @@ to the lifetime of the Ref, and not actual RefCell. This means that the Ref
 has to be sitting around as long as we keep the reference around.
 
 This is in fact necessary for correctness. When a Ref gets dropped, it tells
-the RefCell that it's not borrowed anymore. So if *did* manage to hold onto our
+the RefCell that it's not borrowed anymore. So if we *did* manage to hold onto our
 reference longer than the Ref existed, we could get a RefMut while a reference
 was kicking around and totally break Rust's type system in half.
 
