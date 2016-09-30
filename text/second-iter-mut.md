@@ -115,7 +115,7 @@ src/second.rs:65         IterMut { next: self.head.as_mut().map(|node| &mut **no
 error: aborting due to previous error
 ```
 
-Uh... what? Looks we messed up mutability somewhere in `iter_mut`:
+Uh... What? Looks we messed up mutability somewhere in `iter_mut`:
 
 ```rust
 pub fn iter_mut(&self) -> IterMut<T> {
@@ -137,7 +137,7 @@ pub fn iter_mut(&mut self) -> IterMut<T> {
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
 ```
 
-Uh... wow. Holy shit! IterMut Just Works!
+Uh... Wow. Holy shit! IterMut Just Works!
 
 Let's test this:
 
@@ -196,7 +196,7 @@ this works:
 
 * We `take` the `Option<&mut>` so we have exclusive access to the mutable
   reference. No need to worry about someone looking at it again.
-* Rust understands that it's ok to shard a mutable reference into the subfields
+* Rust understands that it's ok to share a mutable reference into the subfields
   of the pointed-to struct, because there's no way to "go back up", and they're
   definitely disjoint.
 
