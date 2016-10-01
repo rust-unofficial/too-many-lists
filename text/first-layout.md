@@ -36,13 +36,15 @@ pub enum List {
 ```text
 > cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/lists)
-src/first.rs:1:1: 4:2 error: illegal recursive enum type; wrap the inner value in a box to make it representable [E0072]
+src/first.rs:1:1: 4:2 error: recursive type `first::List` has infinite size [E0072]
 src/first.rs:1 pub enum List {
-src/first.rs:2    Empty,
-src/first.rs:3    Elem(T, List),
-src/first.rs:4 }
+              ^
+src/first.rs:1:1: 4:2 help: run `rustc --explain E0072` to see a detailed explanation
+src/first.rs:1:1: 4:2 help: insert indirection (e.g., a `Box`, `Rc`, or `&`) at some point to make `first::List` representable
 error: aborting due to previous error
-Could not compile `lists`.
+error: Could not compile `list`.
+
+To learn more, run the command again with --verbose.
 ```
 
 Noooooooo!!!! Functional programmers tricked us! That made us do something
@@ -54,7 +56,7 @@ I'm ok now. Are you ok now? If we actually check out the error message (instead
 of getting ready to flee the country, as \*ahem\* *some* of us did), we can see
 that rustc is actually telling us exactly how to solve this problem:
 
-> illegal recursive enum type; wrap the inner value in a box to make it representable
+> insert indirection (e.g., a `Box`, `Rc`, or `&`) at some point to make `first::List` representable
 
 Alright, `box`. What's that? Let's google `rust box`...
 
