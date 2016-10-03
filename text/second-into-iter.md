@@ -31,7 +31,7 @@ iterator each collection should endeavour to implement:
 
 We actually already have all the tools to implement
 IntoIter using List's interface: just call `pop` over and over. As such, we'll
-just implement IntoIter as a new type wrapper around List:
+just implement IntoIter as a newtype wrapper around List:
 
 
 ```rust
