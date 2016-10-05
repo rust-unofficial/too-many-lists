@@ -15,8 +15,9 @@ implementation of Iterator has an *associated type* called Item. In this case,
 this is the type of this that it can spit out when you call `next`.
 
 The reason Iterator yields `Option<Self::Item>` is because the interface
-coallesces the `has_next` and `get_next` concepts. When you have_next, you yield
-Some(value), and when you don't you yield None. This makes the
+coalesces the `has_next` and `get_next` concepts. When you have the next value,
+you yield
+`Some(value)`, and when you don't you yield `None`. This makes the
 API generally more ergonomic and safe to use and implement, while avoiding
 redundant checks and logic between `has_next` and `get_next`. Nice!
 
