@@ -1,6 +1,6 @@
 % Drop
 
-Like the mutable lists, we have a the recursive destructor problem.
+Like the mutable lists, we have a recursive destructor problem.
 Admittedly, this isn't as bad of a problem for the immutable list: if we ever
 hit another node that's the head of another list *somewhere*, we won't
 recursively drop it. However it's still a thing we should care about, and
