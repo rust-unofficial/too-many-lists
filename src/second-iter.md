@@ -137,7 +137,7 @@ they're a change to something we've known and loved since the dawn of
 programming. We've actually managed to dodge lifetimes so far, even though
 they've been tangled throughout our programs this whole time.
 
-Lifetimes are unecessary in garbage collected languages because the garbage
+Lifetimes are unnecessary in garbage collected languages because the garbage
 collector ensures that everything magically lives as long as it needs to. Most
 data in Rust is *manually* managed, so that data needs another solution. C and
 C++ give us a clear example what happens if you just let people take pointers
