@@ -8,11 +8,10 @@ addons:
       - tree
 
 install:
-  - git clone --depth 1 https://github.com/steveklabnik/rustbook.git
-  - cd rustbook && cargo build --release && cd ..
+  - cargo install mdbook
 
 script:
-  - rustbook/target/release/rustbook build text/ book/
+  - mdbook build
 
 after_success:
   - tree .
