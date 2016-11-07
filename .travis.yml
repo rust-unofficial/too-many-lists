@@ -11,9 +11,8 @@ install:
   - cargo install mdbook
 
 script:
-  - PATH=$PATH:/home/travis/.cargo/bin mdbook test
   - PATH=$PATH:/home/travis/.cargo/bin mdbook build
-  
+
 after_success:
   - tree .
   - zip too-many-lists.zip rust.css
