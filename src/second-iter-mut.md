@@ -94,7 +94,7 @@ Oops! I actually accidentally made an error when writing the
 that also means `Option<&>` is *also* Copy. So when we did `self.next.map` it
 was fine because the Option was just copied. Now we can't do that, because
 `&mut` isn't Copy (if you copied an &mut, you'd have two &mut's to the same
-location in memory, which is verboten. Instead, we should properly `take`
+location in memory, which is verboten). Instead, we should properly `take`
 the Option to get it.
 
 
