@@ -265,8 +265,8 @@ Oh lord, what will that do?!
 Well, pushing is actually fine. We've got a view into some sub-range of the
 list, and the list will just grow beyond our sights. No biggie.
 
-However `pop` is another story. If they're popping elements outside outside of
-our range, it should *still* be fine. We can't see those nodes so nothing will
+However `pop` is another story. If they're popping elements outside of our
+range, it should *still* be fine. We can't see those nodes so nothing will
 happen. However if they try to pop off the node we're pointing at... everything
 will blow up! In particular when they go to `unwrap` the result of the
 `try_unwrap`, it will actually fail, and the whole program will panic.
