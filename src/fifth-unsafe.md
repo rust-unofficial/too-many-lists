@@ -22,11 +22,11 @@ book][nom]). That's ok, because with linked lists we can actually ignore almost
 all of it.
 
 The main Unsafe tool we'll be using are *raw pointers*. Raw pointers are
-basically C's pointers. They have no inherent aliasing rules. They have
-no lifetimes. The can be null. They can be dangling. They can point to
-uninitialized memory. The can be cast to and from integers. They can be
-cast to point to a different type. Mutability? Cast it. Pretty much everything
-goes, and that means pretty much anything can go wrong.
+basically C's pointers. They have no inherent aliasing rules. They have no
+lifetimes. They can be null. They can be dangling. They can point to
+uninitialized memory. They can be cast to and from integers. They can be cast
+to point to a different type. Mutability? Cast it. Pretty much everything goes,
+and that means pretty much anything can go wrong.
 
 This is some bad stuff and honestly you'll live a happier life never having
 to touch these. Unforunately, we want to write linked lists, and linked lists
