@@ -1,6 +1,8 @@
 #!/bin/bash -xe
 
 function install_deps() {
+    echo "Installing curl..."
+    apt-get install -y curl
     echo "Installing Rust..."
     curl https://static.rust-lang.org/rustup.sh | sudo sh -s -- --spec=nightly
     echo "Cloning Rustbook..."
