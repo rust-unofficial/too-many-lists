@@ -52,7 +52,7 @@ impl<T> Option<T> {
 
 It demotes the Option<T> to an Option to a reference to its internals. We could
 do this ourselves with an explicit match but *ugh no*. It does mean that we
-need to do an extra derefence to cut through the extra indirection, but
+need to do an extra dereference to cut through the extra indirection, but
 thankfully the `.` operator handles that for us.
 
 

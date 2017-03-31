@@ -335,7 +335,7 @@ Nice.
 Box is actually really special in Rust, because it's sufficiently built into the
 language that the compiler lets you do some stuff that nothing else can do. We
 actually have been doing one such thing this whole time: `DerefMove`. Whenever
-you have a pointer type you can derefence it with `*` or `.` to get at its
+you have a pointer type you can dereference it with `*` or `.` to get at its
 contents. Usually you can get a `Deref` or maybe even a `DerefMut`,
 corresponding to a shared or mutable reference respectively.
 
