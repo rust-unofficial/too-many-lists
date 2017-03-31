@@ -19,10 +19,11 @@ case "$BONNYCI_TEST_PIPELINE" in
     "check")
         install_deps
         build_book
+	;;
     "gate")
         install_deps
         build_book
+	;;
 esac
 
 exit 0
-
