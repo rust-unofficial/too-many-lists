@@ -45,3 +45,10 @@ Once you have the rustbook binary, you just need to do:
 cd too-many-lists/
 rm -rf book/ && rustbook build text/ book/
 ```
+
+---
+
+If you'd prefer, this project can also be built with
+[GitBook](https://github.com/GitbookIO/gitbook), although GitBook
+is not officially supported and compatibility is therefore
+uncertain and incidental.
