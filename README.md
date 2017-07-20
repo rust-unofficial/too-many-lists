@@ -11,7 +11,7 @@ Building requires mdbook, which can be installed from crates.io:
 cargo install mdbook
 ```
 
-Assuming you've placed `mdbook` into your system PATH variable, then run it from the root of your local copy:
+Assuming you've placed the install directory `~/.cargo/bin` into your system PATH, then run from the root of your local copy:
 
 ```sh
 mdbook build
