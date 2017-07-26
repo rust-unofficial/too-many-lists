@@ -31,7 +31,7 @@ reference, here's what we're going to be making:
 4. [A Bad But Safe Doubly Linked Deque](fourth.md)
 5. [An Unsafe Singly Linked Queue](fifth.md)
 6. [TODO: An Ok Unsafe Doubly Linked Deque](sixth.md)
-7. [Bonus: A Bunch of Silly Lists](seventh.md)
+7. [Bonus: A Bunch of Silly Lists](infinity.md)
 
 Just so we're all the same page, I'll be writing out all the commands that I
 feed into my terminal. I'll also be using Rust's standard package manager, Cargo,
