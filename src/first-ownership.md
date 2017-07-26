@@ -11,7 +11,7 @@ fn foo(self, arg2: Type2) -> ReturnType {
 }
 ```
 
-There's 3 primary forms that self can take: `self`, `&mut self`, and `&self`.
+There are 3 primary forms that self can take: `self`, `&mut self`, and `&self`.
 These 3 forms represent the three primary forms of ownership in Rust:
 
 * `self` - Value

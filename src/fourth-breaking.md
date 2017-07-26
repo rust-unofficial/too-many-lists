@@ -109,7 +109,7 @@ trying to move a `RefCell<T>` out of an `&RefCell<T>`. We've just pushed the
 problem up the ownership chain.
 
 As we saw in the previous chapter, `Rc<T>` only lets us get shared references
-into it's internals. That makes sense, because that's *the whole point* of
+into its internals. That makes sense, because that's *the whole point* of
 reference counted pointers: they're shared!
 
 This was a problem for us when we wanted to implement Drop for our reference
