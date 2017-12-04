@@ -198,7 +198,7 @@ to:
 
 * Check if the list is empty.
 * If it's empty, just return None
-* It it's *not* empty
+* If it's *not* empty
     * remove the head of the list
     * remove its `elem`
     * replace the lists head with its `next`
