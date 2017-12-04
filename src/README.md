@@ -37,8 +37,7 @@ Just so we're all the same page, I'll be writing out all the commands that I
 feed into my terminal. I'll also be using Rust's standard package manager, Cargo,
 to develop the project. Cargo isn't necessary to write a Rust program, but it's
 *so much* better than using rustc directly. If you just want to futz around you
-can also run some simple programs in the browser via https://play.rust-lang.org/
-though it doesn't support running unit tests.
+can also run some simple programs in the browser via https://play.rust-lang.org/.
 
 Let's get started and make our project:
 
