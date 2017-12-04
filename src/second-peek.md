@@ -137,7 +137,7 @@ fn peek() {
     list.peek_mut().map(|&mut value| {
         value = 42 });
 
-    assert_eq!(list.peek(), Some(&4));
+    assert_eq!(list.peek(), Some(&42));
     assert_eq!(list.pop(), Some(42));
 }
 ```
