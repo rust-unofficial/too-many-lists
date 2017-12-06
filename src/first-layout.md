@@ -115,6 +115,8 @@ pub enum List {
 }
 ```
 
+`Cons`, by the way, isn't a special term in rust; it's just what the author of the documentation decided to call that variant of the enum. Here, we call it `Elem`.
+
 ```text
 > cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/lists)
