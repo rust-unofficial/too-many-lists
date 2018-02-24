@@ -1,6 +1,6 @@
 # Symmetric Junk
 
-Alright let's get all that combinatoric symmtery over with.
+Alright let's get all that combinatoric symmetry over with.
 
 All we have to do is some basic text replacement:
 
