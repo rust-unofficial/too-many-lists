@@ -42,7 +42,7 @@ can also run some simple programs in the browser via https://play.rust-lang.org/
 Let's get started and make our project:
 
 ```text
-> cargo new lists
+> cargo new --lib lists
 > cd lists
 ```
 
