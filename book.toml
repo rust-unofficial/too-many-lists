@@ -4,3 +4,5 @@ description = "Learning Rust With Entirely Too Many Linked Lists"
 author = "Alexis Beingessner et. al."
 
 [output.html]
+
+[output.epub]
