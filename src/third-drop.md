@@ -37,7 +37,7 @@ really bad).
 
 The second way is if we could identify that we're the last list that knows
 about this node, we could in *principle* actually move the Node out of the Rc.
-Then we could also know when to stop: whenver we *can't* hoist out the Node.
+Then we could also know when to stop: whenever we *can't* hoist out the Node.
 For reference, the function is called `try_unwrap`.
 
 Rc actually lets you do this... Honestly, I'd rather
