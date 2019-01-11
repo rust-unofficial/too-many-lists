@@ -7,8 +7,5 @@ description = "Learning Rust With Entirely Too Many Linked Lists"
 build-dir = "book"
 create-missing = false
 
-[output.html]
-additional-css = ["rust.css"]
-
 [output.html.search]
 limit-results = 30
