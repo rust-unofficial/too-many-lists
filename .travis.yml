@@ -5,11 +5,7 @@ rust:
 git:
   depth: 1
 
-# Missed cache and too slow
-# Use pre-build binary instead
-#cache: cargo
-before_script:
-  #- (cargo install mdbook --vers 0.1.7 --force || true)
+install:
   - curl -o /tmp/mdbook.tar.gz
         -L 'https://github.com/rust-lang-nursery/mdBook/releases/download/v0.1.7/mdbook-v0.1.7-x86_64-unknown-linux-gnu.tar.gz'
     && tar xf /tmp/mdbook.tar.gz -C ~/.cargo/bin
@@ -17,7 +13,7 @@ before_script:
 script:
   - mdbook build
 
-after_success:
+before_deploy:
   - zip -r too-many-lists.zip book
 
 deploy:
