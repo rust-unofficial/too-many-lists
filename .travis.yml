@@ -2,6 +2,7 @@ language: c
 
 git:
   depth: 1
+  quiet: true
 
 install:
   - curl -o /tmp/mdbook.tar.gz
