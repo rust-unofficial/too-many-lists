@@ -1,0 +1,11 @@
+[book]
+title = "Learning Rust With Entirely Too Many Linked Lists"
+author = "Alexis Beingessner"
+description = "Learning Rust With Entirely Too Many Linked Lists"
+
+[build]
+build-dir = "book"
+create-missing = false
+
+[output.html.search]
+limit-results = 30
