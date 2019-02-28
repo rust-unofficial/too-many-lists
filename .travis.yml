@@ -12,13 +12,11 @@ install:
 script:
   - mdbook build
 
-before_deploy:
-  - zip -r too-many-lists.zip book
-
 deploy:
-  provider: releases
-  api_key: "$GH_DEPLOY_TOKEN"
-  file: "too-many-lists.zip"
-  skip_cleanup: true
+  provider: pages
+  skip-cleanup: true
+  local-dir: book
+  github-token: $GH_DEPLOY_TOKEN  # Set in the settings page of your repository, as a secure variable
+  keep-history: true
   on:
-    tags: true
+    branch: master
