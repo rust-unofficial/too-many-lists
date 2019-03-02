@@ -1,27 +1,22 @@
-language: rust
-rust:
-  - nightly
+language: c
 
-addons:
-  apt:
-    packages:
-      - tree
+git:
+  depth: 1
+  quiet: true
 
 install:
-  - cargo install mdbook
+  - curl -o /tmp/mdbook.tar.gz
+        -L 'https://github.com/rust-lang-nursery/mdBook/releases/download/v0.2.1/mdbook-v0.2.1-x86_64-unknown-linux-gnu.tar.gz'
+    && tar xf /tmp/mdbook.tar.gz -C ~/bin
 
 script:
-  - PATH=$PATH:/home/travis/.cargo/bin mdbook build
-
-after_success:
-  - tree .
-  - zip too-many-lists.zip rust.css
-  - zip -r too-many-lists.zip book
+  - mdbook build
 
 deploy:
-  provider: releases
-  api_key: "$GH_DEPLOY_TOKEN"
-  file: "too-many-lists.zip"
-  skip_cleanup: true
+  provider: pages
+  skip-cleanup: true
+  local-dir: book
+  github-token: $GH_DEPLOY_TOKEN  # Set in the settings page of your repository, as a secure variable
+  keep-history: true
   on:
-    tags: true
+    branch: master

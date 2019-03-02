@@ -1,7 +1,7 @@
 # Learn Rust by writing Entirely Too Many Linked Lists
 [![Build Status](https://travis-ci.org/rust-unofficial/too-many-lists.svg?branch=master)](https://travis-ci.org/rust-unofficial/too-many-lists)
 
-Read the pretty version at [http://cglab.ca/~abeinges/blah/too-many-lists/book/](http://cglab.ca/~abeinges/blah/too-many-lists/book/).
+Read the pretty version at https://rust-unofficial.github.io/too-many-lists/.
 
 # Building
 
