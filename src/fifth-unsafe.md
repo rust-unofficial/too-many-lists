@@ -29,7 +29,7 @@ to point to a different type. Mutability? Cast it. Pretty much everything goes,
 and that means pretty much anything can go wrong.
 
 This is some bad stuff and honestly you'll live a happier life never having
-to touch these. Unforunately, we want to write linked lists, and linked lists
+to touch these. Unfortunately, we want to write linked lists, and linked lists
 are awful. That means we're going to have to use unsafe pointers.
 
 There are two kinds of raw pointer: `*const T` and `*mut T`. These are meant to
