@@ -11,13 +11,6 @@ struct Node<T> {
     next: Link<T>,
 }
 
-pub struct Iter<'a, T:'a> {
-    next: Option<&'a Node<T>>,
-}
-
-
-
-
 impl<T> List<T> {
     pub fn new() -> Self {
         List { head: None }
@@ -38,9 +31,26 @@ impl<T> List<T> {
         self.head.as_ref().map(|node| &node.elem)
     }
 
-    pub fn iter(&self) -> Iter<T> {
+    pub fn iter(&self) -> Iter<'_, T> {
         Iter { next: self.head.as_ref().map(|node| &**node) }
     }
+}
+
+impl<T> Drop for List<T> {
+    fn drop(&mut self) {
+        let mut head = self.head.take();
+        while let Some(node) = head {
+            if let Ok(mut node) = Rc::try_unwrap(node) {
+                head = node.next.take();
+            } else {
+                break;
+            }
+        }
+    }
+}
+
+pub struct Iter<'a, T> {
+    next: Option<&'a Node<T>>,
 }
 
 impl<'a, T> Iterator for Iter<'a, T> {
@@ -53,8 +63,6 @@ impl<'a, T> Iterator for Iter<'a, T> {
         })
     }
 }
-
-
 
 #[cfg(test)]
 mod test {
@@ -80,7 +88,6 @@ mod test {
         // Make sure empty tail works
         let list = list.tail();
         assert_eq!(list.head(), None);
-
     }
 
     #[test]

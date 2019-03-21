@@ -12,20 +12,6 @@ struct Node<T> {
     next: Link<T>,
 }
 
-pub struct IntoIter<T>(List<T>);
-
-pub struct Iter<'a, T:'a> {
-    next: Option<&'a Node<T>>,
-}
-
-pub struct IterMut<'a, T: 'a> {
-    next: Option<&'a mut Node<T>>,
-}
-
-
-
-
-
 impl<T> List<T> {
     pub fn new() -> Self {
         List { head: None, tail: ptr::null_mut() }
@@ -79,15 +65,24 @@ impl<T> List<T> {
         IntoIter(self)
     }
 
-    pub fn iter(&self) -> Iter<T> {
+    pub fn iter(&self) -> Iter<'_, T> {
         Iter { next: self.head.as_ref().map(|node| &**node) }
     }
 
-    pub fn iter_mut(&mut self) -> IterMut<T> {
+    pub fn iter_mut(&mut self) -> IterMut<'_, T> {
         IterMut { next: self.head.as_mut().map(|node| &mut **node) }
     }
 }
 
+pub struct IntoIter<T>(List<T>);
+
+pub struct Iter<'a, T> {
+    next: Option<&'a Node<T>>,
+}
+
+pub struct IterMut<'a, T> {
+    next: Option<&'a mut Node<T>>,
+}
 
 impl<T> Drop for List<T> {
     fn drop(&mut self) {
@@ -97,7 +92,6 @@ impl<T> Drop for List<T> {
         }
     }
 }
-
 
 impl<T> Iterator for IntoIter<T> {
     type Item = T;
@@ -127,8 +121,6 @@ impl<'a, T> Iterator for IterMut<'a, T> {
         })
     }
 }
-
-
 
 #[cfg(test)]
 mod test {
@@ -207,3 +199,4 @@ mod test {
         assert_eq!(iter.next(), None);
     }
 }
+

@@ -9,19 +9,6 @@ struct Node<T> {
     next: Link<T>,
 }
 
-pub struct IntoIter<T>(List<T>);
-
-pub struct Iter<'a, T:'a> {
-    next: Option<&'a Node<T>>,
-}
-
-pub struct IterMut<'a, T: 'a> {
-    next: Option<&'a mut Node<T>>,
-}
-
-
-
-
 impl<T> List<T> {
     pub fn new() -> Self {
         List { head: None }
@@ -38,7 +25,6 @@ impl<T> List<T> {
 
     pub fn pop(&mut self) -> Option<T> {
         self.head.take().map(|node| {
-            let node = *node;
             self.head = node.next;
             node.elem
         })
@@ -60,12 +46,8 @@ impl<T> List<T> {
         IntoIter(self)
     }
 
-    pub fn iter(&self) -> Iter<T> {
+    pub fn iter(&self) -> Iter<'_, T> {
         Iter { next: self.head.as_ref().map(|node| &**node) }
-    }
-
-    pub fn iter_mut(&mut self) -> IterMut<T> {
-        IterMut { next: self.head.as_mut().map(|node| &mut **node) }
     }
 }
 
@@ -78,6 +60,8 @@ impl<T> Drop for List<T> {
     }
 }
 
+pub struct IntoIter<T>(List<T>);
+
 impl<T> Iterator for IntoIter<T> {
     type Item = T;
     fn next(&mut self) -> Option<Self::Item> {
@@ -85,14 +69,27 @@ impl<T> Iterator for IntoIter<T> {
     }
 }
 
+pub struct Iter<'a, T> {
+    next: Option<&'a Node<T>>,
+}
+
 impl<'a, T> Iterator for Iter<'a, T> {
     type Item = &'a T;
-
     fn next(&mut self) -> Option<Self::Item> {
         self.next.map(|node| {
             self.next = node.next.as_ref().map(|node| &**node);
             &node.elem
         })
+    }
+}
+
+pub struct IterMut<'a, T: 'a> {
+    next: Option<&'a mut Node<T>>,
+}
+
+impl<T> List<T> {
+    pub fn iter_mut(&mut self) -> IterMut<T> {
+        IterMut { next: self.head.as_mut().map(|node| &mut **node) }
     }
 }
 
@@ -106,10 +103,6 @@ impl<'a, T> Iterator for IterMut<'a, T> {
         })
     }
 }
-
-
-
-
 
 #[cfg(test)]
 mod test {
@@ -155,11 +148,11 @@ mod test {
         assert_eq!(list.peek_mut(), Some(&mut 3));
 
         list.peek_mut().map(|value| {
-            *value = 42 });
+            *value = 42
+        });
 
         assert_eq!(list.peek(), Some(&42));
         assert_eq!(list.pop(), Some(42));
-
     }
 
     #[test]
@@ -171,6 +164,7 @@ mod test {
         assert_eq!(iter.next(), Some(3));
         assert_eq!(iter.next(), Some(2));
         assert_eq!(iter.next(), Some(1));
+        assert_eq!(iter.next(), None);
     }
 
     #[test]
