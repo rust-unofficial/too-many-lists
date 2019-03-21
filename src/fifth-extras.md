@@ -7,16 +7,16 @@ to actually worry about the tail pointer.
 So let's just steal all that from our second list (be sure to reverse the
 expected test output):
 
-```rust
+```rust ,ignore
 // ...
 
 pub struct IntoIter<T>(List<T>);
 
-pub struct Iter<'a, T:'a> {
+pub struct Iter<'a, T> {
     next: Option<&'a Node<T>>,
 }
 
-pub struct IterMut<'a, T: 'a> {
+pub struct IterMut<'a, T> {
     next: Option<&'a mut Node<T>>,
 }
 
@@ -42,11 +42,11 @@ impl<T> List<T> {
         IntoIter(self)
     }
 
-    pub fn iter(&self) -> Iter<T> {
+    pub fn iter(&self) -> Iter<'_, T> {
         Iter { next: self.head.as_ref().map(|node| &**node) }
     }
 
-    pub fn iter_mut(&mut self) -> IterMut<T> {
+    pub fn iter_mut(&mut self) -> IterMut<'_, T> {
         IterMut { next: self.head.as_mut().map(|node| &mut **node) }
     }
 }
@@ -141,27 +141,24 @@ mod test {
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
      Running target/debug/lists-5c71138492ad4b4a
 
-running 11 tests
-test fifth::test::basics ... ok
-test fifth::test::iter_mut ... ok
+running 15 tests
 test fifth::test::into_iter ... ok
-test first::test::basics ... ok
+test fifth::test::basics ... ok
 test fifth::test::iter ... ok
+test fifth::test::iter_mut ... ok
+test first::test::basics ... ok
+test fourth::test::basics ... ok
+test fourth::test::into_iter ... ok
+test fourth::test::peek ... ok
+test second::test::basics ... ok
+test second::test::into_iter ... ok
 test second::test::iter ... ok
 test second::test::iter_mut ... ok
-test second::test::into_iter ... ok
-test second::test::basics ... ok
+test second::test::peek ... ok
 test third::test::basics ... ok
 test third::test::iter ... ok
 
 test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured
-
-   Doc-tests lists
-
-running 0 tests
-
-test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
-
 ```
 
 

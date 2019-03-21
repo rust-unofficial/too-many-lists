@@ -1,14 +1,14 @@
 # IterMut
 
-I'm gonna be honest, IterMut is crazy. Which in itself seems like a crazy
+I'm gonna be honest, IterMut is WILD. Which in itself seems like a wild
 thing to say; surely it's identical to Iter!
 
-Semantically, yes. However the nature of shared and mutable references means
+Semantically, yes, but the nature of shared and mutable references means
 that Iter is "trivial" while IterMut is Legit Wizard Magic.
 
 The key insight comes from our implementation of Iterator for Iter:
 
-```rust
+```rust ,ignore
 impl<'a, T> Iterator for Iter<'a, T> {
     type Item = &'a T;
 
@@ -18,7 +18,7 @@ impl<'a, T> Iterator for Iter<'a, T> {
 
 Which can be desugarred to:
 
-```rust
+```rust ,ignore
 impl<'a, T> Iterator for Iter<'a, T> {
     type Item = &'a T;
 
@@ -31,7 +31,7 @@ of the input and the output! Why do we care? It means we can call `next`
 over and over unconditionally!
 
 
-```rust
+```rust ,ignore
 let mut list = List::new();
 list.push(1); list.push(2); list.push(3);
 
@@ -47,20 +47,19 @@ This is *definitely fine* for shared references because the whole point is that
 you can have tons of them at once. However mutable references *can't* coexist.
 The whole point is that they're exclusive.
 
-The end result is that it's notably harder to write an IterMut using safe
+The end result is that it's notably harder to write IterMut using safe
 code (and we haven't gotten into what that even means yet...). Surprisingly,
 IterMut can actually be implemented for many structures completely safely!
-Borrow checking magic!
 
 We'll start by just taking the Iter code and changing everything to be mutable:
 
-```rust
-pub struct IterMut<'a, T: 'a> {
+```rust ,ignore
+pub struct IterMut<'a, T> {
     next: Option<&'a mut Node<T>>,
 }
 
 impl<T> List<T> {
-    pub fn iter_mut(&mut self) -> IterMut<T> {
+    pub fn iter_mut(&self) -> IterMut<'_, T> {
         IterMut { next: self.head.as_mut().map(|node| &mut **node) }
     }
 }
@@ -79,56 +78,67 @@ impl<'a, T> Iterator for IterMut<'a, T> {
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/second.rs:96:25: 96:34 error: cannot borrow immutable field `self.head` as mutable
-src/second.rs:96         IterMut { next: self.head.as_mut().map(|node| &mut **node) }
-                                         ^~~~~~~~~
-src/second.rs:104:9: 104:13 error: cannot move out of borrowed content
-src/second.rs:104         self.next.map(|node| {
-                          ^~~~
-error: aborting due to previous error
+error[E0596]: cannot borrow `self.head` as mutable, as it is behind a `&` reference
+  --> src/second.rs:95:25
+   |
+94 |     pub fn iter_mut(&self) -> IterMut<'_, T> {
+   |                     ----- help: consider changing this to be a mutable reference: `&mut self`
+95 |         IterMut { next: self.head.as_mut().map(|node| &mut **node) }
+   |                         ^^^^^^^^^ `self` is a `&` reference, so the data it refers to cannot be borrowed as mutable
+
+error[E0507]: cannot move out of borrowed content
+   --> src/second.rs:103:9
+    |
+103 |         self.next.map(|node| {
+    |         ^^^^^^^^^ cannot move out of borrowed content
 ```
 
-Oops! I actually accidentally made an error when writing the
-`iter` impl, but Copy saved the day. `&` is Copy, as we saw before. But
-that also means `Option<&>` is *also* Copy. So when we did `self.next.map` it
+Ok looks like we've got two different errors here. The first one looks really clear
+though, it even tells us how to fix it! You can't upgrade a shared reference to a mutable
+one, so `iter_mut` needs to take `&mut self`. Just a silly copy-paste error.
+
+```rust ,ignore
+pub fn iter_mut(&self) -> IterMut<'_, T> {
+    IterMut { next: self.head.as_mut().map(|node| &mut **node) }
+}
+```
+
+What about the other one?
+
+Oops! I actually accidentally made an error when writing the `iter` impl in
+the previous section, and we were just getting lucky that it worked!
+
+We have just had our first run in with the magic of Copy. When we introduced [ownership][] we
+said that when you move stuff, you can't use it anymore. For some types, this
+makes perfect sense. Our good friend Box manages an allocation on the heap for
+us, and we certainly don't want two pieces of code to think that they need to
+free its memory.
+
+However for other types this is *garbage*. Integers have no
+ownership semantics; they're just meaningless numbers! This is why integers are
+marked as Copy. Copy types are known to be perfectly copyable by a bitwise copy.
+As such, they have a super power: when moved, the old value *is* still usable.
+As a consequence, you can even move a Copy type out of a reference without
+replacement!
+
+All numeric primitives in rust (i32, u64, bool, f32, char, etc...) are Copy.
+You can also declare any user-defined type to be Copy as well, as long as
+all its components are Copy.
+
+Critically to why this code was working, shared references are also Copy!
+Because `&` is copy, `Option<&>` is *also* Copy. So when we did `self.next.map` it
 was fine because the Option was just copied. Now we can't do that, because
 `&mut` isn't Copy (if you copied an &mut, you'd have two &mut's to the same
-location in memory, which is verboten). Instead, we should properly `take`
+location in memory, which is forbidden). Instead, we should properly `take`
 the Option to get it.
 
 
-```rust
+```rust ,ignore
 fn next(&mut self) -> Option<Self::Item> {
     self.next.take().map(|node| {
         self.next = node.next.as_mut().map(|node| &mut **node);
         &mut node.elem
     })
-}
-```
-
-```text
-> cargo build
-src/second.rs:65:25: 65:34 error: cannot borrow immutable field `self.head` as mutable
-src/second.rs:65         IterMut { next: self.head.as_mut().map(|node| &mut **node) }
-                                         ^~~~~~~~~
-error: aborting due to previous error
-```
-
-Uh... what? Looks we messed up mutability somewhere in `iter_mut`:
-
-```rust
-pub fn iter_mut(&self) -> IterMut<T> {
-    IterMut { next: self.head.as_mut().map(|node| &mut **node) }
-}
-```
-
-Classic copy-paste error. `self` is a shared reference! We can't
-get mutable references out of that!
-
-```rust
-pub fn iter_mut(&mut self) -> IterMut<T> {
-    IterMut { next: self.head.as_mut().map(|node| &mut **node) }
 }
 ```
 
@@ -142,7 +152,7 @@ Uh... wow. Holy shit! IterMut Just Works!
 Let's test this:
 
 
-```rust
+```rust ,ignore
 #[test]
 fn iter_mut() {
     let mut list = List::new();
@@ -189,7 +199,7 @@ stupid that gets in the way! Let's be clear here:
 We have just implemented a piece of code that takes a singly-linked list, and
 returns a mutable reference to every single element in the list at most once.
 And it's statically verified to do that. And it's totally safe. And we didn't
-have to do anything crazy.
+have to do anything wild.
 
 That's kind of a big deal, if you ask me. There are a couple reasons why
 this works:
@@ -202,5 +212,5 @@ this works:
 
 It turns out that you can apply this basic logic to get a safe IterMut for an
 array or a tree as well! You can even make the iterator DoubleEnded, so that
-you can consume the iterator from the front *and* the back at once! Wild!
+you can consume the iterator from the front *and* the back at once! Woah!
 

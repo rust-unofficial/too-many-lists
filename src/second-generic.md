@@ -28,19 +28,21 @@ to be Super Mad.
 ```text
 > cargo test
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/second.rs:12:6: 12:10 error: wrong number of type arguments: expected 1, found 0 [E0243]
-src/second.rs:12 impl List {
-                      ^~~~
-src/second.rs:12:6: 12:10 help: run `rustc --explain E0243` to see a detailed explanation
-src/second.rs:35:15: 35:19 error: wrong number of type arguments: expected 1, found 0 [E0243]
-src/second.rs:35 impl Drop for List {
-                               ^~~~
-src/second.rs:35:15: 35:19 help: run `rustc --explain E0243` to see a detailed explanation
-error: aborting due to 2 previous errors
+error[E0107]: wrong number of type arguments: expected 1, found 0
+  --> src/second.rs:14:6
+   |
+14 | impl List {
+   |      ^^^^ expected 1 type argument
+
+error[E0107]: wrong number of type arguments: expected 1, found 0
+  --> src/second.rs:36:15
+   |
+36 | impl Drop for List {
+   |               ^^^^ expected 1 type argument
+
 ```
 
-The compiler is even telling us about some fancy error code, but honestly the
-problem is pretty clear, we're talking about this `List` thing but that's not
+The problem is pretty clear: we're talking about this `List` thing but that's not
 real anymore. Like Option and Box, we now always have to talk about
 `List<Something>`.
 
@@ -66,7 +68,6 @@ impl<T> List<T> {
 
     pub fn pop(&mut self) -> Option<T> {
         self.head.take().map(|node| {
-            let node = *node;
             self.head = node.next;
             node.elem
         })

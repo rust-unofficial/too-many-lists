@@ -4,7 +4,7 @@ One reason to use an immutable linked list is to share data across threads.
 After all, shared mutable state is the root of all evil, and one way to solve
 that is to kill the *mutable* part forever.
 
-Except our list isn't thread safe at all. In order to be thread-safe, we need
+Except our list isn't thread-safe at all. In order to be thread-safe, we need
 to fiddle with reference counts *atomically*. Otherwise, two threads could
 try to increment the reference count, *and only one would happen*. Then the
 list could get freed too soon!
@@ -46,7 +46,7 @@ However there are special types that violate these properties: those that have
 *interior mutability*. So far we've only really interacted with *inherited
 mutability* (AKA external mutability): the mutability of a value is inherited
 from the mutability of its container. That is, you can't just randomly mutate
-some field of a non-mutable type because you feel like it.
+some field of a non-mutable value because you feel like it.
 
 Interior mutability types violate this: they let you mutate through a shared
 reference. There are two major classes of interior mutability: cells, which
@@ -58,8 +58,8 @@ So what does all of this have to do with Rc and Arc? Well, they both use
 interior mutability for their *reference count*. Worse, this reference count
 is shared between every instance! Rc just uses a cell, which means it's not
 thread safe. Arc uses an atomic, which means it *is* thread safe. Of course,
-you can't magically make a type thread safe by putting it in Arc. Arc only can
-derive thread-safety like any other types.
+you can't magically make a type thread safe by putting it in Arc. Arc can only
+derive thread-safety like any other type.
 
 I really really really don't want to get into the finer details of atomic
 memory models or non-derived Send implementations. Needless to say, as you get

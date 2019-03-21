@@ -8,13 +8,13 @@ list *is*. Namely, we assumed that all the links go in the same direction.
 Instead, we can smash our list into two halves: one going to the left,
 and one going to the right:
 
-```
+```rust ,ignore
 // lib.rs
 // ...
 pub mod silly1;     // NEW!
 ```
 
-```rust
+```rust ,ignore
 // silly1.rs
 use second::List as Stack;
 
@@ -30,7 +30,7 @@ We can also "walk" along the list by popping values off one end and onto the
 other. To avoid needless allocations, we're going to copy the source of
 our safe Stack to get access to its private details:
 
-```rust
+```rust ,ignore
 pub struct Stack<T> {
     head: Link<T>,
 }
@@ -89,7 +89,7 @@ impl<T> Drop for Stack<T> {
 
 And just rework `push` and `pop` a bit:
 
-```
+```rust ,ignore
 pub fn push(&mut self, elem: T) {
     let new_node = Box::new(Node {
         elem: elem,
@@ -120,7 +120,7 @@ fn pop_node(&mut self) -> Option<Box<Node<T>>> {
 
 Now we can make our List:
 
-```rust
+```rust ,ignore
 pub struct List<T> {
     left: Stack<T>,
     right: Stack<T>,
@@ -136,7 +136,7 @@ impl<T> List<T> {
 And we can do the usual stuff:
 
 
-```rust
+```rust ,ignore
 pub fn push_left(&mut self, elem: T) { self.left.push(elem) }
 pub fn push_right(&mut self, elem: T) { self.right.push(elem) }
 pub fn pop_left(&mut self) -> Option<T> { self.left.pop() }
@@ -150,7 +150,7 @@ pub fn peek_right_mut(&mut self) -> Option<&mut T> { self.right.peek_mut() }
 But most interestingly, we can walk around!
 
 
-```rust
+```rust ,ignore
 pub fn go_left(&mut self) -> bool {
     self.left.pop_node().map(|node| {
         self.right.push_node(node);
@@ -167,7 +167,7 @@ pub fn go_right(&mut self) -> bool {
 We return booleans here as just a convenience to indicate whether we actually
 managed to move. Now let's test this baby out:
 
-```rust
+```rust ,ignore
 #[cfg(test)]
 mod test {
     use super::List;
@@ -228,12 +228,6 @@ test second::test::peek ... ok
 test silly1::test::walk_aboot ... ok
 
 test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured
-
-   Doc-tests lists
-
-running 0 tests
-
-test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 ```
 
 This is an extreme example of a *finger* data structure, where we maintain

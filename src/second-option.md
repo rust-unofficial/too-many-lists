@@ -50,7 +50,6 @@ impl List {
         match mem::replace(&mut self.head, None) {
             None => None,
             Some(node) => {
-                let node = *node;
                 self.head = node.next;
                 Some(node.elem)
             }
@@ -103,7 +102,6 @@ impl List {
         match self.head.take() {
             None => None,
             Some(node) => {
-                let node = *node;
                 self.head = node.next;
                 Some(node.elem)
             }
@@ -123,7 +121,7 @@ impl Drop for List {
 
 Second, `match option { None => None, Some(x) => Some(y) }` is such an
 incredibly common idiom that it was called `map`. `map` takes a function to
-execute on `x` in the `Some(x)` to produce the `y` in `Some(y)`. We could
+execute on the `x` in the `Some(x)` to produce the `y` in `Some(y)`. We could
 write a proper `fn` and pass it to `map`, but we'd much rather write what to
 do *inline*.
 
@@ -132,10 +130,9 @@ an extra super-power: they can refer to local variables *outside* the closure!
 This makes them super useful for doing all sorts of conditional logic. The
 only place we do a `match` is in `pop`, so let's just rewrite that:
 
-```rust
+```rust,ignore
 pub fn pop(&mut self) -> Option<i32> {
     self.head.take().map(|node| {
-        let node = *node;
         self.head = node.next;
         node.elem
     })

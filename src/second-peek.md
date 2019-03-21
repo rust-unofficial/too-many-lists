@@ -4,7 +4,7 @@ One thing we didn't even bother to implement last time was peeking. Let's go
 ahead and do that. All we need to do is return a reference to the element in
 the head of the list, if it exists. Sounds easy, let's try:
 
-```
+```rust,ignore
 pub fn peek(&self) -> Option<&T> {
     self.head.map(|node| {
         &node.elem
@@ -16,25 +16,19 @@ pub fn peek(&self) -> Option<&T> {
 ```text
 > cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/second.rs:45:9: 45:18 error: cannot move out of type `second::List<T>`, which defines the `Drop` trait
-src/second.rs:45         self.head.map(|node| {
-                         ^~~~~~~~~
-src/second.rs:46:14: 46:23 error: `node.elem` does not live long enough
-src/second.rs:46             &node.elem
-                              ^~~~~~~~~
-note: in expansion of closure expansion
-src/second.rs:45:23: 47:10 note: expansion site
-src/second.rs:44:38: 48:6 note: reference must be valid for the anonymous lifetime #1 defined on the block at 44:37...
-src/second.rs:44     pub fn peek(&self) -> Option<&T> {
-src/second.rs:45         self.head.map(|node| {
-src/second.rs:46             &node.elem
-src/second.rs:47         })
-src/second.rs:48     }
-src/second.rs:45:30: 47:10 note: ...but borrowed value is only valid for the scope of parameters for function at 45:29
-src/second.rs:45         self.head.map(|node| {
-src/second.rs:46             &node.elem
-src/second.rs:47         })
-error: aborting due to 2 previous errors
+error[E0515]: cannot return reference to local data `node.elem`
+  --> src/second.rs:37:13
+   |
+37 |             &node.elem
+   |             ^^^^^^^^^^ returns a reference to data owned by the current function
+
+error[E0507]: cannot move out of borrowed content
+  --> src/second.rs:36:9
+   |
+36 |         self.head.map(|node| {
+   |         ^^^^^^^^^ cannot move out of borrowed content
+
+
 ```
 
 *Sigh*. What now, Rust?
@@ -44,7 +38,7 @@ Previously this was fine because we had just `take`n it out, but now we actually
 want to leave it where it was. The *correct* way to handle this is with the
 `as_ref` method on Option, which has the following definition:
 
-```rust
+```rust,ignore
 impl<T> Option<T> {
     pub fn as_ref(&self) -> Option<&T>;
 }
@@ -56,7 +50,7 @@ need to do an extra dereference to cut through the extra indirection, but
 thankfully the `.` operator handles that for us.
 
 
-```rust
+```rust,ignore
 pub fn peek(&self) -> Option<&T> {
     self.head.as_ref().map(|node| {
         &node.elem
@@ -67,13 +61,14 @@ pub fn peek(&self) -> Option<&T> {
 ```text
 cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.32s
 ```
 
 Nailed it.
 
 We can also make a *mutable* version of this method using `as_mut`:
 
-```rust
+```rust,ignore
 pub fn peek_mut(&mut self) -> Option<&mut T> {
     self.head.as_mut().map(|node| {
         &mut node.elem
@@ -90,7 +85,7 @@ EZ
 
 Don't forget to test it:
 
-```rust
+```rust,ignore
 #[test]
 fn peek() {
     let mut list = List::new();
@@ -103,7 +98,7 @@ fn peek() {
 }
 ```
 
-```
+```text
 cargo test
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
      Running target/debug/lists-5c71138492ad4b4a
@@ -124,7 +119,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 
 That's nice, but we didn't really test to see if we could mutate that `peek_mut` return value, did we?  If a reference is mutable but nobody mutates it, have we really tested the mutability?  Let's try using `map` on this `Option<&mut T>` to put a profound value in:
 
-```rust
+```rust,ignore
 #[test]
 fn peek() {
     let mut list = List::new();
@@ -135,7 +130,8 @@ fn peek() {
     assert_eq!(list.peek(), Some(&3));
     assert_eq!(list.peek_mut(), Some(&mut 3));
     list.peek_mut().map(|&mut value| {
-        value = 42 });
+        value = 42
+    });
 
     assert_eq!(list.peek(), Some(&42));
     assert_eq!(list.pop(), Some(42));
@@ -145,19 +141,21 @@ fn peek() {
 ```text
 > cargo test
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/second.rs:158:13: 158:23 error: re-assignment of immutable variable `value` [E0384]
-src/second.rs:158             value = 42 });
-                              ^~~~~~~~~~
-src/second.rs:158:13: 158:23 help: run `rustc --explain E0384` to see a detailed explanation
-src/second.rs:157:35: 157:40 note: prior assignment occurs here
-src/second.rs:157         list.peek_mut().map(|&mut value| {
-                                                    ^~~~~
-error: aborting due to previous error
+error[E0384]: cannot assign twice to immutable variable `value`
+   --> src/second.rs:100:13
+    |
+99  |         list.peek_mut().map(|&mut value| {
+    |                                   -----
+    |                                   |
+    |                                   first assignment to `value`
+    |                                   help: make this binding mutable: `mut value`
+100 |             value = 42
+    |             ^^^^^^^^^^ cannot assign twice to immutable variable          ^~~~~
 ```
 
-The compiler is complaining that `value` is immutable, but we pretty clearly wrote `&mut value`; what gives?  It turns out that writing the argument of the closure that way doesn't specify that `value` is a mutable reference but instead creates a pattern that will be matched against the argument to the closure; `|&mut value|` means "the argument is a mutable reference, but just stick the immutable value into `value`, please."  If we just use `|value|`, the type of `value` will be `&mut i32` and we can actually mutate the head:
+The compiler is complaining that `value` is immutable, but we pretty clearly wrote `&mut value`; what gives? It turns out that writing the argument of the closure that way doesn't specify that `value` is a mutable reference. Instead, it creates a pattern that will be matched against the argument to the closure; `|&mut value|` means "the argument is a mutable reference, but just copy the value it points to into `value`, please."  If we just use `|value|`, the type of `value` will be `&mut i32` and we can actually mutate the head:
 
-```rust
+```rust,ignore
     #[test]
     fn peek() {
         let mut list = List::new();
@@ -169,7 +167,8 @@ The compiler is complaining that `value` is immutable, but we pretty clearly wro
         assert_eq!(list.peek_mut(), Some(&mut 3));
 
         list.peek_mut().map(|value| {
-            *value = 42 });
+            *value = 42
+        });
 
         assert_eq!(list.peek(), Some(&42));
         assert_eq!(list.pop(), Some(42));

@@ -17,9 +17,13 @@ list3 = push(list2, X) = X -> B -> C -> D
 But at the end we want the memory to look like this:
 
 ```text
-list1 -> A ---v
+list1 -> A ---+
+              |
+              v
 list2 ------> B -> C -> D
-list3 -> X ---^
+              ^
+              |
+list3 -> X ---+
 ```
 
 This just can't work with Boxes, because ownership of `B` is *shared*. Who
@@ -33,16 +37,16 @@ be freed only after everyone stops looking at it. Hooray!
 Rust doesn't have anything like the garbage collectors these languages have.
 They have *tracing* GC, which will dig through all the memory that's sitting
 around at runtime and figure out what's garbage automatically. Instead, all
-Rust has today is *reference counting*. Reference counting is basically a
-poor-man's GC. For many workloads, it has significantly less throughput
+Rust has today is *reference counting*. Reference counting can be thought of
+as a very simple GC. For many workloads, it has significantly less throughput
 than a tracing collector, and it completely falls over if you manage to
-build cycles. Thankfully, for our usecase we'll never run into cycles
+build cycles. But hey, it's all we've got! Thankfully, for our usecase we'll never run into cycles
 (feel free to try to prove this to yourself -- I sure won't).
 
-So how do we do reference counted garbage collection? `Rc`! Rc is just like
+So how do we do reference-counted garbage collection? `Rc`! Rc is just like
 Box, but we can duplicate it, and its memory will *only* be freed when *all*
 the Rc's derived from it are dropped. Unforuntately, this flexibility comes at
-a serious cost: we can only Deref an Rc. No DerefMut or DerefMove. This means
+a serious cost: we can only take a shared reference to its internals. This means
 we can't ever really get data out of one of our lists, nor can we mutate them.
 
 So what's our layout gonna look like? Well, previously we had:
@@ -80,10 +84,15 @@ struct Node<T> {
 ```text
 cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/third.rs:5:23: 5:34 error: use of undeclared type name `Rc` [E0412]
-src/third.rs:5 type Link<T> = Option<Rc<Node<T>>>;
-                                     ^~~~~~~~~~~
-error: aborting due to previous error
+error[E0412]: cannot find type `Rc` in this scope
+ --> src/third.rs:5:23
+  |
+5 | type Link<T> = Option<Rc<Node<T>>>;
+  |                       ^^ not found in this scope
+help: possible candidate is found in another module, you can import it into scope
+  |
+1 | use std::rc::Rc;
+  |
 ```
 
 Oh dang, sick burn. Unlike everything we used for our mutable lists, Rc is so
@@ -97,19 +106,29 @@ use std::rc::Rc;
 ```text
 cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/third.rs:4:5: 4:18 warning: struct field is never used: `head`, #[warn(dead_code)] on by default
-src/third.rs:4     head: Link<T>,
-                   ^~~~~~~~~~~~~
-src/third.rs:10:5: 10:12 warning: struct field is never used: `elem`, #[warn(dead_code)] on by default
-src/third.rs:10     elem: T,
-                    ^~~~~~~
-src/third.rs:11:5: 11:18 warning: struct field is never used: `next`, #[warn(dead_code)] on by default
-src/third.rs:11     next: Link<T>,
-                    ^~~~~~~~~~~~~
+warning: field is never used: `head`
+ --> src/third.rs:4:5
+  |
+4 |     head: Link<T>,
+  |     ^^^^^^^^^^^^^
+  |
+  = note: #[warn(dead_code)] on by default
+
+warning: field is never used: `elem`
+  --> src/third.rs:10:5
+   |
+10 |     elem: T,
+   |     ^^^^^^^
+
+warning: field is never used: `next`
+  --> src/third.rs:11:5
+   |
+11 |     next: Link<T>,
+   |     ^^^^^^^^^^^^^
 ```
 
-Seems legit. Rust continues to be a complete joke to write. I bet we can just
-find-and-replace Box with Rc and call it a day.
+Seems legit. Rust continues to be a *completely* trivial to write. I bet we can just
+find-and-replace Box with Rc and call it a day!
 
 ...
 

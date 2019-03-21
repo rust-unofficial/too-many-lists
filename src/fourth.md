@@ -22,3 +22,4 @@ pub mod fourth;
 This will be another clean-room operation, though as usual we'll probably find
 some logic that applies verbatim again.
 
+Disclaimer: this chapter is basically a demonstration that this is a very bad idea.

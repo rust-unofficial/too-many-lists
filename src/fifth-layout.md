@@ -46,7 +46,7 @@ We could do this today and call it quits, but that would stink! Both of these
 operations walk over the *entire* list. Some would argue that such a queue
 implementation is indeed a queue because it exposes the right interface. However
 I believe that performance guarantees are part of the interface. I don't care
-about precise asymptotic bounds, but rather "fast" and "slow". Queues guarantee
+about precise asymptotic bounds, just "fast" vs "slow". Queues guarantee
 that push and pop are fast, and walking over the whole list is definitely *not*
 fast.
 
@@ -55,9 +55,9 @@ over and over. Can we memoize this work? Why, yes! We can store a pointer to
 the end of the list, and just jump straight to there!
 
 It turns out that only one inversion of `push` and `pop` works with this.
-Because our list is singly-linked, we can't effeciently walk *backwards* in
-the list. To invert `pop` we would have to move the "tail" pointer backwards.
-But if we instead invert `push` we only have to move the "head" pointer
+To invert `pop` we would have to move the "tail" pointer backwards, but
+because our list is singly-linked, we can't do that effeciently.
+If we instead invert `push` we only have to move the "head" pointer
 forwards, which is easy.
 
 Let's try that:
@@ -118,20 +118,17 @@ plenty of *other* error messages!
 ```text
 > cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/fifth.rs:33:38: 33:46 error: use of moved value: `new_tail` [E0382]
-src/fifth.rs:33                 old_tail.next = Some(new_tail);
-                                                     ^~~~~~~~
-src/fifth.rs:28:58: 28:66 note: `new_tail` moved here because it has type `Box<fifth::Node<T>>`, which is non-copyable
-src/fifth.rs:28         let old_tail = mem::replace(&mut self.tail, Some(new_tail));
-                                                                         ^~~~~~~~
-src/fifth.rs:37:34: 37:42 error: use of moved value: `new_tail` [E0382]
-src/fifth.rs:37                 self.head = Some(new_tail);
-                                                 ^~~~~~~~
-src/fifth.rs:28:58: 28:66 note: `new_tail` moved here because it has type `Box<fifth::Node<T>>`, which is non-copyable
-src/fifth.rs:28         let old_tail = mem::replace(&mut self.tail, Some(new_tail));
-                                                                         ^~~~~~~~
-error: aborting due to 2 previous errors
-Could not compile `lists`.
+error[E0382]: use of moved value: `new_tail`
+  --> src/fifth.rs:38:38
+   |
+26 |         let new_tail = Box::new(Node {
+   |             -------- move occurs because `new_tail` has type `std::boxed::Box<fifth::Node<T>>`, which does not implement the `Copy` trait
+...
+33 |         let old_tail = mem::replace(&mut self.tail, Some(new_tail));
+   |                                                          -------- value moved here
+...
+38 |                 old_tail.next = Some(new_tail);
+   |                                      ^^^^^^^^ value used here after move
 ```
 
 Shoot!
@@ -198,12 +195,11 @@ wherever we stuff the actual Box.
 ```text
 > cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/fifth.rs:3:18: 3:30 error: missing lifetime specifier [E0106]
-src/fifth.rs:3     tail: Option<&mut Node<T>>, // NEW!
-                                ^~~~~~~~~~~~
-src/fifth.rs:3:18: 3:30 help: run `rustc --explain E0106` to see a detailed explanation
-error: aborting due to previous error
-Could not compile `lists`.
+error[E0106]: missing lifetime specifier
+ --> src/fifth.rs:3:18
+  |
+3 |     tail: Option<&mut Node<T>>, // NEW!
+  |                  ^ expected lifetime parameter
 ```
 
 Oh right, we need to give references in types lifetimes. Hmm... what's the
@@ -212,7 +208,7 @@ what we did for IterMut, and just add a generic `'a`:
 
 ```rust
 # fn main() {}
-pub struct List<'a, T: 'a> {
+pub struct List<'a, T> {
     head: Link<T>,
     tail: Option<&'a mut Node<T>>, // NEW!
 }
@@ -258,41 +254,69 @@ impl<'a, T> List<'a, T> {
 ```text
 cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/fifth.rs:35:27: 35:35 error: cannot infer an appropriate lifetime for autoref due to conflicting requirements
-src/fifth.rs:35                 self.head.as_mut().map(|node| &mut **node)
-                                          ^~~~~~~~
-src/fifth.rs:18:5: 40:6 help: consider using an explicit lifetime parameter as shown: fn push(&'a mut self, elem: T)
-src/fifth.rs:18     pub fn push(&mut self, elem: T) {
-src/fifth.rs:19         let new_tail = Box::new(Node {
-src/fifth.rs:20             elem: elem,
-src/fifth.rs:21             // When you push onto the tail, your next is always None
-src/fifth.rs:22             next: None,
-src/fifth.rs:23         });
-                ...
-error: aborting due to previous error
+error[E0495]: cannot infer an appropriate lifetime for autoref due to conflicting requirements
+  --> src/fifth.rs:35:27
+   |
+35 |                 self.head.as_mut().map(|node| &mut **node)
+   |                           ^^^^^^
+   |
+note: first, the lifetime cannot outlive the anonymous lifetime #1 defined on the method body at 18:5...
+  --> src/fifth.rs:18:5
+   |
+18 | /     pub fn push(&mut self, elem: T) {
+19 | |         let new_tail = Box::new(Node {
+20 | |             elem: elem,
+21 | |             // When you push onto the tail, your next is always None
+...  |
+39 | |         self.tail = new_tail;
+40 | |     }
+   | |_____^
+note: ...so that reference does not outlive borrowed content
+  --> src/fifth.rs:35:17
+   |
+35 |                 self.head.as_mut().map(|node| &mut **node)
+   |                 ^^^^^^^^^
+note: but, the lifetime must be valid for the lifetime 'a as defined on the impl at 13:6...
+  --> src/fifth.rs:13:6
+   |
+13 | impl<'a, T> List<'a, T> {
+   |      ^^
+   = note: ...so that the expression is assignable:
+           expected std::option::Option<&'a mut fifth::Node<T>>
+              found std::option::Option<&mut fifth::Node<T>>
+
+
 ```
 
-Oh lord. When the compiler starts telling us to just start adding lifetimes in
-random places, it's a red flag that the compiler is deeply confused. But uh...
-ok let's try that I guess?
+Woah, that's a really detailed error message. That's a bit concerning, because it
+suggests we're doing something really messed up. Here's an interesting part:
 
-```rust,ignore
+> the lifetime must be valid for the lifetime `'a` as defined on the impl
+
+We're borrowing from `self`, but the compiler wants us to last as long as `'a`,
+what if we tell it `self` *does* last that long..?
+
+```rust ,ignore
     pub fn push(&'a mut self, elem: T) {
 ```
 
 ```text
 cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/fifth.rs:9:5: 9:12 warning: struct field is never used: `elem`, #[warn(dead_code)] on by default
-src/fifth.rs:9     elem: T,
-                   ^~~~~~~
+warning: field is never used: `elem`
+ --> src/fifth.rs:9:5
+  |
+9 |     elem: T,
+  |     ^^^^^^^
+  |
+  = note: #[warn(dead_code)] on by default
 ```
 
 Oh, hey, that worked! Great!
 
 Let's just do `pop` too:
 
-```rust
+```rust ,ignore
 pub fn pop(&'a mut self) -> Option<T> {
     // Grab the list's current head
     self.head.take().map(|head| {
@@ -309,9 +333,9 @@ pub fn pop(&'a mut self) -> Option<T> {
 }
 ```
 
-Let's try to just write a quick test for that:
+And write a quick test for that:
 
-```
+```rust ,ignore
 mod test {
     use super::List;
     #[test]
@@ -348,65 +372,71 @@ mod test {
 ```text
 cargo test
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/fifth.rs:68:9: 68:13 error: cannot borrow `list` as mutable more than once at a time
-src/fifth.rs:68         list.push(2);
-                        ^~~~
-src/fifth.rs:66:9: 66:13 note: previous borrow of `list` occurs here; the mutable borrow prevents subsequent moves, borrows, or modification of `list` until the borrow ends
-src/fifth.rs:66         list.push(1);
-                        ^~~~
-src/fifth.rs:70:6: 70:6 note: previous borrow ends here
-src/fifth.rs:59     fn basics() {
+error[E0499]: cannot borrow `list` as mutable more than once at a time
+  --> src/fifth.rs:68:9
+   |
+65 |         assert_eq!(list.pop(), None);
+   |                    ---- first mutable borrow occurs here
 ...
-src/fifth.rs:70     }
-                    ^
+68 |         list.push(1);
+   |         ^^^^
+   |         |
+   |         second mutable borrow occurs here
+   |         first borrow later used here
 
-
-**NOT SHOWN: LITERALLY A THOUSAND LINES OF BORROW CHECK ERRORS**
-
-
-src/fifth.rs:84:20: 84:24 error: cannot borrow `list` as mutable more than once at a time
-src/fifth.rs:84         assert_eq!(list.pop(), None);
-                                   ^~~~
-<std macros>:1:1: 9:39 note: in expansion of assert_eq!
-src/fifth.rs:84:9: 84:38 note: expansion site
-src/fifth.rs:83:20: 83:24 note: previous borrow of `list` occurs here; the mutable borrow prevents subsequent moves, borrows, or modification of `list` until the borrow ends
-src/fifth.rs:83         assert_eq!(list.pop(), Some(1));
-                                   ^~~~
-<std macros>:1:1: 9:39 note: in expansion of assert_eq!
-src/fifth.rs:83:9: 83:41 note: expansion site
-src/fifth.rs:85:6: 85:6 note: previous borrow ends here
-src/fifth.rs:59     fn basics() {
+error[E0499]: cannot borrow `list` as mutable more than once at a time
+  --> src/fifth.rs:69:9
+   |
+65 |         assert_eq!(list.pop(), None);
+   |                    ---- first mutable borrow occurs here
 ...
-src/fifth.rs:85     }
-                    ^
-error: aborting due to 66 previous errors
+69 |         list.push(2);
+   |         ^^^^
+   |         |
+   |         second mutable borrow occurs here
+   |         first borrow later used here
+
+error[E0499]: cannot borrow `list` as mutable more than once at a time
+  --> src/fifth.rs:70:9
+   |
+65 |         assert_eq!(list.pop(), None);
+   |                    ---- first mutable borrow occurs here
+...
+70 |         list.push(3);
+   |         ^^^^
+   |         |
+   |         second mutable borrow occurs here
+   |         first borrow later used here
+
+
+....
+
+** WAY MORE LINES OF ERRORS **
+
+....
+
+error: aborting due to 11 previous errors
 ```
 
 🙀🙀🙀🙀🙀🙀🙀🙀🙀🙀🙀🙀🙀🙀🙀🙀🙀🙀🙀🙀🙀🙀🙀
 
-OH MY GEEZ WHAT.
-
-66 borrow check errors.
-
 Oh my goodness.
 
-[I'm pretty sure we just hit this bug in the compiler](https://github.com/rust-lang/rust/issues/27485).
-
-But the compiler's not wrong for vomiting all over us. We just committed a
+The compiler's not wrong for vomiting all over us. We just committed a
 cardinal Rust sin: we stored a reference to ourselves *inside ourselves*.
 Somehow, we managed to convince Rust that this totally made sense in our
 `push` and `pop` implementations (I was legitimately shocked we did). I believe
 the reason is that Rust can't yet tell that the reference is into ourselves
 from just `push` and `pop` -- or rather, Rust doesn't really have that notion
-at all. Reference-into-yourself falls over as an emergent behaviour.
+at all. Reference-into-yourself failing to work is just an emergent behaviour.
 
-However as soon as we tried to *use* our list, everything quickly fell apart.
+As soon as we tried to *use* our list, everything quickly fell apart.
 When we call `push` or `pop`, we promptly store a reference to ourselves in
 ourselves and become *trapped*. We are literally borrowing ourselves.
 
 Our `pop` implementation hints at why this could be really dangerous:
 
-```rust,ignore
+```rust ,ignore
 // ...
 if self.head.is_none() {
     self.tail = None;
@@ -427,8 +457,7 @@ Please. No.
 No instead we're going to go off the rails and use *raw pointers*.
 Our layout is going to look like this:
 
-```rust
-# fn main() {}
+```rust ,ignore
 pub struct List<T> {
     head: Link<T>,
     tail: *mut Node<T>, // DANGER DANGER

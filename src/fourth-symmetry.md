@@ -12,7 +12,7 @@ front -> back
 
 Oh, also we need to add `_mut` variants for peeking.
 
-```rust
+```rust ,ignore
 pub fn push_back(&mut self, elem: T) {
     let new_tail = Node::new(elem);
     match self.tail.take() {
@@ -65,7 +65,7 @@ pub fn peek_front_mut(&mut self) -> Option<RefMut<T>> {
 And massively flesh out our tests:
 
 
-```
+```rust ,ignore
 #[test]
 fn basics() {
     let mut list = List::new();

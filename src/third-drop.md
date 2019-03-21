@@ -6,7 +6,7 @@ hit another node that's the head of another list *somewhere*, we won't
 recursively drop it. However it's still a thing we should care about, and
 how to deal with isn't as clear. Here's how we solved it before:
 
-```rust
+```rust ,ignore
 impl<T> Drop for List<T> {
     fn drop(&mut self) {
         let mut cur_link = self.head.take();
@@ -19,52 +19,20 @@ impl<T> Drop for List<T> {
 
 The problem is the body of the loop:
 
-```rust
+```rust ,ignore
 cur_link = boxed_node.next.take();
 ```
 
 This is mutating the Node inside the Box, but we can't do that with Rc; it only
-gives us shared access. There's two ways to handle this.
+gives us shared access, because any number of other Rc's could be pointing at it.
 
-The first way is that we can keep grabbing the tail of the list and dropping the
-previous one to decrement its count. This will prevent the old list from
-recursively dropping the rest of the list because we hold an outstanding
-reference to it. This has the unfortunate problem that we traverse the *entire*
-list whenever we drop it. In particular this means building a list of length
-n in place takes O(n<sup>2</sup>) as we traverse a lists of length `n-1`,
-`n-2`, .., `1` to guard against overflow (this is really really really
-really bad).
+But if we know that we're the last list that knows about this node, it
+*would* actually be fine to move the Node out of the Rc. Then we could also
+know when to stop: whenever we *can't* hoist out the Node.
 
-The second way is if we could identify that we're the last list that knows
-about this node, we could in *principle* actually move the Node out of the Rc.
-Then we could also know when to stop: whenever we *can't* hoist out the Node.
-For reference, the function is called `try_unwrap`.
+And look at that, Rc has a method that does exactly this: `try_unwrap`:
 
-Rc actually lets you do this... Honestly, I'd rather
-risk blowing the stack sometimes than iterate every list whenever it gets
-dropped. Still if you'd rather not blow the stack, here's the first
-(O(n)) solution:
-
-```rust
-impl<T> Drop for List<T> {
-    fn drop(&mut self) {
-        // Steal the list's head
-        let mut cur_list = self.head.take();
-        while let Some(node) = cur_list {
-            // Clone the current node's next node.
-            cur_list = node.next.clone();
-            // Node dropped here. If the old node had
-            // refcount 1, then it will be dropped and freed, but it won't
-            // be able to fully recurse and drop its child, because we
-            // hold another Rc to it.
-        }
-    }
-}
-```
-
-and here's the second (amortized O(1)) solution:
-
-```rust
+```rust ,ignore
 impl<T> Drop for List<T> {
     fn drop(&mut self) {
         let mut head = self.head.take();
@@ -79,3 +47,24 @@ impl<T> Drop for List<T> {
 }
 ```
 
+```text
+src::cargo test
+   Compiling lists v0.1.0 (/Users/ABeingessner/dev/too-many-lists/lists)
+    Finished dev [unoptimized + debuginfo] target(s) in 1.10s
+     Running /Users/ABeingessner/dev/too-many-lists/lists/target/debug/deps/lists-86544f1d97438f1f
+
+running 8 tests
+test first::test::basics ... ok
+test second::test::basics ... ok
+test second::test::into_iter ... ok
+test second::test::iter ... ok
+test second::test::iter_mut ... ok
+test second::test::peek ... ok
+test third::test::basics ... ok
+test third::test::iter ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+```
+
+Great!
+Nice.

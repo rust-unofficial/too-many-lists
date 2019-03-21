@@ -16,15 +16,16 @@ pub struct Iter<T> {
 
 impl<T> List<T> {
     pub fn iter(&self) -> Iter<T> {
-        Iter { next: self.head.map(|node| &*node) }
+        Iter { next: self.head.map(|node| &node) }
     }
 }
 
 impl<T> Iterator for Iter<T> {
     type Item = &T;
+
     fn next(&mut self) -> Option<Self::Item> {
         self.next.map(|node| {
-            self.next = node.next.map(|node| &*node);
+            self.next = node.next.map(|node| &node);
             &node.elem
         })
     }
@@ -34,21 +35,25 @@ impl<T> Iterator for Iter<T> {
 ```text
 > cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/second.rs:62:18: 62:26 error: missing lifetime specifier [E0106]
-src/second.rs:62     next: Option<&Node<T>>,
-                                  ^~~~~~~~
-src/second.rs:62:18: 62:26 help: run `rustc --explain E0106` to see a detailed explanation
-src/second.rs:72:17: 72:19 error: missing lifetime specifier [E0106]
-src/second.rs:72     type Item = &T;
-                                 ^~
-src/second.rs:72:17: 72:19 help: run `rustc --explain E0106` to see a detailed explanation
-error: aborting due to 2 previous errors
+error[E0106]: missing lifetime specifier
+  --> src/second.rs:72:18
+   |
+72 |     next: Option<&Node<T>>,
+   |                  ^ expected lifetime parameter
+
+error[E0106]: missing lifetime specifier
+  --> src/second.rs:82:17
+   |
+82 |     type Item = &T;
+   |                 ^ expected lifetime parameter
 ```
 
-Oh god. Lifetimes. I've heard of these things. I hear they're a nightmare. Let's
-try that `--explain`:
+Oh god. Lifetimes. I've heard of these things. I hear they're a nightmare.
 
-```
+Let's try something new: see that `error[E0106]` thing? That's a compiler error
+code. We can ask rustc to explain those with, well, `--explain`:
+
+```text
 > rustc --explain E0106
 This error indicates that a lifetime is missing from a type. If it is an error
 inside a function signature, the problem may be with failing to adhere to the
@@ -68,7 +73,8 @@ type MyStr<'a> = &'a str; //correct
 
 ```
 
-That uh... that didn't really clarify much. But it looks like we should add
+That uh... that didn't really clarify much (these docs assume we understand
+Rust better than we currently do). But it looks like we should add
 those `'a` things to our struct? Let's try that.
 
 ```
@@ -80,28 +86,32 @@ pub struct Iter<'a, T> {
 ```text
 > cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/second.rs:71:22: 71:29 error: wrong number of lifetime parameters: expected 1, found 0 [E0107]
-src/second.rs:71 impl<T> Iterator for Iter<T> {
-                                      ^~~~~~~
-src/second.rs:71:22: 71:29 help: run `rustc --explain E0107` to see a detailed explanation
-src/second.rs:72:17: 72:19 error: missing lifetime specifier [E0106]
-src/second.rs:72     type Item = &T;
-                                 ^~
-src/second.rs:72:17: 72:19 help: run `rustc --explain E0106` to see a detailed explanation
+error[E0106]: missing lifetime specifier
+  --> src/second.rs:83:22
+   |
+83 | impl<T> Iterator for Iter<T> {
+   |                      ^^^^^^^ expected lifetime parameter
+
+error[E0106]: missing lifetime specifier
+  --> src/second.rs:84:17
+   |
+84 |     type Item = &T;
+   |                 ^ expected lifetime parameter
+
 error: aborting due to 2 previous errors
-
 ```
 
-Alright I'm starting to see a pattern here... let's just go whole-hog here:
+Alright I'm starting to see a pattern here... let's just add these little guys
+to everything we can:
 
-```
+```rust ,ignore
 pub struct Iter<'a, T> {
     next: Option<&'a Node<T>>,
 }
 
 impl<'a, T> List<T> {
     pub fn iter(&'a self) -> Iter<'a, T> {
-        Iter { next: self.head.map(|node| &'a *node) }
+        Iter { next: self.head.map(|node| &'a node) }
     }
 }
 
@@ -109,7 +119,7 @@ impl<'a, T> Iterator for Iter<'a, T> {
     type Item = &'a T;
     fn next(&'a mut self) -> Option<Self::Item> {
         self.next.map(|node| {
-            self.next = node.next.map(|node| &'a *node);
+            self.next = node.next.map(|node| &'a node);
             &'a node.elem
         })
     }
@@ -119,13 +129,24 @@ impl<'a, T> Iterator for Iter<'a, T> {
 ```text
 > cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/second.rs:67:34: 67:35 error: expected `:`, found `*`
-src/second.rs:67         self.head.map(|node| &'a **node)
-                                                  ^
-Could not compile `lists`.
+error: expected `:`, found `node`
+  --> src/second.rs:77:47
+   |
+77 |         Iter { next: self.head.map(|node| &'a node) }
+   |         ---- while parsing this struct        ^^^^ expected `:`
+
+error: expected `:`, found `node`
+  --> src/second.rs:85:50
+   |
+85 |             self.next = node.next.map(|node| &'a node);
+   |                                                  ^^^^ expected `:`
+
+error[E0063]: missing field `next` in initializer of `second::Iter<'_, _>`
+  --> src/second.rs:77:9
+   |
+77 |         Iter { next: self.head.map(|node| &'a node) }
+   |         ^^^^ missing `next`
 ```
-
-
 
 Oh god. We broke Rust.
 
@@ -152,18 +173,18 @@ a totally transparent way.
 
 So what's a lifetime?
 
-Quite simply, a lifetime is the name of a scope somewhere in a program.
+Quite simply, a lifetime is the name of a region (\~block/scope) of code somewhere in a program.
 That's it. When a reference is tagged with a lifetime, we're saying that it
-has to be valid for that *entire* scope. Different things place requirements on
+has to be valid for that *entire* region. Different things place requirements on
 how long a reference must and can be valid for. The entire lifetime system is in
-turn just a constraint-solving system that tries to minimize the scope of every
+turn just a constraint-solving system that tries to minimize the region of every
 reference. If it sucessfully finds a set of lifetimes that satisfies all the
 constraints, your program compiles! Otherwise you get an error back saying that
 something didn't live long enough.
 
 Within a function body you generally can't talk about lifetimes, and wouldn't
 want to *anyway*. The compiler has full information and can infer all the
-contraints and find the minimum lifetimes. However at the type and API-level,
+contraints to find the minimum lifetimes. However at the type and API-level,
 the compiler *doesn't* have all the information. It requires you to tell it
 about the relationship between different lifetimes so it can figure out what
 you're doing.
@@ -196,8 +217,9 @@ fn foo<'a, 'b, 'c>(&'a self, &'b B, &'c C) -> &'a D;
 
 So what does `fn foo<'a>(&'a A) -> &'a B` *mean*? In practical terms, all it
 means is that the input must live at least as long as the output. So if you keep
-the output around for a long time, this will *drag* the scope that the `&A` must
-be valid for to be larger and larger.
+the output around for a long time, this will expand the region that the input must
+be valid for. Once you stop using the output, the compiler will know its ok for
+the input to become invalid too.
 
 With this system set up, Rust can ensure nothing is used after free, and nothing
 is mutated while outstanding references exist. It just makes sure the
@@ -207,7 +229,7 @@ Alright. So. Iter.
 
 Let's roll back to the no lifetimes state:
 
-```rust
+```rust ,ignore
 pub struct Iter<T> {
     next: Option<&Node<T>>,
 }
@@ -231,7 +253,7 @@ impl<T> Iterator for Iter<T> {
 
 We need to add lifetimes only in function and type signatures:
 
-```
+```rust ,ignore
 // Iter is generic over *some* lifetime, it doesn't care
 pub struct Iter<'a, T> {
     next: Option<&'a Node<T>>,
@@ -247,7 +269,7 @@ impl<T> List<T> {
     }
 }
 
-// *Do* have a lifetime here, because Iter does have an associated lifetime
+// We *do* have a lifetime here, because Iter has one that we need to define
 impl<'a, T> Iterator for Iter<'a, T> {
     // Need it here too, this is a type declaration
     type Item = &'a T;
@@ -266,101 +288,138 @@ impl<'a, T> Iterator for Iter<'a, T> {
 Alright, I think we got it this time y'all.
 
 ```text
-> cargo build
+cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/second.rs:62:1: 64:2 error: the parameter type `T` may not live long enough [E0309]
-src/second.rs:62 pub struct Iter<'a, T> {
-src/second.rs:63     next: Option<&'a Node<T>>,
-src/second.rs:64 }
-src/second.rs:62:1: 64:2 help: run `rustc --explain E0309` to see a detailed explanation
-src/second.rs:62:1: 64:2 help: consider adding an explicit lifetime bound `T: 'a`...
-src/second.rs:62:1: 64:2 note: ...so that the reference type `&'a second::Node<T>` does not outlive the data it points at
-src/second.rs:62 pub struct Iter<'a, T> {
-src/second.rs:63     next: Option<&'a Node<T>>,
-src/second.rs:64 }
-error: aborting due to previous error
+error[E0308]: mismatched types
+  --> src/second.rs:77:22
+   |
+77 |         Iter { next: self.head.map(|node| &node) }
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected struct `second::Node`, found struct `std::boxed::Box`
+   |
+   = note: expected type `std::option::Option<&second::Node<T>>`
+              found type `std::option::Option<&std::boxed::Box<second::Node<T>>>`
+
+error[E0308]: mismatched types
+  --> src/second.rs:85:25
+   |
+85 |             self.next = node.next.map(|node| &node);
+   |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected struct `second::Node`, found struct `std::boxed::Box`
+   |
+   = note: expected type `std::option::Option<&'a second::Node<T>>`
+              found type `std::option::Option<&std::boxed::Box<second::Node<T>>>`
 ```
 
 (╯°□°)╯︵ ┻━┻
 
+OK. SO. We fixed our lifetime errors but now we're getting some new type errors.
 
-```text
-rustc --explain E0309
-Types in type definitions have lifetimes associated with them that represent
-how long the data stored within them is guaranteed to be live. This lifetime
-must be as long as the data needs to be alive, and missing the constraint that
-denotes this will cause this error.
+We want to be storing `&Node`'s, but we're getting `&Box<Node>`s. Ok, that's easy
+enough, we just need to dereference the Box before we take our reference:
 
-// This won't compile because T is not constrained, meaning the data
-// stored in it is not guaranteed to last as long as the reference
-struct Foo<'a, T> {
-    foo: &'a T
+```rust ,ignore
+impl<T> List<T> {
+    pub fn iter<'a>(&'a self) -> Iter<'a, T> {
+        Iter { next: self.head.map(|node| &*node) }
+    }
 }
 
-// This will compile, because it has the constraint on the type parameter
-struct Foo<'a, T: 'a> {
-    foo: &'a T
-}
-```
-
-This is dumb. I think it's dumb. You have to do it.
-
-
-```rust
-pub struct Iter<'a, T: 'a> {
-    next: Option<&'a Node<T>>,
+impl<'a, T> Iterator for Iter<'a, T> {
+    type Item = &'a T;
+    fn next(&mut self) -> Option<Self::Item> {
+        self.next.map(|node| {
+            self.next = node.next.map(|node| &*node);
+            &node.elem
+        })
+    }
 }
 ```
 
 ```text
 cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/second.rs:67:22: 67:31 error: cannot move out of type `second::List<T>`, which defines the `Drop` trait
-src/second.rs:67         Iter { next: self.head.map(|node| &*node) }
-                                      ^~~~~~~~~
-src/second.rs:67:44: 67:49 error: `*node` does not live long enough
-src/second.rs:67         Iter { next: self.head.map(|node| &*node) }
-                                                            ^~~~~
-note: in expansion of closure expansion
-src/second.rs:67:36: 67:49 note: expansion site
-src/second.rs:66:42: 68:6 note: reference must be valid for the lifetime 'a as defined on the block at 66:41...
-src/second.rs:66     pub fn iter<'a>(&'a self) -> Iter<'a, T> {
-src/second.rs:67         Iter { next: self.head.map(|node| &*node) }
-src/second.rs:68     }
-src/second.rs:67:43: 67:49 note: ...but borrowed value is only valid for the scope of parameters for function at 67:42
-src/second.rs:67         Iter { next: self.head.map(|node| &*node) }
-                                                           ^~~~~~
-src/second.rs:76:25: 76:29 error: cannot move out of borrowed content
-src/second.rs:76             self.next = node.next.map(|node| &*node);
-                                         ^~~~
-note: in expansion of closure expansion
-src/second.rs:75:23: 78:10 note: expansion site
-src/second.rs:76:47: 76:52 error: `*node` does not live long enough
-src/second.rs:76             self.next = node.next.map(|node| &*node);
-                                                               ^~~~~
-note: in expansion of closure expansion
-src/second.rs:76:39: 76:52 note: expansion site
-note: in expansion of closure expansion
-src/second.rs:75:23: 78:10 note: expansion site
-src/second.rs:74:46: 79:6 note: reference must be valid for the lifetime 'a as defined on the block at 74:45...
-src/second.rs:74     fn next(&mut self) -> Option<Self::Item> {
-src/second.rs:75         self.next.map(|node| {
-src/second.rs:76             self.next = node.next.map(|node| &*node);
-src/second.rs:77             &node.elem
-src/second.rs:78         })
-src/second.rs:79     }
-src/second.rs:76:46: 76:52 note: ...but borrowed value is only valid for the scope of parameters for function at 76:45
-src/second.rs:76             self.next = node.next.map(|node| &*node);
-                                                              ^~~~~~
-error: aborting due to 4 previous errors
+   Compiling lists v0.1.0 (/Users/ABeingessner/dev/temp/lists)
+error[E0515]: cannot return reference to local data `*node`
+  --> src/second.rs:77:43
+   |
+77 |         Iter { next: self.head.map(|node| &*node) }
+   |                                           ^^^^^^ returns a reference to data owned by the current function
+
+error[E0507]: cannot move out of borrowed content
+  --> src/second.rs:77:22
+   |
+77 |         Iter { next: self.head.map(|node| &*node) }
+   |                      ^^^^^^^^^ cannot move out of borrowed content
+
+error[E0515]: cannot return reference to local data `*node`
+  --> src/second.rs:85:46
+   |
+85 |             self.next = node.next.map(|node| &*node);
+   |                                              ^^^^^^ returns a reference to data owned by the current function
+
+error[E0507]: cannot move out of borrowed content
+  --> src/second.rs:85:25
+   |
+85 |             self.next = node.next.map(|node| &*node);
+   |                         ^^^^^^^^^ cannot move out of borrowed content
 ```
 
 (ﾉಥ益ಥ）ﾉ﻿ ┻━┻
 
-We forgot `as_ref`:
+We forgot `as_ref`, so we're moving the box into `map`, which means it would
+be dropped, which means our references would be dangling:
 
-```rust
-pub struct Iter<'a, T:'a> {
+```rust ,ignore
+pub struct Iter<'a, T> {
+    next: Option<&'a Node<T>>,
+}
+
+impl<T> List<T> {
+    pub fn iter<'a>(&'a self) -> Iter<'a, T> {
+        Iter { next: self.head.as_ref().map(|node| &*node) }
+    }
+}
+
+impl<'a, T> Iterator for Iter<'a, T> {
+    type Item = &'a T;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.next.map(|node| {
+            self.next = node.next.as_ref().map(|node| &*node);
+            &node.elem
+        })
+    }
+}
+```
+
+```text
+cargo build
+   Compiling lists v0.1.0 (/Users/ABeingessner/dev/temp/lists)
+error[E0308]: mismatched types
+  --> src/second.rs:77:22
+   |
+77 |         Iter { next: self.head.as_ref().map(|node| &*node) }
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected struct `second::Node`, found struct `std::boxed::Box`
+   |
+   = note: expected type `std::option::Option<&second::Node<T>>`
+              found type `std::option::Option<&std::boxed::Box<second::Node<T>>>`
+
+error[E0308]: mismatched types
+  --> src/second.rs:85:25
+   |
+85 |             self.next = node.next.as_ref().map(|node| &*node);
+   |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected struct `second::Node`, found struct `std::boxed::Box`
+   |
+   = note: expected type `std::option::Option<&'a second::Node<T>>`
+              found type `std::option::Option<&std::boxed::Box<second::Node<T>>>`
+
+```
+
+😭
+
+`as_ref` added another layer of indirection we need to remove:
+
+
+```rust ,ignore
+pub struct Iter<'a, T> {
     next: Option<&'a Node<T>>,
 }
 
@@ -387,7 +446,39 @@ lists::cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
 ```
 
-┬─┬﻿ ノ( ゜-゜ノ)
+🎉 🎉 🎉
+
+You may be thinking "wow that `&**` thing is really janky", and you're not wrong.
+Normally Rust is very good at doing this kind of conversion implicitly, through
+a process called *deref coercion*, where basically it can insert \*'s
+throughout your code to make it type-check. It can do this because we have the
+borrow checker to ensure we never mess up pointers!
+
+But in this case the closure in conjunction with the fact that we
+have an `Option<&T>` instead of `&T` is a bit too complicated for it to work
+out, so we need to do this for it. Thankfully this is pretty rare, in my experience.
+
+Just for completeness' sake, we *could* give it a *different* hint with the *turbofish*:
+
+```rust ,ignore
+    self.next = node.next.as_ref().map::<&Node<T>, _>(|node| &node);
+```
+
+See, map is a generic function:
+
+```rust ,ignore
+pub fn map<U, F>(self, f: F) -> Option<U>
+```
+
+The turbofish, `::<>`, lets us tell the compiler what we think the types of those
+generics should be. In this case `::<&Node<T>, _>` says "it should return a
+`&Node<T>`, and I don't know/care about that other type".
+
+This in turn lets the compiler know that `&node` should have deref coercion
+applied to it, so we don't need to manually apply all those \*'s!
+
+But in this case I don't think it's really an improvement, this was just a
+thinly veiled excuse to show off deref coercion and the sometimes-useful turbofish. 😅
 
 Let's write a test to be sure we didn't no-op it or anything:
 
@@ -427,7 +518,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 
 Heck yeah.
 
-Finally, it should be noted that we actually apply lifetime elision here:
+Finally, it should be noted that we *can* actually apply lifetime elision here:
 
 ```rust
 impl<T> List<T> {
@@ -448,3 +539,14 @@ impl<T> List<T> {
 ```
 
 Yay less lifetimes!
+
+Or, if you're not comfortable "hiding" that a struct contains a lifetime,
+you can use the Rust 2018 "explicitly elided lifetime" syntax,  `'_`:
+
+```rust ,ignore
+impl<T> List<T> {
+    pub fn iter(&self) -> Iter<'_, T> {
+        Iter { next: self.head.as_ref().map(|node| &**node) }
+    }
+}
+```

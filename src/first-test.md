@@ -12,7 +12,7 @@ avoid conflicting with the "real" code. Just as we used `mod` to specify that
 create a whole new file *inline*:
 
 
-```rust
+```rust,ignore
 // in first.rs
 
 mod test {
@@ -27,19 +27,20 @@ And we invoke it with `cargo test`.
 
 ```text
 > cargo test
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-     Running target/debug/lists-5c71138492ad4b4a
+   Compiling lists v0.1.0 (/Users/ABeingessner/dev/temp/lists)
+    Finished dev [unoptimized + debuginfo] target(s) in 1.00s
+     Running /Users/ABeingessner/dev/lists/target/debug/deps/lists-86544f1d97438f1f
 
 running 1 test
 test first::test::basics ... ok
 
-test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 
    Doc-tests lists
 
 running 0 tests
 
-test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 ```
 
 Yay our do-nothing test passed! Let's make it not-do-nothing. We'll do that
@@ -47,7 +48,7 @@ with the `assert_eq!` macro. This isn't some special testing magic. All it
 does is compare the two things you give it, and panic the program if they don't
 match. Yep, you indicate failure to the test harness by freaking out!
 
-```rust
+```rust,ignore
 mod test {
     #[test]
     fn basics() {
@@ -83,19 +84,19 @@ mod test {
 ```text
 > cargo test
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/first.rs:47:24: 47:33 error: failed to resolve. Use of undeclared type or module `List` [E0433]
-src/first.rs:47         let mut list = List::new();
-                                       ^~~~~~~~~
-src/first.rs:47:24: 47:33 error: unresolved name `List::new` [E0425]
-src/first.rs:47         let mut list = List::new();
-                                       ^~~~~~~~~
-error: aborting due to 2 previous errors
+error[E0433]: failed to resolve: use of undeclared type or module `List`
+  --> src/first.rs:43:24
+   |
+43 |         let mut list = List::new();
+   |                        ^^^^ use of undeclared type or module `List`
+
+
 ```
 
 Oops! Because we made a new module, we need to pull in List explicitly to use
 it.
 
-```rust
+```rust,ignore
 mod test {
     use super::List;
     // everything else the same
@@ -105,21 +106,27 @@ mod test {
 ```text
 > cargo test
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/first.rs:45:9: 45:20 warning: unused import, #[warn(unused_imports)] on by default
-src/first.rs:45     use super::List;
-                        ^~~~~~~~~~~
-     Running target/debug/lists-5c71138492ad4b4a
+warning: unused import: `super::List`
+  --> src/first.rs:45:9
+   |
+45 |     use super::List;
+   |         ^^^^^^^^^^^
+   |
+   = note: #[warn(unused_imports)] on by default
+
+    Finished dev [unoptimized + debuginfo] target(s) in 0.43s
+     Running /Users/ABeingessner/dev/lists/target/debug/deps/lists-86544f1d97438f1f
 
 running 1 test
 test first::test::basics ... ok
 
-test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 
    Doc-tests lists
 
 running 0 tests
 
-test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 ```
 
 Yay!
@@ -131,7 +138,7 @@ consumers), we should indicate that the whole `test` module should only be
 compiled if we're running tests.
 
 
-```
+```rust,ignore
 #[cfg(test)]
 mod test {
     use super::List;

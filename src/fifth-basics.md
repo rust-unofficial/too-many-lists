@@ -4,7 +4,7 @@ Alright, back to basics. How do we construct our list?
 
 Before we just did:
 
-```rust
+```rust ,ignore
 impl<T> List<T> {
     pub fn new() -> Self {
         List { head: None, tail: None }
@@ -17,15 +17,14 @@ But we're not using Option for the `tail` anymore:
 ```text
 > cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/fifth.rs:15:34: 15:38 error: mismatched types:
- expected `*mut fifth::Node<_>`,
-    found `core::option::Option<_>`
-(expected *-ptr,
-    found enum `core::option::Option`) [E0308]
-src/fifth.rs:15         List { head: None, tail: None }
-                                                 ^~~~
-src/fifth.rs:15:34: 15:38 help: run `rustc --explain E0308` to see a detailed explanation
-error: aborting due to previous error
+error[E0308]: mismatched types
+  --> src/fifth.rs:15:34
+   |
+15 |         List { head: None, tail: None }
+   |                                  ^^^^ expected *-ptr, found enum `std::option::Option`
+   |
+   = note: expected type `*mut fifth::Node<T>`
+              found type `std::option::Option<_>`
 ```
 
 We *could* use an Option, but unlike Box, `*mut` *is* nullable. This means it
@@ -36,7 +35,7 @@ So how do we get a null pointer? There's a few ways, but I prefer to use
 `std::ptr::null_mut()`. If you want, you can also use `0 as *mut _`, but that
 just seems so *messy*.
 
-```rust
+```rust ,ignore
 use std::ptr;
 
 // defns...
@@ -51,21 +50,34 @@ impl<T> List<T> {
 ```text
 cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/fifth.rs:4:5: 4:18 warning: struct field is never used: `head`, #[warn(dead_code)] on by default
-src/fifth.rs:4     head: Link<T>,
-                   ^~~~~~~~~~~~~
-src/fifth.rs:5:5: 5:23 warning: struct field is never used: `tail`, #[warn(dead_code)] on by default
-src/fifth.rs:5     tail: *mut Node<T>,
-                   ^~~~~~~~~~~~~~~~~~
-src/fifth.rs:11:5: 11:12 warning: struct field is never used: `elem`, #[warn(dead_code)] on by default
-src/fifth.rs:11     elem: T,
-                    ^~~~~~~
-src/fifth.rs:12:5: 12:18 warning: struct field is never used: `next`, #[warn(dead_code)] on by default
-src/fifth.rs:12     next: Link<T>,
-                    ^~~~~~~~~~~~~
+warning: field is never used: `head`
+ --> src/fifth.rs:4:5
+  |
+4 |     head: Link<T>,
+  |     ^^^^^^^^^^^^^
+  |
+  = note: #[warn(dead_code)] on by default
+
+warning: field is never used: `tail`
+ --> src/fifth.rs:5:5
+  |
+5 |     tail: *mut Node<T>,
+  |     ^^^^^^^^^^^^^^^^^^
+
+warning: field is never used: `elem`
+  --> src/fifth.rs:11:5
+   |
+11 |     elem: T,
+   |     ^^^^^^^
+
+warning: field is never used: `head`
+  --> src/fifth.rs:12:5
+   |
+12 |     head: Link<T>,
+   |     ^^^^^^^^^^^^^
 ```
 
-*shush* compiler, I will use them soon.
+*shush* compiler, we will use them soon.
 
 Alright, let's move on to writing `push` again. This time, instead of grabbing
 an `Option<&mut Node<T>>` after we insert, we're just going to grab a
@@ -77,14 +89,14 @@ have a pointer to freed memory.
 How do we make a raw pointer from a normal pointer? Coercions! If a variable
 is declared to be a raw pointer, a normal reference will coerce into it:
 
-```rust
+```rust ,ignore
 let raw_tail: *mut _ = &mut *new_tail;
 ```
 
 We have all the info we need. We can translate our code into, approximately,
 the previous reference version:
 
-```rust
+```rust ,ignore
 pub fn push(&mut self, elem: T) {
     let mut new_tail = Box::new(Node {
         elem: elem,
@@ -109,11 +121,13 @@ pub fn push(&mut self, elem: T) {
 ```text
 > cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/fifth.rs:32:13: 32:27 error: attempted access of field `next` on type `*mut fifth::Node<T>`, but no field with that name was found
-src/fifth.rs:32             self.tail.next = Some(new_tail);
-                            ^~~~~~~~~~~~~~
-error: aborting due to previous error
-Could not compile `lists`.
+error[E0609]: no field `next` on type `*mut fifth::Node<T>`
+  --> src/fifth.rs:31:23
+   |
+31 |             self.tail.next = Some(new_tail);
+   |             ----------^^^^
+   |             |
+   |             help: `self.tail` is a raw pointer; try dereferencing it: `(*self.tail).next`
 ```
 
 Huh? We have a pointer to a Node, why can't we get the `next` field?
@@ -129,11 +143,13 @@ operation. So let's do that:
 ```text
 > cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/fifth.rs:31:14: 31:28 error: attempted access of field `next` on type `*mut fifth::Node<T>`, but no field with that name was found
-src/fifth.rs:31             *self.tail.next = Some(new_tail);
-                             ^~~~~~~~~~~~~~
-error: aborting due to previous error
-Could not compile `lists`.
+error[E0609]: no field `next` on type `*mut fifth::Node<T>`
+  --> src/fifth.rs:31:23
+   |
+31 |             *self.tail.next = Some(new_tail);
+   |             -----------^^^^
+   |             |
+   |             help: `self.tail` is a raw pointer; try dereferencing it: `(*self.tail).next`
 ```
 
 Uuuugh operator precedence.
@@ -145,12 +161,13 @@ Uuuugh operator precedence.
 ```text
 > cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/fifth.rs:31:14: 31:24 error: dereference of raw pointer requires unsafe function or block [E0133]
-src/fifth.rs:31             (*self.tail).next = Some(new_tail);
-                             ^~~~~~~~~~
-src/fifth.rs:31:14: 31:24 help: run `rustc --explain E0133` to see a detailed explanation
-error: aborting due to previous error
-Could not compile `lists`.
+error[E0133]: dereference of raw pointer is unsafe and requires unsafe function or block
+  --> src/fifth.rs:31:13
+   |
+31 |             (*self.tail).next = Some(new_tail);
+   |             ^^^^^^^^^^^^^^^^^ dereference of raw pointer
+   |
+   = note: raw pointers may be NULL, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
 ```
 
 THIS SHOULDN'T BE THIS HARD.
@@ -190,10 +207,13 @@ pub fn push(&mut self, elem: T) {
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/fifth.rs:11:5: 11:12 warning: struct field is never used: `elem`, #[warn(dead_code)] on by default
-src/fifth.rs:11     elem: T,
-                    ^~~~~~~
+warning: field is never used: `elem`
+  --> src/fifth.rs:11:5
+   |
+11 |     elem: T,
+   |     ^^^^^^^
+   |
+   = note: #[warn(dead_code)] on by default
 ```
 
 Yay!
@@ -229,14 +249,14 @@ This taint is manageable because of *privacy*. Outside of our module, all of our
 struct fields are totally private, so no one else can mess with our state in
 arbitrary ways. As long as no combination of the APIs we expose causes bad stuff
 to happen, as far as an outside observer is concerned, all of our code is safe!
-And really, this is no different from the FFI case. No one needs care
+And really, this is no different from the FFI case. No one needs to care
 if some python math library shells out to C as long as it exposes a safe
 interface.
 
 Anyway, let's move on to `pop`, which is pretty much verbatim the reference
 version:
 
-```rust
+```rust ,ignore
 pub fn pop(&mut self) -> Option<T> {
     self.head.take().map(|head| {
         let head = *head;
@@ -257,7 +277,7 @@ subsequent calls to `push` will start writing to the dangling tail!
 
 Let's test it out:
 
-```rust
+```rust ,ignore
 #[cfg(test)]
 mod test {
     use super::List;
@@ -302,7 +322,7 @@ mod test {
 ```
 
 This is just the stack test, but with the expected `pop` results flipped around.
-I also added some extra steps and the end to make sure that tail-pointer
+I also added some extra steps at the end to make sure that tail-pointer
 corruption case in `pop` doesn't occur.
 
 ```text
@@ -310,23 +330,21 @@ cargo test
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
      Running target/debug/lists-5c71138492ad4b4a
 
-running 8 tests
-test first::test::basics ... ok
-test second::test::basics ... ok
+running 12 tests
 test fifth::test::basics ... ok
-test second::test::iter ... ok
-test third::test::iter ... ok
-test second::test::iter_mut ... ok
+test first::test::basics ... ok
+test fourth::test::basics ... ok
+test fourth::test::peek ... ok
+test second::test::basics ... ok
+test fourth::test::into_iter ... ok
 test second::test::into_iter ... ok
+test second::test::iter ... ok
+test second::test::iter_mut ... ok
+test second::test::peek ... ok
 test third::test::basics ... ok
+test third::test::iter ... ok
 
 test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured
-
-   Doc-tests lists
-
-running 0 tests
-
-test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 ```
 
 Gold Star!

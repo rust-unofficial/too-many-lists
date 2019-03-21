@@ -27,8 +27,8 @@ a list made it go away!
 
 A mutable reference represents temporary *exclusive access* to a value that you
 don't own. You're allowed to do absolutely anything you want to a value you
-have a mutable reference to as long as when your loan expires, wherever you
-loaned it from still sees a valid value. This means you can actually completely
+have a mutable reference to as long you leave it in a valid state when you're
+done (it would be rude to the owner otherwise!). This means you can actually completely
 overwrite the value. A really useful special case of this is *swapping* a value
 out for another, which we'll be using a lot. The only thing you can't do with an
 `&mut` is move the value out with no replacement. `&mut self` is great for

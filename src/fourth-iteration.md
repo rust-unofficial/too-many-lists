@@ -7,7 +7,7 @@ Let's take a crack at iterating this bad-boy.
 IntoIter, as always, is going to be the easiest. Just wrap the stack and
 call `pop`:
 
-```rust
+```rust ,ignore
 pub struct IntoIter<T>(List<T>);
 
 impl<T> List<T> {
@@ -46,7 +46,7 @@ reversed iterator are just calls to `next_back`.
 
 Anyway, because we're already a deque providing this API is pretty easy:
 
-```rust
+```rust ,ignore
 impl<T> DoubleEndedIterator for IntoIter<T> {
     fn next_back(&mut self) -> Option<T> {
         self.0.pop_back()
@@ -56,7 +56,7 @@ impl<T> DoubleEndedIterator for IntoIter<T> {
 
 And let's test it out:
 
-```rust
+```rust ,ignore
 #[test]
 fn into_iter() {
     let mut list = List::new();
@@ -107,8 +107,8 @@ Iter will be a bit less forgiving. We'll have to deal with those awful `Ref`
 things again! Because of Refs, we can't store `&Node`s like we did before.
 Instead, let's try to store `Ref<Node>`s:
 
-```rust
-pub struct Iter<'a, T: 'a>(Option<Ref<'a, Node<T>>>);
+```rust ,ignore
+pub struct Iter<'a, T>(Option<Ref<'a, Node<T>>>);
 
 impl<T> List<T> {
     pub fn iter(&self) -> Iter<T> {
@@ -126,7 +126,7 @@ So far so good. Implementing `next` is going to be a bit hairy, but I think
 it's the same basic logic as the old stack IterMut but with extra RefCell
 madness:
 
-```rust
+```rust ,ignore
 impl<'a, T> Iterator for Iter<'a, T> {
     type Item = Ref<'a, T>;
     fn next(&mut self) -> Option<Self::Item> {
@@ -141,25 +141,29 @@ impl<'a, T> Iterator for Iter<'a, T> {
 ```text
 cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/fourth.rs:154:22: 154:30 error: `node_ref` does not live long enough
-src/fourth.rs:154             self.0 = node_ref.next.as_ref().map(|head| head.borrow());
-                                       ^~~~~~~~
-note: in expansion of closure expansion
-src/fourth.rs:153:27: 156:10 note: expansion site
-src/fourth.rs:152:46: 157:6 note: reference must be valid for the lifetime 'a as defined on the block at 152:45...
-src/fourth.rs:152     fn next(&mut self) -> Option<Self::Item> {
-src/fourth.rs:153         self.0.take().map(|node_ref| {
-src/fourth.rs:154             self.0 = node_ref.next.as_ref().map(|head| head.borrow());
-src/fourth.rs:155             Ref::map(node_ref, |node| &node.elem)
-src/fourth.rs:156         })
-src/fourth.rs:157     }
-src/fourth.rs:153:38: 156:10 note: ...but borrowed value is only valid for the scope of parameters for function at 153:37
-src/fourth.rs:153         self.0.take().map(|node_ref| {
-src/fourth.rs:154             self.0 = node_ref.next.as_ref().map(|head| head.borrow());
-src/fourth.rs:155             Ref::map(node_ref, |node| &node.elem)
-src/fourth.rs:156         })
-error: aborting due to previous error
-Could not compile `lists`.
+error[E0521]: borrowed data escapes outside of closure
+   --> src/fourth.rs:155:13
+    |
+153 |     fn next(&mut self) -> Option<Self::Item> {
+    |             --------- `self` is declared here, outside of the closure body
+154 |         self.0.take().map(|node_ref| {
+155 |             self.0 = node_ref.next.as_ref().map(|head| head.borrow());
+    |             ^^^^^^   -------- borrow is only valid in the closure body
+    |             |
+    |             reference to `node_ref` escapes the closure body here
+
+error[E0505]: cannot move out of `node_ref` because it is borrowed
+   --> src/fourth.rs:156:22
+    |
+153 |     fn next(&mut self) -> Option<Self::Item> {
+    |             --------- lifetime `'1` appears in the type of `self`
+154 |         self.0.take().map(|node_ref| {
+155 |             self.0 = node_ref.next.as_ref().map(|head| head.borrow());
+    |             ------   -------- borrow of `node_ref` occurs here
+    |             |
+    |             assignment requires that `node_ref` is borrowed for `'1`
+156 |             Ref::map(node_ref, |node| &node.elem)
+    |                      ^^^^^^^^ move out of `node_ref` occurs here
 ```
 
 Shoot.
@@ -169,63 +173,95 @@ us just split Refs up like that. The Ref we get out of `head.borrow()` is only
 allowed to live as long as `node_ref`, but we end up trashing that in our
 `Ref::map` call.
 
-I don't think there's anything we can do here. It's a dead end. Let's try
-getting out of the RefCells. What if we store an `&RefCell<Node>`?
+Coincidentally, as of the moment I am writing this, the function we want was
+actually stabilized 2 days ago. That means it will be a few months before it
+hits the stable release. So let's continue along with the latest nightly build:
 
+```rust ,ignore
+pub fn map_split<U, V, F>(orig: Ref<'b, T>, f: F) -> (Ref<'b, U>, Ref<'b, V>) where
+    F: FnOnce(&T) -> (&U, &V),
+    U: ?Sized,
+    V: ?Sized,
+```
 
-```rust
-pub struct Iter<'a, T: 'a>(Option<&'a RefCell<Node<T>>>);
+Woof. Let's give it a try...
 
-impl<T> List<T> {
-    pub fn iter(&self) -> Iter<T> {
-        Iter(self.head.as_ref().map(|head| &** head))
-    }
-}
+```rust ,ignore
+fn next(&mut self) -> Option<Self::Item> {
+    self.0.take().map(|node_ref| {
+        let (next, elem) = Ref::map_split(node_ref, |node| {
+            (&node.next, &node.elem)
+        });
 
-impl<'a, T> Iterator for Iter<'a, T> {
-    type Item = Ref<'a, T>;
-    fn next(&mut self) -> Option<Self::Item> {
-        self.0.take().map(|node| {
-            self.0 = node.borrow().next.as_ref().map(|head| &**head);
-            Ref::map(node.borrow(), |node| &node.elem)
-        })
-    }
+        self.0 = next.as_ref().map(|head| head);
+
+        elem
+    })
 }
 ```
 
 ```text
-> cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/fourth.rs:154:22: 154:35 error: borrowed value does not live long enough
-src/fourth.rs:154             self.0 = node.borrow().next.as_ref().map(|head| &**head);
-                                       ^~~~~~~~~~~~~
-note: in expansion of closure expansion
-src/fourth.rs:153:27: 156:10 note: expansion site
-src/fourth.rs:152:46: 157:6 note: reference must be valid for the lifetime 'a as defined on the block at 152:45...
-src/fourth.rs:152     fn next(&mut self) -> Option<Self::Item> {
-src/fourth.rs:153         self.0.take().map(|node| {
-src/fourth.rs:154             self.0 = node.borrow().next.as_ref().map(|head| &**head);
-src/fourth.rs:155             Ref::map(node.borrow(), |node| &node.elem)
-src/fourth.rs:156         })
-src/fourth.rs:157     }
-src/fourth.rs:154:13: 154:70 note: ...but borrowed value is only valid for the statement at 154:12
-src/fourth.rs:154             self.0 = node.borrow().next.as_ref().map(|head| &**head);
-                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-note: in expansion of closure expansion
-src/fourth.rs:153:27: 156:10 note: expansion site
-src/fourth.rs:154:13: 154:70 help: consider using a `let` binding to increase its lifetime
-src/fourth.rs:154             self.0 = node.borrow().next.as_ref().map(|head| &**head);
-                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-note: in expansion of closure expansion
-src/fourth.rs:153:27: 156:10 note: expansion site
-error: aborting due to previous error
-Could not compile `lists`.
+cargo build
+   Compiling lists v0.1.0 (/Users/ABeingessner/dev/temp/lists)
+error[E0521]: borrowed data escapes outside of closure
+   --> src/fourth.rs:159:13
+    |
+153 |     fn next(&mut self) -> Option<Self::Item> {
+    |             --------- `self` is declared here, outside of the closure body
+...
+159 |             self.0 = next.as_ref().map(|head| head.borrow());
+    |             ^^^^^^   ---- borrow is only valid in the closure body
+    |             |
+    |             reference to `next` escapes the closure body here
 ```
 
-Hmm... no this is the same problem again. The `borrow` makes a Ref that we can't
-keep alive long enough.
+Ergh. We need to `Ref::Map` again to get our lifetimes right. But `Ref::Map`
+returns a `Ref` and we need an `Option<Ref>`, but we need to go through the
+Ref to map over our Option...
 
-Hang on, though. We've got `Rc`s. Who said we even needed to store references?
+**stares into distance for a long time**
+
+??????
+
+```rust ,ignore
+fn next(&mut self) -> Option<Self::Item> {
+    self.0.take().map(|node_ref| {
+        let (next, elem) = Ref::map_split(node_ref, |node| {
+            (&node.next, &node.elem)
+        });
+
+        self.0 = if next.is_some() {
+            Some(Ref::map(next, |next| &**next.as_ref().unwrap()))
+        } else {
+            None
+        };
+
+        elem
+    })
+}
+```
+
+```text
+error[E0308]: mismatched types
+   --> src/fourth.rs:162:22
+    |
+162 |                 Some(Ref::map(next, |next| &**next.as_ref().unwrap()))
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected struct `fourth::Node`, found struct `std::cell::RefCell`
+    |
+    = note: expected type `std::cell::Ref<'_, fourth::Node<_>>`
+               found type `std::cell::Ref<'_, std::cell::RefCell<fourth::Node<_>>>`
+```
+
+Oh. Right. There's multiple RefCells. The deeper we walk into the list, the more
+nested we become under each RefCell. We would need to maintain, like, a stack of
+Refs to represent all the outstanding loans we're holding, because if we stop
+looking at an element we need to decrement the borrow-count on every RefCell that
+comes before it.................
+
+I don't think there's anything we can do here. It's a dead end. Let's try
+getting out of the RefCells.
+
+What about our `Rc`s. Who said we even needed to store references?
 Why can't we just Clone the whole Rc to get a nice owning handle into the middle
 of the list?
 
@@ -256,9 +292,9 @@ that lets you do that.
 But wait, even if we do *that* then we've got an even bigger problem: the
 dreaded spectre of iterator invalidation. Previously we've been totally immune
 to iterator invalidation, because the Iter borrowed the list, leaving it totally
-immutable. However now that our Iter is full of Rcs, it doesn't borrow the list
+immutable. However if our Iter was yielding Rcs, they wouldn't borrow the list
 at all! That means people can start calling `push` and `pop` on the list while
-they have an Iter!
+they hold pointers into it!
 
 Oh lord, what will that do?!
 
@@ -277,7 +313,7 @@ try to remove the nodes that we're pointing at. And even then we don't get
 dangling pointers or anything, the program will deterministically panic!
 
 But having to deal with iterator invalidation on top of mapping Rcs just
-seems... lame. `Rc<RefCell>` has really truly finally failed us. Interestingly,
+seems... bad. `Rc<RefCell>` has really truly finally failed us. Interestingly,
 we've experienced an inversion of the persistent stack case. Where the
 persistent stack struggled to ever reclaim ownership of the data but could get
 references all day every day, our list had no problem gaining ownership, but

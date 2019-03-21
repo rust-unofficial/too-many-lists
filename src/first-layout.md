@@ -1,7 +1,7 @@
 # Basic Data Layout
 
 Alright, so what's a linked list? Well basically, it's a bunch of pieces of data
-on the heap (shhh Linux Kernel!) that point to each other in sequence. Linked
+on the heap (hush, kernel people!) that point to each other in sequence. Linked
 lists are something procedural programmers shouldn't touch with a 10-foot pole,
 and what functional programmers use for everything. It seems fair, then, that we
 should ask functional programmers for the definition of a linked list. They will
@@ -36,25 +36,24 @@ pub enum List {
 ```text
 > cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/lists)
-src/first.rs:1:1: 4:2 error: recursive type `first::List` has infinite size [E0072]
-src/first.rs:1 pub enum List {
-              ^
-src/first.rs:1:1: 4:2 help: run `rustc --explain E0072` to see a detailed explanation
-src/first.rs:1:1: 4:2 help: insert indirection (e.g., a `Box`, `Rc`, or `&`) at some point to make `first::List` representable
-error: aborting due to previous error
-error: Could not compile `list`.
-
-To learn more, run the command again with --verbose.
+error[E0072]: recursive type `first::List` has infinite size
+ --> src/first.rs:4:1
+  |
+4 | pub enum List {
+  | ^^^^^^^^^^^^^ recursive type has infinite size
+5 |     Empty,
+6 |     Elem(i32, List),
+  |               ---- recursive without indirection
+  |
+  = help: insert indirection (e.g., a `Box`, `Rc`, or `&`) at some point to make `first::List` representable
 ```
 
-Noooooooo!!!! Functional programmers tricked us! That made us do something
-*illegal*! This is entrapment!
+Well. I don't know about you, but I certainly feel betrayed by the functional
+programming community.
 
-...
-
-I'm ok now. Are you ok now? If we actually check out the error message (instead
-of getting ready to flee the country, as \*ahem\* *some* of us did), we can see
-that rustc is actually telling us exactly how to solve this problem:
+If we actually check out the error message (after we get over the whole
+betrayal thing), we can see that rustc is actually telling us exactly
+how to solve this problem:
 
 > insert indirection (e.g., a `Box`, `Rc`, or `&`) at some point to make `first::List` representable
 
@@ -104,7 +103,9 @@ fn main() {
 >
 > It wouldn't work. This is because the size of a List depends on how many elements are in the list, and so we don't know how much memory to allocate for a Cons. By introducing a Box, which has a defined size, we know how big Cons needs to be.
 
-Wow, uh. That is perhaps the most relevant and helpful documentation I have ever seen. Literally the first thing in the documentation is *exactly what we're trying to write, why it didn't work, and how to fix it*. Dang, yo. Docs.
+Wow, uh. That is perhaps the most relevant and helpful documentation I have ever seen. Literally the first thing in the documentation is *exactly what we're trying to write, why it didn't work, and how to fix it*.
+
+Dang, docs rule.
 
 Ok, let's do that:
 
@@ -122,7 +123,7 @@ pub enum List {
 
 Hey it built!
 
-...but this is actually a really stupid definition of a List, for a few reasons.
+...but this is actually a really foolish definition of a List, for a few reasons.
 
 Consider a list with two elements:
 
@@ -153,7 +154,7 @@ in memory.
 
 In general, if we have an enum like:
 
-```rust
+```rust,ignore
 enum Foo {
     D1(T1),
     D2(T2),
@@ -222,8 +223,8 @@ pub enum List {
 }
 ```
 
-Hopefully this seems like an even worse idea to you. For one, this really
-complicates our logic. In particular, there is now a completely invalid state:
+Hopefully this seems like an even worse idea to you. Most notably, this really
+complicates our logic, because there is now a completely invalid state:
 `ElemThenNotEmpty(0, Box(Empty))`. It also *still* suffers from non-uniformly
 allocating our elements.
 
@@ -235,7 +236,7 @@ layout took advantage of the *null pointer optimization*.
 We previously saw that every enum has to store a *tag* to specify which variant
 of the enum its bits represent. However, if we have a special kind of enum:
 
-```rust
+```rust,ignore
 enum Foo {
     A,
     B(ContainsANonNullPtr),
@@ -249,10 +250,11 @@ a non-zero pointer. Slick!
 
 Can you think of other enums and types that could do this kind of optimization?
 There's actually a lot! This is why Rust leaves enum layout totally unspecified.
-Sadly the null pointer optimization is the only one implemented today -- though
-it's pretty important! It means `&`, `&mut`, `Box`, `Rc`, `Arc`, `Vec`, and
+There are a few more complicated enum layout optimizations that Rust will do for
+us, but the null pointer one is definitely the most important!
+It means `&`, `&mut`, `Box`, `Rc`, `Arc`, `Vec`, and
 several other important types in Rust have no overhead when put in an `Option`!
-(We'll get to most of these in due time).
+(We'll get to most of these in due time.)
 
 So how do we avoid the extra junk, uniformly allocate, *and* get that sweet
 null-pointer optimization? We need to better separate out the idea of having an
@@ -264,7 +266,7 @@ structs let us declare a type that contains *many* values at once. Let's break
 our List into two types: A List, and a Node.
 
 As before, a List is either Empty or has an element followed by another List.
-However by representing the "has an element followed by another List" case by an
+By representing the "has an element followed by another List" case by an
 entirely separate type, we can hoist the Box to be in a more optimal position:
 
 ```rust
@@ -291,12 +293,15 @@ documentation) was problematic.
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/lists)
-src/first.rs:8:11: 8:18 error: private type in exported type signature
-src/first.rs:8    More(Box<Node>),
-                           ^~~~~~~
-error: aborting due to previous error
-Could not compile `lists`.
+warning: private type `first::Node` in public interface (error E0446)
+ --> src/first.rs:8:10
+  |
+8 |     More(Box<Node>),
+  |          ^^^^^^^^^
+  |
+  = note: #[warn(private_in_public)] on by default
+  = warning: this was previously accepted by the compiler but
+    is being phased out; it will become a hard error in a future release!
 ```
 
 :(
@@ -330,22 +335,38 @@ field. Yay zero-cost abstractions!
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/lists)
-src/first.rs:2:2: 2:15 warning: struct field is never used: `head`, #[warn(dead_code)] on by default
-src/first.rs:2    head: Link,
-                  ^~~~~~~~~~~~~
-src/first.rs:6:2: 6:7 warning: variant is never used: `Empty`, #[warn(dead_code)] on by default
-src/first.rs:6    Empty,
-                  ^~~~~
-src/first.rs:7:2: 7:20 warning: variant is never used: `More`, #[warn(dead_code)] on by default
-src/first.rs:7    More(Box<Node>),
-                  ^~~~~~~~~~~~~~~~~~
-src/first.rs:11:2: 11:9 warning: struct field is never used: `elem`, #[warn(dead_code)] on by default
-src/first.rs:11   elem: i32,
-                  ^~~~~~~
-src/first.rs:12:2: 12:15 warning: struct field is never used: `next`, #[warn(dead_code)] on by default
-src/first.rs:12   next: Link,
-                  ^~~~~~~~~~~~~
+warning: field is never used: `head`
+ --> src/first.rs:2:5
+  |
+2 |     head: Link,
+  |     ^^^^^^^^^^
+  |
+  = note: #[warn(dead_code)] on by default
+
+warning: variant is never constructed: `Empty`
+ --> src/first.rs:6:5
+  |
+6 |     Empty,
+  |     ^^^^^
+
+warning: variant is never constructed: `More`
+ --> src/first.rs:7:5
+  |
+7 |     More(Box<Node>),
+  |     ^^^^^^^^^^^^^^^
+
+warning: field is never used: `elem`
+  --> src/first.rs:11:5
+   |
+11 |     elem: i32,
+   |     ^^^^^^^^^
+
+warning: field is never used: `next`
+  --> src/first.rs:12:5
+   |
+12 |     next: Link,
+   |     ^^^^^^^^^^
+
 ```
 
 Alright, that compiled! Rust is pretty mad, because as far as it can tell,

@@ -37,7 +37,7 @@ Just so we're all the same page, I'll be writing out all the commands that I
 feed into my terminal. I'll also be using Rust's standard package manager, Cargo,
 to develop the project. Cargo isn't necessary to write a Rust program, but it's
 *so much* better than using rustc directly. If you just want to futz around you
-can also run some simple programs in the browser via https://play.rust-lang.org/.
+can also run some simple programs in the browser via [play.rust-lang.org][play].
 
 Let's get started and make our project:
 
@@ -57,7 +57,7 @@ being a productive Rust programmer.
 
 Although actually that's a lie. In writing this I encountered *way* more
 compiler errors than I show. In particular, in the later chapters I won't be
-showing a lot of the random "I typed (read: copy-pasted) bad" errors that you
+showing a lot of the random "I typed (copy-pasted) bad" errors that you
 expect to encounter in every language. This is a *guided tour* of having the
 compiler scream at us.
 
@@ -108,7 +108,7 @@ paragraph!
 
 Just so I can link directly to a detailed argument, here are several attempts
 at counter-arguments I have seen, and my response to them. Feel free to skip
-to [the end](#take-a-breath) if you just want to learn some Rust!
+to [the first chapter](first.html) if you just want to learn some Rust!
 
 
 
@@ -295,6 +295,7 @@ can get kinda gnarly, as we'll see.
 
 Ok. That's out of the way. Let's write a bajillion linked lists.
 
+[On to the first chapter!](first.html)
 
 
 [rust-std-list]: https://doc.rust-lang.org/std/collections/struct.LinkedList.html
@@ -304,3 +305,4 @@ Ok. That's out of the way. Let's write a bajillion linked lists.
 [slices]: https://doc.rust-lang.org/book/slice-patterns.html
 [iterators]: https://doc.rust-lang.org/std/iter/trait.Iterator.html
 [ghc]: https://wiki.haskell.org/GHC_optimisations#Fusion
+[play]: https://play.rust-lang.org/

@@ -45,12 +45,19 @@ pub fn append(&self, elem: T) -> List<T> {
 ```text
 > cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/third.rs:10:5: 10:12 warning: struct field is never used: `elem`, #[warn(dead_code)] on by default
-src/third.rs:10     elem: T,
-                    ^~~~~~~
-src/third.rs:11:5: 11:18 warning: struct field is never used: `next`, #[warn(dead_code)] on by default
-src/third.rs:11     next: Link<T>,
-                    ^~~~~~~~~~~~~
+warning: field is never used: `elem`
+  --> src/third.rs:10:5
+   |
+10 |     elem: T,
+   |     ^^^^^^^
+   |
+   = note: #[warn(dead_code)] on by default
+
+warning: field is never used: `next`
+  --> src/third.rs:11:5
+   |
+11 |     next: Link<T>,
+   |     ^^^^^^^^^^^^^
 ```
 
 Wow, Rust is really hard-nosed about actually using fields. It can tell no
@@ -70,15 +77,14 @@ pub fn tail(&self) -> List<T> {
 ```text
 cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/third.rs:28:22: 28:61 error: mismatched types:
- expected `core::option::Option<alloc::rc::Rc<third::Node<_>>>`,
-    found `core::option::Option<core::option::Option<alloc::rc::Rc<third::Node<T>>>>`
-(expected struct `alloc::rc::Rc`,
-    found enum `core::option::Option`) [E0308]
-src/third.rs:28         List { head: self.head.as_ref().map(|node| node.next.clone()) }
-                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-src/third.rs:28:22: 28:61 help: run `rustc --explain E0308` to see a detailed explanation
-error: aborting due to previous error
+error[E0308]: mismatched types
+  --> src/third.rs:27:22
+   |
+27 |         List { head: self.head.as_ref().map(|node| node.next.clone()) }
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected struct `std::rc::Rc`, found enum `std::option::Option`
+   |
+   = note: expected type `std::option::Option<std::rc::Rc<_>>`
+              found type `std::option::Option<std::option::Option<std::rc::Rc<_>>>`
 ```
 
 Hrm, we messed up. `map` expects us to return a Y, but here we're returning an
@@ -170,15 +176,15 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 
 Perfect!
 
-Iter is identical to the mutable list case:
+Iter is also identical to how it was for our mutable list:
 
 ```rust
-pub struct Iter<'a, T:'a> {
+pub struct Iter<'a, T> {
     next: Option<&'a Node<T>>,
 }
 
 impl<T> List<T> {
-    pub fn iter<'a>(&'a self) -> Iter<'a, T> {
+    pub fn iter(&self) -> Iter<'_, T> {
         Iter { next: self.head.as_ref().map(|node| &**node) }
     }
 }

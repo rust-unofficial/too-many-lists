@@ -3,7 +3,7 @@
 `pop_front` should be the same basic logic as `push_front`, but backwards. Let's
 try:
 
-```rust
+```rust ,ignore
 pub fn pop_front(&mut self) -> Option<T> {
     // need to take the old head, ensuring it's -2
     self.head.take().map(|old_head| {                         // -1 old
@@ -28,18 +28,16 @@ pub fn pop_front(&mut self) -> Option<T> {
 ```text
 > cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/fourth.rs:63:13: 63:26 error: attempted access of field `elem` on type `alloc::rc::Rc<core::cell::RefCell<fourth::Node<T>>>`, but no field with that name was found
-src/fourth.rs:63             old_head.elem
-                             ^~~~~~~~~~~~~
-note: in expansion of closure expansion
-src/fourth.rs:49:30: 64:10 note: expansion site
-error: aborting due to previous error
-Could not compile `lists`.
+error[E0609]: no field `elem` on type `std::rc::Rc<std::cell::RefCell<fourth::Node<T>>>`
+  --> src/fourth.rs:64:22
+   |
+64 |             old_head.elem
+   |                      ^^^^ unknown field
 ```
 
 ACK. *RefCells*. Gotta `borrow_mut` again I guess...
 
-```rust
+```rust ,ignore
 pub fn pop_front(&mut self) -> Option<T> {
     self.head.take().map(|old_head| {
         match old_head.borrow_mut().next.take() {
@@ -59,13 +57,11 @@ pub fn pop_front(&mut self) -> Option<T> {
 ```text
 cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/fourth.rs:58:13: 58:34 error: cannot move out of borrowed content
-src/fourth.rs:58             old_head.borrow_mut().elem
-                             ^~~~~~~~~~~~~~~~~~~~~
-note: in expansion of closure expansion
-src/fourth.rs:48:30: 59:10 note: expansion site
-error: aborting due to previous error
-Could not compile `lists`.
+error[E0507]: cannot move out of borrowed content
+  --> src/fourth.rs:64:13
+   |
+64 |             old_head.borrow_mut().elem
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^ cannot move out of borrowed content
 ```
 
 *sigh*
@@ -84,42 +80,30 @@ We need something that takes a `RefCell<T>` and gives us a `T`. Let's check
 
 That looks promising!
 
-```rust
+```rust ,ignore
 old_head.into_inner().elem
 ```
 
 ```text
 > cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/fourth.rs:58:13: 58:21 error: cannot move out of borrowed content
-src/fourth.rs:58             old_head.into_inner().elem
-                             ^~~~~~~~
-note: in expansion of closure expansion
-src/fourth.rs:48:30: 59:10 note: expansion site
-error: aborting due to previous error
-Could not compile `lists`.
+error[E0507]: cannot move out of an `Rc`
+  --> src/fourth.rs:64:13
+   |
+64 |             old_head.into_inner().elem
+   |             ^^^^^^^^ cannot move out of an `Rc`
 ```
 
-Uh... what? Nothing changed! Dang compiler!
-
-It's actually telling us the right thing, but it's not giving us quite enough
-information to figure it out. So I'm just going to cut the chase: where
-previously we were trying to move a `T` out of the `&mut Node<T>`, now we're
-trying to move a `RefCell<T>` out of an `&RefCell<T>`. We've just pushed the
-problem up the ownership chain.
-
-As we saw in the previous chapter, `Rc<T>` only lets us get shared references
+Ah dang. `into_inner` wants to move out the RefCell, but we can't, because it's
+in an `Rc`. As we saw in the previous chapter, `Rc<T>` only lets us get shared references
 into its internals. That makes sense, because that's *the whole point* of
 reference counted pointers: they're shared!
 
 This was a problem for us when we wanted to implement Drop for our reference
-counted list, because we needed to gain ownership of the nodes to drop them
-one at a time. 
+counted list, and the solution is the same: `Rc::try_unwrap`, which moves out
+the contents of an Rc if its refcount is 1.
 
-Now we can use `Rc::try_unwrap`, which moves out the contents of an Rc out
-if its refcount is 1.
-
-```rust
+```rust ,ignore
 Rc::try_unwrap(old_head).unwrap().into_inner().elem
 ```
 
@@ -129,41 +113,29 @@ this case, the `Rc` you tried to unwrap. Since we don't care about the case
 where it fails (if we wrote our program correctly, it *has* to succeed), we
 just call `unwrap` on it.
 
-`unwrap` is a function on Results and Options that basically says "get the
-the value out, or panic the program". Panics are A Whole Thing, so I'll simplify
-things by just saying a panics crash your program in a controlled manner,
-effectively making every function instantly return. Notably, it makes sure to
-call all the destructors that happen to be laying around on the way out. So your
-memory will get freed (meh? OS does that anyway, right?) and your Connections
-and Files will get properly saved/closed (yay!).
-
-This is a bit of a lie, there's cases where you can stop a panic. In particular
-at a thread boundary if you're into that whole "parallelism" thing. That whole
-freeing your memory thing is less lame there, *I guess*.
-
 Anyway, let's see what compiler error we get next (let's face it, there's going
 to be one).
 
 ```text
 > cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/fourth.rs:58:38: 58:46 error: no method named `unwrap` found for type `core::result::Result<core::cell::RefCell<fourth::Node<T>>, alloc::rc::Rc<core::cell::RefCell<fourth::Node<T>>>>` in the current scope
-src/fourth.rs:58             Rc::try_unwrap(old_head).unwrap().into_inner().elem
-                                                      ^~~~~~~~
-note: in expansion of closure expansion
-src/fourth.rs:48:30: 59:10 note: expansion site
-src/fourth.rs:58:38: 58:46 note: the method `unwrap` exists but the following trait bounds were not satisfied: `alloc::rc::Rc<core::cell::RefCell<fourth::Node<T>>> : core::fmt::Debug`
-error: aborting due to previous error
-Could not compile `lists`.
+error[E0599]: no method named `unwrap` found for type `std::result::Result<std::cell::RefCell<fourth::Node<T>>, std::rc::Rc<std::cell::RefCell<fourth::Node<T>>>>` in the current scope
+  --> src/fourth.rs:64:38
+   |
+64 |             Rc::try_unwrap(old_head).unwrap().into_inner().elem
+   |                                      ^^^^^^
+   |
+   = note: the method `unwrap` exists but the following trait bounds were not satisfied:
+           `std::rc::Rc<std::cell::RefCell<fourth::Node<T>>> : std::fmt::Debug`
 ```
 
-UGH. This is dumb. Rust is dumb. `unwrap` on Result requires that you can
-debug-print the error case. `RefCell<T>` only implements `Debug` if `T` does.
-`Node` doesn't implement Debug. We could just implement Debug for Node but I'm
-not in the mood. Let's just work around this by turning the `Result` into an
-`Option` with the `ok` method:
+UGH. `unwrap` on Result requires that you can debug-print the error case.
+`RefCell<T>` only implements `Debug` if `T` does. `Node` doesn't implement Debug.
 
-```rust
+Rather than doing that, let's just work around it by converting the Result to
+an Option with `ok`:
+
+```rust ,ignore
 Rc::try_unwrap(old_head).ok().unwrap().into_inner().elem
 ```
 
@@ -263,7 +235,7 @@ if it contains multiple elements. Maybe that's just me.
 As we saw, removing elements was a bit painful. So the easiest thing for us to
 do is just `pop` until we get None:
 
-```rust
+```rust ,ignore
 impl<T> Drop for List<T> {
     fn drop(&mut self) {
         while self.pop_front().is_some() {}

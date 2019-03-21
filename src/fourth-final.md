@@ -1,11 +1,12 @@
 # Final Code
 
-Alright, so that's implementing a 100% safe doubly linked list in Rust. It
-relies on some unstable standard library features, and had massive
-implementation leak issues particularly surrounding acquiring internal
-references.
+Alright, so that's implementing a 100% safe doubly linked list in Rust. It was
+a nightmare to implement, leaks implementation details, and doesn't support several
+fundamental operations.
 
-It also was riddled with tons of "unnecessary" runtime checks for
+But, it exists.
+
+Oh, I guess it's also riddled with tons of "unnecessary" runtime checks for
 correctness between `Rc` and `RefCell`. I put unnecessary in quotes because
 they're actually necessary to guarantee the whole *actually being safe* thing.
 We encountered a few places where those checks actually *were* necessary.
@@ -18,8 +19,8 @@ From here on out, we're going to be focusing on other side of this coin:
 getting back all the control by making our implementation *unsafe*.
 
 ```rust
-use std::cell::{Ref, RefMut, RefCell};
 use std::rc::Rc;
+use std::cell::{Ref, RefMut, RefCell};
 
 pub struct List<T> {
     head: Link<T>,
@@ -34,7 +35,6 @@ struct Node<T> {
     prev: Link<T>,
 }
 
-pub struct IntoIter<T>(List<T>);
 
 impl<T> Node<T> {
     fn new(elem: T) -> Rc<RefCell<Self>> {
@@ -81,21 +81,6 @@ impl<T> List<T> {
         }
     }
 
-    pub fn pop_front(&mut self) -> Option<T> {
-        self.head.take().map(|old_head| {
-            match old_head.borrow_mut().next.take() {
-                Some(new_head) => {
-                    new_head.borrow_mut().prev.take();
-                    self.head = Some(new_head);
-                }
-                None => {
-                    self.tail.take();
-                }
-            }
-            Rc::try_unwrap(old_head).ok().unwrap().into_inner().elem
-        })
-    }
-
     pub fn pop_back(&mut self) -> Option<T> {
         self.tail.take().map(|old_tail| {
             match old_tail.borrow_mut().prev.take() {
@@ -111,15 +96,24 @@ impl<T> List<T> {
         })
     }
 
-    pub fn peek_front(&self) -> Option<Ref<T>> {
-        self.head.as_ref().map(|node| {
-            Ref::map(node.borrow(), |node| &node.elem)
+    pub fn pop_front(&mut self) -> Option<T> {
+        self.head.take().map(|old_head| {
+            match old_head.borrow_mut().next.take() {
+                Some(new_head) => {
+                    new_head.borrow_mut().prev.take();
+                    self.head = Some(new_head);
+                }
+                None => {
+                    self.tail.take();
+                }
+            }
+            Rc::try_unwrap(old_head).ok().unwrap().into_inner().elem
         })
     }
 
-    pub fn peek_front_mut(&mut self) -> Option<RefMut<T>> {
+    pub fn peek_front(&self) -> Option<Ref<T>> {
         self.head.as_ref().map(|node| {
-            RefMut::map(node.borrow_mut(), |node| &mut node.elem)
+            Ref::map(node.borrow(), |node| &node.elem)
         })
     }
 
@@ -135,6 +129,12 @@ impl<T> List<T> {
         })
     }
 
+    pub fn peek_front_mut(&mut self) -> Option<RefMut<T>> {
+        self.head.as_ref().map(|node| {
+            RefMut::map(node.borrow_mut(), |node| &mut node.elem)
+        })
+    }
+
     pub fn into_iter(self) -> IntoIter<T> {
         IntoIter(self)
     }
@@ -146,8 +146,11 @@ impl<T> Drop for List<T> {
     }
 }
 
+pub struct IntoIter<T>(List<T>);
+
 impl<T> Iterator for IntoIter<T> {
     type Item = T;
+
     fn next(&mut self) -> Option<T> {
         self.0.pop_front()
     }

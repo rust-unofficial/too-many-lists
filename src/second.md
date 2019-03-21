@@ -1,6 +1,6 @@
 # An Ok Singly-Linked Stack
 
-In the previous chapter we wrote up basically a minimum viable singly-linked
+In the previous chapter we wrote up a minimum viable singly-linked
 stack. However there's a few design decisions that make it kind of sucky.
 Let's make it less sucky. In doing so, we will:
 

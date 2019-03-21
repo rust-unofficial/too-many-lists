@@ -3,7 +3,7 @@
 Collections are iterated in Rust using the *Iterator* trait. It's a bit more
 complicated than `Drop`:
 
-```rust
+```rust ,ignore
 pub trait Iterator {
     type Item;
     fn next(&mut self) -> Option<Self::Item>;
@@ -12,7 +12,7 @@ pub trait Iterator {
 
 The new kid on the block here is `type Item`. This is declaring that every
 implementation of Iterator has an *associated type* called Item. In this case,
-this is the type of this that it can spit out when you call `next`.
+this is the type that it can spit out when you call `next`.
 
 The reason Iterator yields `Option<Self::Item>` is because the interface
 coalesces the `has_next` and `get_next` concepts. When you have the next value,
@@ -21,7 +21,7 @@ you yield
 API generally more ergonomic and safe to use and implement, while avoiding
 redundant checks and logic between `has_next` and `get_next`. Nice!
 
-Sadly, Rust has nothing like a `yield` statement, so we're going to have to
+Sadly, Rust has nothing like a `yield` statement (yet), so we're going to have to
 implement the logic ourselves. Also, there's actually 3 different kinds of
 iterator each collection should endeavour to implement:
 
@@ -34,7 +34,7 @@ IntoIter using List's interface: just call `pop` over and over. As such, we'll
 just implement IntoIter as a newtype wrapper around List:
 
 
-```rust
+```rust ,ignore
 // Tuple structs are an alternative form of struct,
 // useful for trivial wrappers around other types.
 pub struct IntoIter<T>(List<T>);
@@ -56,7 +56,7 @@ impl<T> Iterator for IntoIter<T> {
 
 And let's write a test:
 
-```rust
+```rust ,ignore
 #[test]
 fn into_iter() {
     let mut list = List::new();

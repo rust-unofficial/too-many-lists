@@ -11,7 +11,7 @@ impl List {
 }
 ```
 
-First things first, we need to make a node to store our element in:
+First thing's first, we need to make a node to store our element in:
 
 ```rust,ignore
     pub fn push(&mut self, elem: i32) {
@@ -24,7 +24,7 @@ First things first, we need to make a node to store our element in:
 
 What goes `next`? Well, the entire old list! Can we... just do that?
 
-```rust
+```rust,ignore
 impl List {
     pub fn push(&mut self, elem: i32) {
         let new_node = Node {
@@ -37,12 +37,11 @@ impl List {
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/lists)
-src/first.rs:19:10: 19:14 error: cannot move out of borrowed content
-src/first.rs:19           next: self.head,
-                                ^~~~
-error: aborting due to previous error
-Could not compile `lists`.
+error[E0507]: cannot move out of borrowed content
+  --> src/first.rs:19:19
+   |
+19 |             next: self.head,
+   |                   ^^^^^^^^^ cannot move out of borrowed content
 ```
 
 Nooooope. Rust is telling us the right thing, but it's certainly not obvious
@@ -60,7 +59,7 @@ and Rust is very polite (it would also be incredibly dangerous, but surely
 What if we put something back? Namely, the node that we're creating:
 
 
-```rust
+```rust,ignore
 pub fn push(&mut self, elem: i32) {
     let new_node = Box::new(Node {
         elem: elem,
@@ -73,16 +72,15 @@ pub fn push(&mut self, elem: i32) {
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/lists)
-src/first.rs:19:10: 19:14 error: cannot move out of borrowed content
-src/first.rs:19           next: self.head,
-                                ^~~~
-error: aborting due to previous error
-Could not compile `lists`.
+error[E0507]: cannot move out of borrowed content
+  --> src/first.rs:19:19
+   |
+19 |             next: self.head,
+   |                   ^^^^^^^^^ cannot move out of borrowed content
 ```
 
 No dice. In principle, this is something Rust could actually accept, but it
-won't (for various reasons -- the most serious being exception safety). We need
+won't (for various reasons -- the most serious being [exception safety][]). We need
 some way to get the head without Rust noticing that it's gone. For advice, we
 turn to infamous Rust Hacker Indiana Jones:
 
@@ -93,13 +91,13 @@ function lets us steal a value out of a borrow by *replacing* it with another
 value. Let's just pull in `std::mem` at the top of the file, so that `mem` is in
 local scope:
 
-```rust
+```rust,ignore
 use std::mem;
 ```
 
 and use it appropriately:
 
-```rust
+```rust,ignore
 pub fn push(&mut self, elem: i32) {
     let new_node = Box::new(Node {
         elem: elem,
@@ -117,3 +115,9 @@ thing to have to do. Sadly, we must (for now).
 But hey, that's `push` all done! Probably. We should probably test it, honestly.
 Right now the easiest way to do that is probably to write `pop`, and make sure
 that it produces the right results.
+
+
+
+
+
+[exception safety]: https://doc.rust-lang.org/nightly/nomicon/exception-safety.html

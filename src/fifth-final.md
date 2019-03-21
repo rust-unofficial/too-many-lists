@@ -22,21 +22,6 @@ struct Node<T> {
     next: Link<T>,
 }
 
-pub struct IntoIter<T>(List<T>);
-
-pub struct Iter<'a, T:'a> {
-    next: Option<&'a Node<T>>,
-}
-
-pub struct IterMut<'a, T: 'a> {
-    next: Option<&'a mut Node<T>>,
-}
-
-
-
-
-
-
 impl<T> List<T> {
     pub fn new() -> Self {
         List { head: None, tail: ptr::null_mut() }
@@ -50,11 +35,14 @@ impl<T> List<T> {
 
         let raw_tail: *mut _ = &mut *new_tail;
 
+        // .is_null checks for null, equivalent to checking for None
         if !self.tail.is_null() {
             unsafe {
+                // If the old tail existed, update it to point to the new tail
                 (*self.tail).next = Some(new_tail);
             }
         } else {
+            // Otherwise, update the head to point to it
             self.head = Some(new_tail);
         }
 
@@ -90,13 +78,23 @@ impl<T> List<T> {
         IntoIter(self)
     }
 
-    pub fn iter(&self) -> Iter<T> {
+    pub fn iter(&self) -> Iter<'_, T> {
         Iter { next: self.head.as_ref().map(|node| &**node) }
     }
 
-    pub fn iter_mut(&mut self) -> IterMut<T> {
+    pub fn iter_mut(&mut self) -> IterMut<'_, T> {
         IterMut { next: self.head.as_mut().map(|node| &mut **node) }
     }
+}
+
+pub struct IntoIter<T>(List<T>);
+
+pub struct Iter<'a, T> {
+    next: Option<&'a Node<T>>,
+}
+
+pub struct IterMut<'a, T> {
+    next: Option<&'a mut Node<T>>,
 }
 
 impl<T> Drop for List<T> {
@@ -136,8 +134,6 @@ impl<'a, T> Iterator for IterMut<'a, T> {
         })
     }
 }
-
-
 
 #[cfg(test)]
 mod test {

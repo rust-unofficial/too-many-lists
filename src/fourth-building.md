@@ -73,14 +73,17 @@ pub fn push_front(&mut self, elem: T) {
 ```text
 cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/fourth.rs:37:17: 37:30 error: attempted access of field `prev` on type `alloc::rc::Rc<core::cell::RefCell<fourth::Node<T>>>`, but no field with that name was found
-src/fourth.rs:37                 old_head.prev = Some(new_head.clone());
-                                 ^~~~~~~~~~~~~
-src/fourth.rs:38:17: 38:30 error: attempted access of field `next` on type `alloc::rc::Rc<core::cell::RefCell<fourth::Node<T>>>`, but no field with that name was found
-src/fourth.rs:38                 new_head.next = Some(old_head);
-                                 ^~~~~~~~~~~~~
-error: aborting due to 2 previous errors
-Could not compile `lists`.
+error[E0609]: no field `prev` on type `std::rc::Rc<std::cell::RefCell<fourth::Node<T>>>`
+  --> src/fourth.rs:39:26
+   |
+39 |                 old_head.prev = Some(new_head.clone()); // +1 new_head
+   |                          ^^^^ unknown field
+
+error[E0609]: no field `next` on type `std::rc::Rc<std::cell::RefCell<fourth::Node<T>>>`
+  --> src/fourth.rs:40:26
+   |
+40 |                 new_head.next = Some(old_head);         // +1 old_head
+   |                          ^^^^ unknown field
 ```
 
 Alright. Compiler error. Good start. Good start.
@@ -192,9 +195,13 @@ pub fn push_front(&mut self, elem: T) {
 ```text
 > cargo build
    Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
-src/fourth.rs:12:5: 12:12 warning: struct field is never used: `elem`, #[warn(dead_code)] on by default
-src/fourth.rs:12     elem: T,
-                     ^~~~~~~
+warning: field is never used: `elem`
+  --> src/fourth.rs:12:5
+   |
+12 |     elem: T,
+   |     ^^^^^^^
+   |
+   = note: #[warn(dead_code)] on by default
 ```
 
 Hey, it built! Docs win again.

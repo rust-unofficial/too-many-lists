@@ -5,6 +5,8 @@ Alright, that's it for the second list; here's the final code!
 ```rust
 # fn main() {}
 
+use std::mem;
+
 pub struct List<T> {
     head: Link<T>,
 }
@@ -15,18 +17,6 @@ struct Node<T> {
     elem: T,
     next: Link<T>,
 }
-
-pub struct IntoIter<T>(List<T>);
-
-pub struct Iter<'a, T:'a> {
-    next: Option<&'a Node<T>>,
-}
-
-pub struct IterMut<'a, T: 'a> {
-    next: Option<&'a mut Node<T>>,
-}
-
-
 
 impl<T> List<T> {
     pub fn new() -> Self {
@@ -44,7 +34,6 @@ impl<T> List<T> {
 
     pub fn pop(&mut self) -> Option<T> {
         self.head.take().map(|node| {
-            let node = *node;
             self.head = node.next;
             node.elem
         })
@@ -66,40 +55,50 @@ impl<T> List<T> {
         IntoIter(self)
     }
 
-    pub fn iter(&self) -> Iter<T> {
+    pub fn iter(&self) -> Iter<'_, T> {
         Iter { next: self.head.as_ref().map(|node| &**node) }
     }
 
-    pub fn iter_mut(&mut self) -> IterMut<T> {
+    pub fn iter_mut(&mut self) -> IterMut<'_, T> {
         IterMut { next: self.head.as_mut().map(|node| &mut **node) }
     }
 }
 
 impl<T> Drop for List<T> {
     fn drop(&mut self) {
-        let mut cur_link = self.head.take();
+        let mut cur_link = mem::replace(&mut self.head, None);
         while let Some(mut boxed_node) = cur_link {
             cur_link = boxed_node.next.take();
         }
     }
 }
 
+pub struct IntoIter<T>(List<T>);
+
 impl<T> Iterator for IntoIter<T> {
     type Item = T;
     fn next(&mut self) -> Option<Self::Item> {
+        // access fields of a tuple struct numerically
         self.0.pop()
     }
 }
 
+pub struct Iter<'a, T> {
+    next: Option<&'a Node<T>>,
+}
+
 impl<'a, T> Iterator for Iter<'a, T> {
     type Item = &'a T;
-
     fn next(&mut self) -> Option<Self::Item> {
         self.next.map(|node| {
-            self.next = node.next.as_ref().map(|node| &**node);
+            self.next = node.next.as_ref().map::<&Node<T>, _>(|node| &node);
             &node.elem
         })
     }
+}
+
+pub struct IterMut<'a, T> {
+    next: Option<&'a mut Node<T>>,
 }
 
 impl<'a, T> Iterator for IterMut<'a, T> {
@@ -112,7 +111,6 @@ impl<'a, T> Iterator for IterMut<'a, T> {
         })
     }
 }
-
 
 #[cfg(test)]
 mod test {
@@ -156,6 +154,13 @@ mod test {
 
         assert_eq!(list.peek(), Some(&3));
         assert_eq!(list.peek_mut(), Some(&mut 3));
+
+        list.peek_mut().map(|value| {
+            *value = 42
+        });
+
+        assert_eq!(list.peek(), Some(&42));
+        assert_eq!(list.pop(), Some(42));
     }
 
     #[test]
@@ -167,6 +172,7 @@ mod test {
         assert_eq!(iter.next(), Some(3));
         assert_eq!(iter.next(), Some(2));
         assert_eq!(iter.next(), Some(1));
+        assert_eq!(iter.next(), None);
     }
 
     #[test]
