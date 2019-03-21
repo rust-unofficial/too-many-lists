@@ -39,7 +39,7 @@ pub fn pop(&mut self) -> Option<i32> {
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/lists)
+
 error[E0308]: mismatched types
   --> src/first.rs:27:30
    |
@@ -84,7 +84,7 @@ explicitly return early with `return` like any other C-like language.
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/lists)
+
 error[E0507]: cannot move out of borrowed content
   --> src/first.rs:28:15
    |
@@ -131,7 +131,7 @@ pub fn pop(&mut self) -> Option<i32> {
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/lists)
+
 warning: unused variable: `node`
   --> src/first.rs:32:24
    |

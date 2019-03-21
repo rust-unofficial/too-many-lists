@@ -35,7 +35,7 @@ pub enum List {
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/lists)
+
 error[E0072]: recursive type `first::List` has infinite size
  --> src/first.rs:4:1
   |
@@ -118,7 +118,8 @@ pub enum List {
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/lists)
+
+   Finished dev [unoptimized + debuginfo] target(s) in 0.22s
 ```
 
 Hey it built!
@@ -293,6 +294,7 @@ documentation) was problematic.
 
 ```text
 > cargo build
+
 warning: private type `first::Node` in public interface (error E0446)
  --> src/first.rs:8:10
   |
@@ -335,6 +337,7 @@ field. Yay zero-cost abstractions!
 
 ```text
 > cargo build
+
 warning: field is never used: `head`
  --> src/first.rs:2:5
   |
