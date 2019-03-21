@@ -143,7 +143,7 @@ has really blown up here. Our code is at very least not *obviously wrong*.
 
 ```text
 > cargo test
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
      Running target/debug/lists-5c71138492ad4b4a
 
 running 10 tests
@@ -160,11 +160,6 @@ test third::test::basics ... ok
 
 test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured
 
-   Doc-tests lists
-
-running 0 tests
-
-test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 ```
 
 Nice. Copy-pasting is the best kind of programming.

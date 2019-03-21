@@ -16,7 +16,7 @@ But we're not using Option for the `tail` anymore:
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0308]: mismatched types
   --> src/fifth.rs:15:34
    |
@@ -49,7 +49,7 @@ impl<T> List<T> {
 
 ```text
 cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 warning: field is never used: `head`
  --> src/fifth.rs:4:5
   |
@@ -120,7 +120,7 @@ pub fn push(&mut self, elem: T) {
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0609]: no field `next` on type `*mut fifth::Node<T>`
   --> src/fifth.rs:31:23
    |
@@ -142,7 +142,7 @@ operation. So let's do that:
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0609]: no field `next` on type `*mut fifth::Node<T>`
   --> src/fifth.rs:31:23
    |
@@ -160,7 +160,7 @@ Uuuugh operator precedence.
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0133]: dereference of raw pointer is unsafe and requires unsafe function or block
   --> src/fifth.rs:31:13
    |
@@ -327,7 +327,7 @@ corruption case in `pop` doesn't occur.
 
 ```text
 cargo test
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
      Running target/debug/lists-5c71138492ad4b4a
 
 running 12 tests

@@ -72,7 +72,7 @@ pub fn push_front(&mut self, elem: T) {
 
 ```text
 cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0609]: no field `prev` on type `std::rc::Rc<std::cell::RefCell<fourth::Node<T>>>`
   --> src/fourth.rs:39:26
    |
@@ -194,7 +194,7 @@ pub fn push_front(&mut self, elem: T) {
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 warning: field is never used: `elem`
   --> src/fourth.rs:12:5
    |

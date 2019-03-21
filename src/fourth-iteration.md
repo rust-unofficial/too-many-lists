@@ -74,7 +74,7 @@ fn into_iter() {
 
 ```text
 cargo test
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
      Running target/debug/lists-5c71138492ad4b4a
 
 running 11 tests
@@ -92,11 +92,6 @@ test second::test::peek ... ok
 
 test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured
 
-   Doc-tests lists
-
-running 0 tests
-
-test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 ```
 
 Nice.
@@ -119,7 +114,7 @@ impl<T> List<T> {
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 ```
 
 So far so good. Implementing `next` is going to be a bit hairy, but I think
@@ -140,7 +135,7 @@ impl<'a, T> Iterator for Iter<'a, T> {
 
 ```text
 cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0521]: borrowed data escapes outside of closure
    --> src/fourth.rs:155:13
     |

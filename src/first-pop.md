@@ -231,7 +231,7 @@ pub fn pop(&mut self) -> Option<i32> {
 
 ```text
 cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
    Finished dev [unoptimized + debuginfo] target(s) in 0.22s
 ```
 
@@ -267,7 +267,7 @@ evaluate. Just a nice shorthand for simple cases.
 
 ```text
 cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
    Finished dev [unoptimized + debuginfo] target(s) in 0.22s
 ```
 

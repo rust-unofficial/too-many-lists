@@ -15,7 +15,7 @@ pub fn peek(&self) -> Option<&T> {
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0515]: cannot return reference to local data `node.elem`
   --> src/second.rs:37:13
    |
@@ -60,7 +60,7 @@ pub fn peek(&self) -> Option<&T> {
 
 ```text
 cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
     Finished dev [unoptimized + debuginfo] target(s) in 0.32s
 ```
 
@@ -78,7 +78,7 @@ pub fn peek_mut(&mut self) -> Option<&mut T> {
 
 ```text
 lists::cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 ```
 
 EZ
@@ -100,7 +100,7 @@ fn peek() {
 
 ```text
 cargo test
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
      Running target/debug/lists-5c71138492ad4b4a
 
 running 3 tests
@@ -110,11 +110,6 @@ test second::test::peek ... ok
 
 test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured
 
-   Doc-tests lists
-
-running 0 tests
-
-test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 ```
 
 That's nice, but we didn't really test to see if we could mutate that `peek_mut` return value, did we?  If a reference is mutable but nobody mutates it, have we really tested the mutability?  Let's try using `map` on this `Option<&mut T>` to put a profound value in:
@@ -140,7 +135,7 @@ fn peek() {
 
 ```text
 > cargo test
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0384]: cannot assign twice to immutable variable `value`
    --> src/second.rs:100:13
     |
@@ -177,7 +172,7 @@ The compiler is complaining that `value` is immutable, but we pretty clearly wro
 
 ```text
 cargo test
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
      Running target/debug/lists-5c71138492ad4b4a
 
 running 3 tests
@@ -187,11 +182,6 @@ test second::test::peek ... ok
 
 test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured
 
-   Doc-tests lists
-
-running 0 tests
-
-test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 ```
 
 Much better!

@@ -33,7 +33,7 @@ HAH.
 
 ```text
 cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0515]: cannot return value referencing temporary value
   --> src/fourth.rs:66:13
    |
@@ -105,7 +105,7 @@ pub fn peek_front(&self) -> Option<Ref<T>> {
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0412]: cannot find type `Ref` in this scope
   --> src/fourth.rs:63:40
    |
@@ -128,7 +128,7 @@ use std::cell::{Ref, RefCell};
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0308]: mismatched types
   --> src/fourth.rs:64:9
    |
@@ -198,7 +198,7 @@ fn peek() {
 
 ```
 > cargo test
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
      Running target/debug/lists-5c71138492ad4b4a
 
 running 10 tests
@@ -215,11 +215,6 @@ test third::test::iter ... ok
 
 test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured
 
-   Doc-tests lists
-
-running 0 tests
-
-test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 ```
 
 Great!

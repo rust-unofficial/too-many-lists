@@ -206,7 +206,7 @@ mod test {
 
 ```text
 > cargo test
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
      Running target/debug/lists-5c71138492ad4b4a
 
 running 16 tests

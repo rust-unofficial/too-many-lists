@@ -83,7 +83,7 @@ struct Node<T> {
 
 ```text
 cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0412]: cannot find type `Rc` in this scope
  --> src/third.rs:5:23
   |
@@ -105,7 +105,7 @@ use std::rc::Rc;
 
 ```text
 cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 warning: field is never used: `head`
  --> src/third.rs:4:5
   |

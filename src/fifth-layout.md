@@ -116,7 +116,7 @@ plenty of *other* error messages!
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0382]: use of moved value: `new_tail`
   --> src/fifth.rs:38:38
    |
@@ -192,7 +192,7 @@ wherever we stuff the actual Box.
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0106]: missing lifetime specifier
  --> src/fifth.rs:3:18
   |
@@ -250,7 +250,7 @@ impl<'a, T> List<'a, T> {
 
 ```text
 cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0495]: cannot infer an appropriate lifetime for autoref due to conflicting requirements
   --> src/fifth.rs:35:27
    |
@@ -299,7 +299,7 @@ what if we tell it `self` *does* last that long..?
 
 ```text
 cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 warning: field is never used: `elem`
  --> src/fifth.rs:9:5
   |
@@ -368,7 +368,7 @@ mod test {
 
 ```text
 cargo test
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0499]: cannot borrow `list` as mutable more than once at a time
   --> src/fifth.rs:68:9
    |

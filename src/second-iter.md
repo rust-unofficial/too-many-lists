@@ -34,7 +34,7 @@ impl<T> Iterator for Iter<T> {
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0106]: missing lifetime specifier
   --> src/second.rs:72:18
    |
@@ -85,7 +85,7 @@ pub struct Iter<'a, T> {
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0106]: missing lifetime specifier
   --> src/second.rs:83:22
    |
@@ -128,7 +128,7 @@ impl<'a, T> Iterator for Iter<'a, T> {
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error: expected `:`, found `node`
   --> src/second.rs:77:47
    |
@@ -289,7 +289,7 @@ Alright, I think we got it this time y'all.
 
 ```text
 cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0308]: mismatched types
   --> src/second.rs:77:22
    |
@@ -443,7 +443,7 @@ impl<'a, T> Iterator for Iter<'a, T> {
 
 ```text
 lists::cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 ```
 
 🎉 🎉 🎉
@@ -497,7 +497,7 @@ fn iter() {
 
 ```text
 > cargo test
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
      Running target/debug/lists-5c71138492ad4b4a
 
 running 5 tests
@@ -509,11 +509,6 @@ test second::test::peek ... ok
 
 test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured
 
-   Doc-tests lists
-
-running 0 tests
-
-test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 ```
 
 Heck yeah.

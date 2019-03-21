@@ -27,7 +27,7 @@ pub fn pop_front(&mut self) -> Option<T> {
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0609]: no field `elem` on type `std::rc::Rc<std::cell::RefCell<fourth::Node<T>>>`
   --> src/fourth.rs:64:22
    |
@@ -56,7 +56,7 @@ pub fn pop_front(&mut self) -> Option<T> {
 
 ```text
 cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0507]: cannot move out of borrowed content
   --> src/fourth.rs:64:13
    |
@@ -86,7 +86,7 @@ old_head.into_inner().elem
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0507]: cannot move out of an `Rc`
   --> src/fourth.rs:64:13
    |
@@ -118,7 +118,7 @@ to be one).
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0599]: no method named `unwrap` found for type `std::result::Result<std::cell::RefCell<fourth::Node<T>>, std::rc::Rc<std::cell::RefCell<fourth::Node<T>>>>` in the current scope
   --> src/fourth.rs:64:38
    |
@@ -143,7 +143,7 @@ PLEASE.
 
 ```text
 cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 ```
 
 YES.
@@ -195,7 +195,7 @@ mod test {
 
 ```text
 cargo test
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
      Running target/debug/lists-5c71138492ad4b4a
 
 running 9 tests
@@ -211,11 +211,6 @@ test second::test::into_iter ... ok
 
 test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured
 
-   Doc-tests lists
-
-running 0 tests
-
-test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 ```
 
 *Nailed it*.
@@ -245,7 +240,7 @@ impl<T> Drop for List<T> {
 
 ```text
 cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 ```
 
 (We actually could have done this with our mutable stacks, but shortcuts are for

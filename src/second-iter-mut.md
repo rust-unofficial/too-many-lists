@@ -144,7 +144,7 @@ fn next(&mut self) -> Option<Self::Item> {
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 ```
 
 Uh... wow. Holy shit! IterMut Just Works!
@@ -167,7 +167,7 @@ fn iter_mut() {
 
 ```text
 > cargo test
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
      Running target/debug/lists-5c71138492ad4b4a
 
 running 6 tests
@@ -180,11 +180,6 @@ test second::test::peek ... ok
 
 test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured
 
-   Doc-tests lists
-
-running 0 tests
-
-test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 ```
 
 Yep. It works.

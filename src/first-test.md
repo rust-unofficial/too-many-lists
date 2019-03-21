@@ -35,12 +35,7 @@ running 1 test
 test first::test::basics ... ok
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
-
-   Doc-tests lists
-
-running 0 tests
-
-test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+; 0 filtered out
 ```
 
 Yay our do-nothing test passed! Let's make it not-do-nothing. We'll do that
@@ -83,7 +78,7 @@ mod test {
 
 ```text
 > cargo test
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0433]: failed to resolve: use of undeclared type or module `List`
   --> src/first.rs:43:24
    |
@@ -105,7 +100,7 @@ mod test {
 
 ```text
 > cargo test
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 warning: unused import: `super::List`
   --> src/first.rs:45:9
    |
@@ -121,12 +116,7 @@ running 1 test
 test first::test::basics ... ok
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
-
-   Doc-tests lists
-
-running 0 tests
-
-test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+; 0 filtered out
 ```
 
 Yay!

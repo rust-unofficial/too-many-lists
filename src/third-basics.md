@@ -44,7 +44,7 @@ pub fn append(&self, elem: T) -> List<T> {
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 warning: field is never used: `elem`
   --> src/third.rs:10:5
    |
@@ -76,7 +76,7 @@ pub fn tail(&self) -> List<T> {
 
 ```text
 cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 error[E0308]: mismatched types
   --> src/third.rs:27:22
    |
@@ -99,7 +99,7 @@ pub fn tail(&self) -> List<T> {
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 ```
 
 Great.
@@ -115,7 +115,7 @@ pub fn head(&self) -> Option<&T> {
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
 ```
 
 Nice.
@@ -155,7 +155,7 @@ mod test {
 
 ```text
 > cargo test
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
      Running target/debug/lists-5c71138492ad4b4a
 
 running 5 tests
@@ -167,11 +167,6 @@ test third::test::basics ... ok
 
 test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured
 
-   Doc-tests lists
-
-running 0 tests
-
-test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 ```
 
 Perfect!
@@ -215,7 +210,7 @@ fn iter() {
 
 ```text
 cargo test
-   Compiling lists v0.1.0 (file:///Users/ABeingessner/dev/too-many-lists/lists)
+
      Running target/debug/lists-5c71138492ad4b4a
 
 running 7 tests
@@ -229,11 +224,6 @@ test third::test::iter ... ok
 
 test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured
 
-   Doc-tests lists
-
-running 0 tests
-
-test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 ```
 
 Who ever said dynamic typing was easier?
