@@ -34,14 +34,11 @@ impl<T> List<T> {
 
         let raw_tail: *mut _ = &mut *new_tail;
 
-        // .is_null checks for null, equivalent to checking for None
         if !self.tail.is_null() {
             unsafe {
-                // If the old tail existed, update it to point to the new tail
                 (*self.tail).next = Some(new_tail);
             }
         } else {
-            // Otherwise, update the head to point to it
             self.head = Some(new_tail);
         }
 

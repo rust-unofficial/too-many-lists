@@ -34,7 +34,7 @@ impl<T> List<T> {
     }
 
     pub fn head(&self) -> Option<&T> {
-        self.head.as_ref().map(|node| &node.elem )
+        self.head.as_ref().map(|node| &node.elem)
     }
 
     pub fn iter(&self) -> Iter<'_, T> {

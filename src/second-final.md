@@ -3,8 +3,6 @@
 Alright, that's it for the second list; here's the final code!
 
 ```rust
-use std::mem;
-
 pub struct List<T> {
     head: Link<T>,
 }
@@ -64,7 +62,7 @@ impl<T> List<T> {
 
 impl<T> Drop for List<T> {
     fn drop(&mut self) {
-        let mut cur_link = mem::replace(&mut self.head, None);
+        let mut cur_link = self.head.take();
         while let Some(mut boxed_node) = cur_link {
             cur_link = boxed_node.next.take();
         }
@@ -89,7 +87,7 @@ impl<'a, T> Iterator for Iter<'a, T> {
     type Item = &'a T;
     fn next(&mut self) -> Option<Self::Item> {
         self.next.map(|node| {
-            self.next = node.next.as_ref().map::<&Node<T>, _>(|node| &node);
+            self.next = node.next.as_ref().map(|node| &**node);
             &node.elem
         })
     }
