@@ -3,8 +3,6 @@
 Alright, that's it for the second list; here's the final code!
 
 ```rust
-# fn main() {}
-
 use std::mem;
 
 pub struct List<T> {

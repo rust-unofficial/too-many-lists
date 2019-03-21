@@ -18,7 +18,7 @@ And in the process we'll learn about
 
 Let's add a new file called `second.rs`:
 
-```
+```rust ,ignore
 // in lib.rs
 
 pub mod first;

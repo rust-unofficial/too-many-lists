@@ -10,7 +10,7 @@ hard, and I always make a mistake somewhere.
 
 Let's add a new file called `fourth.rs`:
 
-```
+```rust ,ignore
 // in lib.rs
 
 pub mod first;

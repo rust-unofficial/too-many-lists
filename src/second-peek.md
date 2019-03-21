@@ -4,7 +4,7 @@ One thing we didn't even bother to implement last time was peeking. Let's go
 ahead and do that. All we need to do is return a reference to the element in
 the head of the list, if it exists. Sounds easy, let's try:
 
-```rust,ignore
+```rust ,ignore
 pub fn peek(&self) -> Option<&T> {
     self.head.map(|node| {
         &node.elem
@@ -38,7 +38,7 @@ Previously this was fine because we had just `take`n it out, but now we actually
 want to leave it where it was. The *correct* way to handle this is with the
 `as_ref` method on Option, which has the following definition:
 
-```rust,ignore
+```rust ,ignore
 impl<T> Option<T> {
     pub fn as_ref(&self) -> Option<&T>;
 }
@@ -50,7 +50,7 @@ need to do an extra dereference to cut through the extra indirection, but
 thankfully the `.` operator handles that for us.
 
 
-```rust,ignore
+```rust ,ignore
 pub fn peek(&self) -> Option<&T> {
     self.head.as_ref().map(|node| {
         &node.elem
@@ -68,7 +68,7 @@ Nailed it.
 
 We can also make a *mutable* version of this method using `as_mut`:
 
-```rust,ignore
+```rust ,ignore
 pub fn peek_mut(&mut self) -> Option<&mut T> {
     self.head.as_mut().map(|node| {
         &mut node.elem
@@ -85,7 +85,7 @@ EZ
 
 Don't forget to test it:
 
-```rust,ignore
+```rust ,ignore
 #[test]
 fn peek() {
     let mut list = List::new();
@@ -119,7 +119,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 
 That's nice, but we didn't really test to see if we could mutate that `peek_mut` return value, did we?  If a reference is mutable but nobody mutates it, have we really tested the mutability?  Let's try using `map` on this `Option<&mut T>` to put a profound value in:
 
-```rust,ignore
+```rust ,ignore
 #[test]
 fn peek() {
     let mut list = List::new();
@@ -155,7 +155,7 @@ error[E0384]: cannot assign twice to immutable variable `value`
 
 The compiler is complaining that `value` is immutable, but we pretty clearly wrote `&mut value`; what gives? It turns out that writing the argument of the closure that way doesn't specify that `value` is a mutable reference. Instead, it creates a pattern that will be matched against the argument to the closure; `|&mut value|` means "the argument is a mutable reference, but just copy the value it points to into `value`, please."  If we just use `|value|`, the type of `value` will be `&mut i32` and we can actually mutate the head:
 
-```rust,ignore
+```rust ,ignore
     #[test]
     fn peek() {
         let mut list = List::new();

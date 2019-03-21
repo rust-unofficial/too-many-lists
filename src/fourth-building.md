@@ -5,7 +5,7 @@ with this new system. `new` is still trivial, just None out all the fields.
 Also because it's getting a bit unwieldy, let's break out a Node constructor
 too:
 
-```rust
+```rust ,ignore
 impl<T> Node<T> {
     fn new(elem: T) -> Rc<RefCell<Self>> {
         Rc::new(RefCell::new(Node {
@@ -48,7 +48,7 @@ successor, while the nodes on the ends are pointed to by the list itself.
 
 Let's take a crack at it:
 
-```rust
+```rust ,ignore
 pub fn push_front(&mut self, elem: T) {
     // new node needs +2 links, everything else should be +0
     let new_head = Node::new(elem);
@@ -145,7 +145,7 @@ We should probably check the docs.
 > It's very common then to put a `RefCell<T>` inside shared pointer types to reintroduce
 > mutability:
 >
-> ```rust
+> ```rust ,ignore
 > use std::collections::HashMap;
 > use std::cell::RefCell;
 > use std::rc::Rc;
@@ -167,14 +167,14 @@ Hey, Rust's docs continue to be incredibly awesome.
 
 The meaty bit we care about is this line:
 
-```rust
+```rust ,ignore
 shared_map.borrow_mut().insert("africa", 92388);
 ```
 
 In particular, the `borrow_mut` thing. Seems we need to explicitly borrow a
 RefCell. The `.` operator's not going to do it for us. Weird. Let's try:
 
-```rust
+```rust ,ignore
 pub fn push_front(&mut self, elem: T) {
     let new_head = Node::new(elem);
     match self.head.take() {

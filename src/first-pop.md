@@ -5,7 +5,7 @@ want to return something. But `pop` also has to deal with a tricky corner
 case: what if the list is empty? To represent this case, we use the trusty
 `Option` type:
 
-```rust,ignore
+```rust ,ignore
 pub fn pop(&mut self) -> Option<i32> {
     // TODO
 }
@@ -24,7 +24,7 @@ T. That means that you can make an Option for *any* type!
 So uh, we have this `Link` thing, how do we figure out if it's Empty or has
 More? Pattern matching with `match`!
 
-```rust
+```rust ,ignore
 pub fn pop(&mut self) -> Option<i32> {
     match self.head {
         Link::Empty => {
@@ -58,7 +58,7 @@ return `None`, but in this case it's probably a better idea to return
 `unimplemented!()` is a macro (`!` indicates a macro) that panics the program
 when we get to it (\~crashes it in a controlled manner).
 
-```rust
+```rust ,ignore
 pub fn pop(&mut self) -> Option<i32> {
     match self.head {
         Link::Empty => {
@@ -115,7 +115,7 @@ help: consider borrowing here: `&self.head`
 
 Rust says we should add a reference to our `match` to fix that. 🤷‍♀️ Let's try it:
 
-```rust,ignore
+```rust ,ignore
 pub fn pop(&mut self) -> Option<i32> {
     match &self.head {
         Link::Empty => {
@@ -160,7 +160,7 @@ Option, so let's make a variable for that. In the Empty case we need to return
 None. In the More case we need to return `Some(i32)`, and change the head of
 the list. So, let's try to do basically that?
 
-```rust
+```rust ,ignore
 pub fn pop(&mut self) -> Option<i32> {
     let result;
     match self.head {
@@ -213,7 +213,7 @@ the Empty dance again!
 Let's try that:
 
 
-```rust,ignore
+```rust ,ignore
 pub fn pop(&mut self) -> Option<i32> {
     let result;
     match mem::replace(&mut self.head, Link::Empty) {
@@ -249,7 +249,7 @@ actually the value that functions which don't declare a return value -- like
 
 So instead, we can write `pop` as:
 
-```rust,ignore
+```rust ,ignore
 pub fn pop(&mut self) -> Option<i32> {
     match mem::replace(&mut self.head, Link::Empty) {
         Link::Empty => None,

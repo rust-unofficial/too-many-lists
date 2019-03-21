@@ -2,7 +2,7 @@
 
 To associate actual code with a type, we use `impl` blocks:
 
-```rust,ignore
+```rust ,ignore
 impl List {
     // TODO, make code happen
 }
@@ -11,7 +11,7 @@ impl List {
 Now we just need to figure out how to actually write code. In Rust we declare
 a function like so:
 
-```rust,ignore
+```rust ,ignore
 fn foo(arg1: Type1, arg2: Type2) -> ReturnType {
     // body
 }
@@ -22,7 +22,7 @@ implementation details, we need to provide that as a function. The usual way
 to do that in Rust is to provide a static method, which is just a
 normal function inside an `impl`:
 
-```rust,ignore
+```rust ,ignore
 impl List {
     pub fn new() -> Self {
         List { head: Link::Empty }

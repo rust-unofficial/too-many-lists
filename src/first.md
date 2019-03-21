@@ -8,7 +8,7 @@ We'll put our first list in `src/first.rs`. We need to tell Rust that `first.rs`
 something that our lib uses. All that requires is that we put this at the top of
 `src/lib.rs` (which Cargo made for us):
 
-```rust
+```rust ,ignore
 // in lib.rs
 pub mod first;
 ```

@@ -5,7 +5,7 @@ with it. We do that with "normal" (non-static) methods. Methods are a special
 case of function in Rust because of  the `self` argument, which doesn't have
 a declared type:
 
-```rust,ignore
+```rust ,ignore
 fn foo(self, arg2: Type2) -> ReturnType {
     // body
 }

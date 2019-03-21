@@ -136,7 +136,7 @@ Rust is kinda a jerk when you use raw pointers. To access the contents of a
 raw pointer, it insists that we manually deref them, because it's such an unsafe
 operation. So let's do that:
 
-```rust
+```rust ,ignore
 *self.tail.next = Some(new_tail);
 ```
 
@@ -154,7 +154,7 @@ error[E0609]: no field `next` on type `*mut fifth::Node<T>`
 
 Uuuugh operator precedence.
 
-```rust
+```rust ,ignore
 (*self.tail).next = Some(new_tail);
 ```
 
@@ -181,7 +181,7 @@ we can write an `unsafe` block inside our function, to delimit the FFI boundary.
 This declares the overall function to be safe. Let's do that one:
 
 
-```rust
+```rust ,ignore
 pub fn push(&mut self, elem: T) {
     let mut new_tail = Box::new(Node {
         elem: elem,

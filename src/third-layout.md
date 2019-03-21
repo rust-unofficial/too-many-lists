@@ -51,7 +51,7 @@ we can't ever really get data out of one of our lists, nor can we mutate them.
 
 So what's our layout gonna look like? Well, previously we had:
 
-```rust
+```rust ,ignore
 pub struct List<T> {
     head: Link<T>,
 }
@@ -66,7 +66,7 @@ struct Node<T> {
 
 Can we just change Box to Rc?
 
-```rust
+```rust ,ignore
 // in third.rs
 
 pub struct List<T> {
@@ -99,7 +99,7 @@ Oh dang, sick burn. Unlike everything we used for our mutable lists, Rc is so
 lame that it's not even implicitly imported into every single Rust program.
 *What a loser*.
 
-```rust
+```rust ,ignore
 use std::rc::Rc;
 ```
 

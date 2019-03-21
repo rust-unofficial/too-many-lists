@@ -5,7 +5,7 @@ simple stuff again.
 
 For the constructor, we can again just copy-paste:
 
-```
+```rust ,ignore
 impl<T> List<T> {
     pub fn new() -> Self {
         List { head: None }
@@ -33,7 +33,7 @@ Clone implementation that does exactly the thing we want.
 
 Alright, let's give it a shot:
 
-```rust
+```rust ,ignore
 pub fn append(&self, elem: T) -> List<T> {
     List { head: Some(Rc::new(Node {
         elem: elem,
@@ -68,7 +68,7 @@ so far.
 whole list with the first element removed. All that is is cloning the *second*
 element in the list (if it exists). Let's try this:
 
-```rust
+```rust ,ignore
 pub fn tail(&self) -> List<T> {
     List { head: self.head.as_ref().map(|node| node.next.clone()) }
 }
@@ -91,7 +91,7 @@ Hrm, we messed up. `map` expects us to return a Y, but here we're returning an
 `Option<Y>`. Thankfully, this is another common Option pattern, and we can just
 use `and_then` to let us return an Option.
 
-```rust
+```rust ,ignore
 pub fn tail(&self) -> List<T> {
     List { head: self.head.as_ref().and_then(|node| node.next.clone()) }
 }
@@ -107,7 +107,7 @@ Great.
 Now that we have `tail`, we should probably provide `head`, which returns a
 reference to the first element. That's just `peek` from the mutable list:
 
-```rust
+```rust ,ignore
 pub fn head(&self) -> Option<&T> {
     self.head.as_ref().map(|node| &node.elem )
 }
@@ -123,7 +123,7 @@ Nice.
 That's enough functionality that we can test it:
 
 
-```rust
+```rust ,ignore
 #[cfg(test)]
 mod test {
     use super::List;
@@ -178,7 +178,7 @@ Perfect!
 
 Iter is also identical to how it was for our mutable list:
 
-```rust
+```rust ,ignore
 pub struct Iter<'a, T> {
     next: Option<&'a Node<T>>,
 }
@@ -201,7 +201,7 @@ impl<'a, T> Iterator for Iter<'a, T> {
 }
 ```
 
-```rust
+```rust ,ignore
 #[test]
 fn iter() {
     let list = List::new().append(1).append(2).append(3);

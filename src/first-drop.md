@@ -9,7 +9,7 @@ done with. A type has a destructor if it implements a *trait* called Drop.
 Traits are Rust's fancy term for interfaces. The Drop trait has the following
 interface:
 
-```rust,ignore
+```rust ,ignore
 pub trait Drop {
     fn drop(&mut self);
 }
@@ -43,7 +43,7 @@ incorrect! To see why, let's try to write what the compiler has to do, by
 manually implementing Drop for our List as the compiler would:
 
 
-```rust,ignore
+```rust ,ignore
 impl Drop for List {
     fn drop(&mut self) {
         // NOTE: you can't actually explicitly call `drop` in real Rust code;
@@ -82,7 +82,7 @@ way to drop in a tail-recursive manner! Instead we're going to have to manually
 write an iterative drop for `List` that hoists nodes out of their boxes.
 
 
-```rust
+```rust ,ignore
 impl Drop for List {
     fn drop(&mut self) {
         let mut cur_link = mem::replace(&mut self.head, Link::Empty);

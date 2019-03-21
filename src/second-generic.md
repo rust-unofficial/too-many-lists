@@ -7,7 +7,7 @@ over arbitrary elements.
 It turns out that's actually really easy. Let's make all of our types generic
 right now:
 
-```rust
+```rust ,ignore
 pub struct List<T> {
     head: Link<T>,
 }
@@ -51,7 +51,7 @@ implementations to work with *all* the T's. So, just like List, let's make our
 `impl`s pointy:
 
 
-```rust
+```rust ,ignore
 impl<T> List<T> {
     pub fn new() -> Self {
         List { head: None }
@@ -109,7 +109,7 @@ All of our code is now completely generic over arbitrary values of T. Dang,
 Rust is *easy*. I'd like to make a particular shout-out to `new` which didn't
 even change:
 
-```rust
+```rust ,ignore
 pub fn new() -> Self {
     List { head: None }
 }

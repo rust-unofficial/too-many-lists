@@ -7,7 +7,6 @@ all of the logic from the safe stack!
 We also notably *didn't* have to write any crazy Rc or RefCell stuff.
 
 ```rust
-#fn main() {}
 use std::ptr;
 
 pub struct List<T> {

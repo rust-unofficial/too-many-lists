@@ -13,7 +13,7 @@ will set us up for the next list which will *change the game*.
 
 Let's add a new file called `third.rs`:
 
-```
+```rust ,ignore
 // in lib.rs
 
 pub mod first;

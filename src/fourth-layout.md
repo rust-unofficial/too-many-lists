@@ -28,7 +28,7 @@ ends of the list.
 
 So we probably want something like:
 
-```rust
+```rust ,ignore
 use std::rc::Rc;
 use std::cell::RefCell;
 

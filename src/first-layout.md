@@ -21,7 +21,7 @@ this functional definition into Rust!
 For now we'll avoid generics to keep things simple. We'll only support
 storing signed 32-bit integers:
 
-```rust,ignore
+```rust ,ignore
 // in first.rs
 
 // pub says we want people outside this module to be able to use List
@@ -109,7 +109,7 @@ Dang, docs rule.
 
 Ok, let's do that:
 
-```rust
+```rust ,ignore
 pub enum List {
     Empty,
     Elem(i32, Box<List>),
@@ -154,7 +154,7 @@ in memory.
 
 In general, if we have an enum like:
 
-```rust,ignore
+```rust ,ignore
 enum Foo {
     D1(T1),
     D2(T2),
@@ -215,7 +215,7 @@ trashes this property.
 Alright, I'm reasonably convinced Layout 1 is bad. How do we rewrite our List?
 Well, we could do something like:
 
-```rust
+```rust ,ignore
 pub enum List {
     Empty,
     ElemThenEmpty(i32),
@@ -269,7 +269,7 @@ As before, a List is either Empty or has an element followed by another List.
 By representing the "has an element followed by another List" case by an
 entirely separate type, we can hoist the Box to be in a more optimal position:
 
-```rust
+```rust ,ignore
 struct Node {
     elem: i32,
     next: List,
@@ -314,7 +314,7 @@ we favour keeping implementation details private. Let's make `List` a struct, so
 that we can hide the implementation details:
 
 
-```rust
+```rust ,ignore
 pub struct List {
     head: Link,
 }

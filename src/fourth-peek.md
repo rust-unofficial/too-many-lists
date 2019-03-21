@@ -57,7 +57,7 @@ become a nightmare.
 So what's going on? To understand that, we need to go back to the definition of
 `borrow`:
 
-```rust
+```rust ,ignore
 fn borrow<'a>(&'a self) -> Ref<'a, T>
 fn borrow_mut<'a>(&'a self) -> RefMut<'a, T>
 ```
@@ -95,7 +95,7 @@ totally encapsulate the use of RefCells like that.
 But... what if we just give up on totally hiding our implementation details?
 What if we returns Refs?
 
-```rust
+```rust ,ignore
 pub fn peek_front(&self) -> Option<Ref<T>> {
     self.head.as_ref().map(|node| {
         node.borrow()
@@ -122,7 +122,7 @@ help: possible candidates are found in other modules, you can import them into s
 Blurp. Gotta import some stuff.
 
 
-```rust
+```rust ,ignore
 use std::cell::{Ref, RefCell};
 ```
 
@@ -151,7 +151,7 @@ Both of those options are *kinda* lame.
 Instead, we're going to go deeper down. Let's
 have some *fun*. Our source of fun is *this beast*:
 
-```rust
+```rust ,ignore
 map<U, F>(orig: Ref<'b, T>, f: F) -> Ref<'b, U>
     where F: FnOnce(&T) -> &U,
           U: ?Sized
@@ -167,7 +167,7 @@ there's no None-like case, but I digress.
 
 It's cool and that's all that matters to me. *I need this*.
 
-```rust
+```rust ,ignore
 pub fn peek_front(&self) -> Option<Ref<T>> {
     self.head.as_ref().map(|node| {
         Ref::map(node.borrow(), |node| &node.elem)
@@ -184,7 +184,7 @@ Awww yissss
 Let's make sure this is working by munging up the test from our stack. We need
 to do some munging to deal with the fact that Refs don't implement comparisons.
 
-```rust
+```rust ,ignore
 #[test]
 fn peek() {
     let mut list = List::new();

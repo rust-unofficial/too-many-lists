@@ -9,7 +9,7 @@ element, we want to proceed to the current node's `next` node.
 
 Alright, let's try that:
 
-```rust
+```rust ,ignore
 pub struct Iter<T> {
     next: Option<&Node<T>>,
 }
@@ -201,7 +201,7 @@ automatically pick the lifetimes for you. This is *lifetime elision*.
 
 In particular:
 
-```rust,ignore
+```rust ,ignore
 // Only one reference in input, so the output must be derived from that input
 fn foo(&A) -> &B; // sugar for:
 fn foo<'a>(&'a A) -> &'a B;
@@ -482,7 +482,7 @@ thinly veiled excuse to show off deref coercion and the sometimes-useful turbofi
 
 Let's write a test to be sure we didn't no-op it or anything:
 
-```rust
+```rust ,ignore
 #[test]
 fn iter() {
     let mut list = List::new();
@@ -520,7 +520,7 @@ Heck yeah.
 
 Finally, it should be noted that we *can* actually apply lifetime elision here:
 
-```rust
+```rust ,ignore
 impl<T> List<T> {
     pub fn iter<'a>(&'a self) -> Iter<'a, T> {
         Iter { next: self.head.as_ref().map(|node| &**node) }
@@ -530,7 +530,7 @@ impl<T> List<T> {
 
 is equivalent to:
 
-```rust
+```rust ,ignore
 impl<T> List<T> {
     pub fn iter(&self) -> Iter<T> {
         Iter { next: self.head.as_ref().map(|node| &**node) }

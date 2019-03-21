@@ -3,7 +3,7 @@
 Particularly observant readers may have noticed that we actually reinvented
 a really bad version of Option:
 
-```rust
+```rust ,ignore
 enum Link {
     Empty,
     More(Box<Node>),
@@ -17,7 +17,7 @@ nice* methods that we've been manually implementing ourselves. Let's *not*
 do that, and replace everything with Options. First, we'll do it naively
 by just renaming everything to use Some and None:
 
-```rust
+```rust ,ignore
 use std::mem;
 
 pub struct List {
@@ -72,7 +72,7 @@ This is marginally better, but the big wins will come from Option's methods.
 First, `mem::replace(&mut option, None)` is such an incredibly
 common idiom that Option actually just went ahead and made it a method: `take`.
 
-```rust
+```rust ,ignore
 pub struct List {
     head: Link,
 }
@@ -130,7 +130,7 @@ an extra super-power: they can refer to local variables *outside* the closure!
 This makes them super useful for doing all sorts of conditional logic. The
 only place we do a `match` is in `pop`, so let's just rewrite that:
 
-```rust,ignore
+```rust ,ignore
 pub fn pop(&mut self) -> Option<i32> {
     self.head.take().map(|node| {
         self.head = node.next;

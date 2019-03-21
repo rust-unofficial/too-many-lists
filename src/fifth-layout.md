@@ -62,9 +62,8 @@ forwards, which is easy.
 
 Let's try that:
 
-```rust
+```rust ,ignore
 use std::mem;
-# fn main() {}
 
 pub struct List<T> {
     head: Link<T>,
@@ -143,8 +142,7 @@ push. Yikes! 🙀
 
 Alright, well we know how to make a non-owning pointer. That's just a reference!
 
-```rust
-# fn main() {}
+```rust ,ignore
 pub struct List<T> {
     head: Link<T>,
     tail: Option<&mut Node<T>>, // NEW!
@@ -206,8 +204,7 @@ Oh right, we need to give references in types lifetimes. Hmm... what's the
 lifetime of this reference? Well, this seems like IterMut, right? Let's try
 what we did for IterMut, and just add a generic `'a`:
 
-```rust
-# fn main() {}
+```rust ,ignore
 pub struct List<'a, T> {
     head: Link<T>,
     tail: Option<&'a mut Node<T>>, // NEW!

@@ -3,7 +3,7 @@
 So let's write pushing a value onto a list. `push` *mutates* the list,
 so we'll want to take `&mut self`. We also need to take an i32 to push:
 
-```rust,ignore
+```rust ,ignore
 impl List {
     pub fn push(&mut self, elem: i32) {
         // TODO
@@ -13,7 +13,7 @@ impl List {
 
 First thing's first, we need to make a node to store our element in:
 
-```rust,ignore
+```rust ,ignore
     pub fn push(&mut self, elem: i32) {
         let new_node = Node {
             elem: elem,
@@ -24,7 +24,7 @@ First thing's first, we need to make a node to store our element in:
 
 What goes `next`? Well, the entire old list! Can we... just do that?
 
-```rust,ignore
+```rust ,ignore
 impl List {
     pub fn push(&mut self, elem: i32) {
         let new_node = Node {
@@ -59,7 +59,7 @@ and Rust is very polite (it would also be incredibly dangerous, but surely
 What if we put something back? Namely, the node that we're creating:
 
 
-```rust,ignore
+```rust ,ignore
 pub fn push(&mut self, elem: i32) {
     let new_node = Box::new(Node {
         elem: elem,
@@ -91,13 +91,13 @@ function lets us steal a value out of a borrow by *replacing* it with another
 value. Let's just pull in `std::mem` at the top of the file, so that `mem` is in
 local scope:
 
-```rust,ignore
+```rust ,ignore
 use std::mem;
 ```
 
 and use it appropriately:
 
-```rust,ignore
+```rust ,ignore
 pub fn push(&mut self, elem: i32) {
     let new_node = Box::new(Node {
         elem: elem,

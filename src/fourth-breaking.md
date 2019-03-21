@@ -157,7 +157,7 @@ We implemented `push` and `pop`.
 Let's test by stealing the old `stack` basic test (because that's all that
 we've implemented so far):
 
-```
+```rust ,ignore
 #[cfg(test)]
 mod test {
     use super::List;

@@ -12,7 +12,7 @@ avoid conflicting with the "real" code. Just as we used `mod` to specify that
 create a whole new file *inline*:
 
 
-```rust,ignore
+```rust ,ignore
 // in first.rs
 
 mod test {
@@ -48,7 +48,7 @@ with the `assert_eq!` macro. This isn't some special testing magic. All it
 does is compare the two things you give it, and panic the program if they don't
 match. Yep, you indicate failure to the test harness by freaking out!
 
-```rust,ignore
+```rust ,ignore
 mod test {
     #[test]
     fn basics() {
@@ -96,7 +96,7 @@ error[E0433]: failed to resolve: use of undeclared type or module `List`
 Oops! Because we made a new module, we need to pull in List explicitly to use
 it.
 
-```rust,ignore
+```rust ,ignore
 mod test {
     use super::List;
     // everything else the same
@@ -138,7 +138,7 @@ consumers), we should indicate that the whole `test` module should only be
 compiled if we're running tests.
 
 
-```rust,ignore
+```rust ,ignore
 #[cfg(test)]
 mod test {
     use super::List;
