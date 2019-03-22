@@ -98,7 +98,7 @@ though, it even tells us how to fix it! You can't upgrade a shared reference to 
 one, so `iter_mut` needs to take `&mut self`. Just a silly copy-paste error.
 
 ```rust ,ignore
-pub fn iter_mut(&self) -> IterMut<'_, T> {
+pub fn iter_mut(&mut self) -> IterMut<'_, T> {
     IterMut { next: self.head.as_mut().map(|node| &mut **node) }
 }
 ```
