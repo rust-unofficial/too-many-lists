@@ -276,4 +276,4 @@ Nice, still works!
 
 
 [ownership]: first-ownership.html
-[diverging]: http://doc.rust-lang.org/nightly/book/functions.html#diverging-functions
+[diverging]: https://doc.rust-lang.org/nightly/book/ch19-04-advanced-types.html#the-never-type-that-never-returns
