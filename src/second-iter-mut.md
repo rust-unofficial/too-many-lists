@@ -108,7 +108,7 @@ What about the other one?
 Oops! I actually accidentally made an error when writing the `iter` impl in
 the previous section, and we were just getting lucky that it worked!
 
-We have just had our first run in with the magic of Copy. When we introduced [ownership][] we
+We have just had our first run in with the magic of Copy. When we introduced [ownership][ownership] we
 said that when you move stuff, you can't use it anymore. For some types, this
 makes perfect sense. Our good friend Box manages an allocation on the heap for
 us, and we certainly don't want two pieces of code to think that they need to
@@ -209,3 +209,4 @@ It turns out that you can apply this basic logic to get a safe IterMut for an
 array or a tree as well! You can even make the iterator DoubleEnded, so that
 you can consume the iterator from the front *and* the back at once! Woah!
 
+[ownership]: first-ownership.md
