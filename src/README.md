@@ -36,8 +36,11 @@ reference, here's what we're going to be making:
 Just so we're all the same page, I'll be writing out all the commands that I
 feed into my terminal. I'll also be using Rust's standard package manager, Cargo,
 to develop the project. Cargo isn't necessary to write a Rust program, but it's
-*so much* better than using rustc directly. If you just want to futz around you
-can also run some simple programs in the browser via [play.rust-lang.org][play].
+*so much* better than using rustc directly. To use all the newest features that
+some of the linked lists require, you need at least Cargo version 1.31. Some of
+the examples might behave differently otherwise. If you just want to futz
+around you can also run some simple programs in the browser via
+[play.rust-lang.org][play].
 
 Let's get started and make our project:
 
