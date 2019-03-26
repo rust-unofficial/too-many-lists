@@ -188,7 +188,7 @@ fn next(&mut self) -> Option<Self::Item> {
             (&node.next, &node.elem)
         });
 
-        self.0 = next.as_ref().map(|head| head);
+        self.0 = next.as_ref().map(|head| head.borrow());
 
         elem
     })
