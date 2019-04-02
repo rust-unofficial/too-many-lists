@@ -56,7 +56,7 @@ the end of the list, and just jump straight to there!
 
 It turns out that only one inversion of `push` and `pop` works with this.
 To invert `pop` we would have to move the "tail" pointer backwards, but
-because our list is singly-linked, we can't do that effeciently.
+because our list is singly-linked, we can't do that efficiently.
 If we instead invert `push` we only have to move the "head" pointer
 forwards, which is easy.
 
