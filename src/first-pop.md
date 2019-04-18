@@ -163,7 +163,7 @@ the list. So, let's try to do basically that?
 ```rust ,ignore
 pub fn pop(&mut self) -> Option<i32> {
     let result;
-    match self.head {
+    match &self.head {
         Link::Empty => {
             result = None;
         }
