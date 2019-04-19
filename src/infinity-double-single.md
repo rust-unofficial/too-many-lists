@@ -1,6 +1,6 @@
 # The Double Singly-Linked List
 
-We struggled with doubly linked lists because they have tangled ownership
+We struggled with doubly-linked lists because they have tangled ownership
 semantics: no node strictly owns any other node. However we struggled
 with this because we brought in our preconceived notions of what a linked
 list *is*. Namely, we assumed that all the links go in the same direction.

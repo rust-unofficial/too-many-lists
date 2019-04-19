@@ -1,6 +1,6 @@
 # Layout
 
-So what's a singly-linked queue like? Well, when we had a singly linked stack
+So what's a singly-linked queue like? Well, when we had a singly-linked stack
 we pushed onto one end of the list, and then popped off the same end. The only
 difference between a stack and a queue is that a queue pops off the *other*
 end. So from our stack implementation we have:

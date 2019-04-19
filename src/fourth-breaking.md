@@ -221,7 +221,7 @@ previously we bothered to implement Drop for our stacks just to avoid unbounded
 recursion, now we need to implement Drop to get *anything* to happen at all.
 
 `Rc` can't deal with cycles. If there's a cycle, everything will keep everything
-else alive. A doubly linked list, as it turns out, is just a big chain of tiny
+else alive. A doubly-linked list, as it turns out, is just a big chain of tiny
 cycles! So when we drop our list, the two end nodes will have their refcounts
 decremented down to 1... and then nothing else will happen. Well, if our list
 contains exactly one node we're good to go. But ideally a list should work right

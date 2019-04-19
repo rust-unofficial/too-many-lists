@@ -3,7 +3,7 @@
 Alright, we've mastered the art of mutable singly-linked stacks.
 
 Let's move from *single* ownership to *shared* ownership by writing a
-*persistent* immutable singly linked list. This will be exactly the list
+*persistent* immutable singly-linked list. This will be exactly the list
 that functional programmers have come to know and love. You can get the
 head *or* the tail and put someone's head on someone else's tail...
 and... that's basically it. Immutability is a hell of a drug.
