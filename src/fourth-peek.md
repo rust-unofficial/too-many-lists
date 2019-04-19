@@ -47,7 +47,7 @@ error[E0515]: cannot return value referencing temporary value
 
 Ok I'm just burning my computer.
 
-This is exactly the same logic as our singly linked stack. Why are things
+This is exactly the same logic as our singly-linked stack. Why are things
 different. WHY.
 
 The answer is really the whole moral of this chapter: RefCells make everything

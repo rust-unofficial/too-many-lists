@@ -33,12 +33,12 @@ making them real.
 Everything's in the sidebar (may be collapsed on mobile), but for quick
 reference, here's what we're going to be making:
 
-1. [A Bad Singly Linked Stack](first.md)
-2. [An Ok Singly Linked Stack](second.md)
-3. [A Persistent Singly Linked Stack](third.md)
-4. [A Bad But Safe Doubly Linked Deque](fourth.md)
-5. [An Unsafe Singly Linked Queue](fifth.md)
-6. [TODO: An Ok Unsafe Doubly Linked Deque](sixth.md)
+1. [A Bad Singly-Linked Stack](first.md)
+2. [An Ok Singly-Linked Stack](second.md)
+3. [A Persistent Singly-Linked Stack](third.md)
+4. [A Bad But Safe Doubly-Linked Deque](fourth.md)
+5. [An Unsafe Singly-Linked Queue](fifth.md)
+6. [TODO: An Ok Unsafe Doubly-Linked Deque](sixth.md)
 7. [Bonus: A Bunch of Silly Lists](infinity.md)
 
 Just so we're all the same page, I'll be writing out all the commands that I
@@ -245,9 +245,9 @@ without you having to worry about it. However this comes at the cost of being
 you're just writing procedural code again.
 
 Even in functional languages, you should endeavour to use the appropriate data
-structure for the job when you actually need a data structure. Yes, singly
-linked lists are your primary tool for control flow, but they're a really poor
-way to actually store a bunch of data and query it.
+structure for the job when you actually need a data structure. Yes,
+singly-linked lists are your primary tool for control flow, but they're a
+really poor way to actually store a bunch of data and query it.
 
 
 ## Linked lists are great for building concurrent data structures!
@@ -293,7 +293,7 @@ patterns are probably a bit too tangled, depending on the details.
 ## They're simple and great for teaching!
 
 Well, yeah. You're reading a book dedicated to that premise.
-Well, singly linked lists are pretty simple. Doubly linked lists
+Well, singly-linked lists are pretty simple. Doubly-linked lists
 can get kinda gnarly, as we'll see.
 
 

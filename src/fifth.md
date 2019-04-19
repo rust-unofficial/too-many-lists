@@ -6,7 +6,7 @@ in general? Well, yes and no. Rc and Refcell can be great for handling
 simple cases, but they can get unwieldy. Especially if you
 want to hide that it's happening. There's gotta be a better way!
 
-In this chapter we're going to roll back to singly linked lists and
+In this chapter we're going to roll back to singly-linked lists and
 implement a singly-linked queue to dip our toes into *raw pointers*
 and *Unsafe Rust*.
 

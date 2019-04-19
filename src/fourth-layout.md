@@ -21,7 +21,7 @@ of scope. We'll get to that later.
 Now with Rc and RefCell we can become... an incredibly verbose pervasively
 mutable garbage collected language that can't collect cycles! Y-yaaaaay...
 
-Alright, we want to be *doubly linked*. This means each node has a pointer to
+Alright, we want to be *doubly-linked*. This means each node has a pointer to
 the previous and next node. Also, the list itself has a pointer to the
 first and last node. This gives us fast insertion and removal on *both*
 ends of the list.

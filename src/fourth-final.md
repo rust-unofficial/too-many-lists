@@ -1,6 +1,6 @@
 # Final Code
 
-Alright, so that's implementing a 100% safe doubly linked list in Rust. It was
+Alright, so that's implementing a 100% safe doubly-linked list in Rust. It was
 a nightmare to implement, leaks implementation details, and doesn't support several
 fundamental operations.
 
@@ -10,7 +10,7 @@ Oh, I guess it's also riddled with tons of "unnecessary" runtime checks for
 correctness between `Rc` and `RefCell`. I put unnecessary in quotes because
 they're actually necessary to guarantee the whole *actually being safe* thing.
 We encountered a few places where those checks actually *were* necessary.
-Doubly linked lists have a horribly tangled aliasing and ownership story!
+Doubly-linked lists have a horribly tangled aliasing and ownership story!
 
 Still, it's a thing we can do. Especially if we don't care about exposing
 internal data structures to our consumers.
