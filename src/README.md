@@ -310,7 +310,7 @@ Ok. That's out of the way. Let's write a bajillion linked lists.
 [cpp-std-list]: http://en.cppreference.com/w/cpp/container/list
 [github]: https://github.com/Gankro/too-many-lists
 [bjarne]: https://www.youtube.com/watch?v=YQs6IC-vgmo
-[slices]: https://doc.rust-lang.org/book/slice-patterns.html
+[slices]: https://doc.rust-lang.org/edition-guide/rust-2018/slice-patterns.html
 [iterators]: https://doc.rust-lang.org/std/iter/trait.Iterator.html
 [ghc]: https://wiki.haskell.org/GHC_optimisations#Fusion
 [play]: https://play.rust-lang.org/
