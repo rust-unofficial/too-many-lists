@@ -163,7 +163,7 @@ collector ensures that everything magically lives as long as it needs to. Most
 data in Rust is *manually* managed, so that data needs another solution. C and
 C++ give us a clear example what happens if you just let people take pointers
 to random data on the stack: pervasive unmanageable unsafety. This can be
-roughly seperated into two classes of error:
+roughly separated into two classes of error:
 
 * Holding a pointer to something that went out of scope
 * Holding a pointer to something that got mutated away
@@ -218,7 +218,7 @@ fn foo<'a, 'b, 'c>(&'a self, &'b B, &'c C) -> &'a D;
 So what does `fn foo<'a>(&'a A) -> &'a B` *mean*? In practical terms, all it
 means is that the input must live at least as long as the output. So if you keep
 the output around for a long time, this will expand the region that the input must
-be valid for. Once you stop using the output, the compiler will know its ok for
+be valid for. Once you stop using the output, the compiler will know it's ok for
 the input to become invalid too.
 
 With this system set up, Rust can ensure nothing is used after free, and nothing
@@ -533,7 +533,7 @@ impl<T> List<T> {
 }
 ```
 
-Yay less lifetimes!
+Yay fewer lifetimes!
 
 Or, if you're not comfortable "hiding" that a struct contains a lifetime,
 you can use the Rust 2018 "explicitly elided lifetime" syntax,  `'_`:
