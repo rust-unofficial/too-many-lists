@@ -118,7 +118,7 @@ Great!
 ## Bonus Section For Premature Optimization!
 
 Our implementation of drop is actually *very* similar to
-`while let Link::More(_) = self.pop() { }`, which is certainly simpler. How is
+`while let Some(_) = self.pop() { }`, which is certainly simpler. How is
 it different, and what performance issues could result from it once we start
 generalizing our list to store things other than integers?
 
