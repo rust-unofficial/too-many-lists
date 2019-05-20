@@ -442,7 +442,7 @@ impl<'a, T> Iterator for Iter<'a, T> {
 ```
 
 ```text
-lists::cargo build
+cargo build
 
 ```
 
