@@ -32,7 +32,7 @@ impl<T> List<T> {
 Yay!
 
 Now let's try to write pushing onto the front of the list. Because
-doubly-linked lists are signficantly more complicated, we're going to need
+doubly-linked lists are significantly more complicated, we're going to need
 to do a fair bit more work. Where singly-linked list operations could be
 reduced to an easy one-liner, doubly-linked list ops are fairly complicated.
 
