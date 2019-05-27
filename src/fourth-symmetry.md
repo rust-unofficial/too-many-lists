@@ -117,7 +117,6 @@ fn basics() {
     assert_eq!(list.pop_back(), Some(4));
 
     // Check exhaustion
-    assert_eq!(list.pop_back(), Some(1));
     assert_eq!(list.pop_back(), None);
 }
 
