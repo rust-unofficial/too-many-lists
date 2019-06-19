@@ -116,7 +116,7 @@ paragraph!
 
 Just so I can link directly to a detailed argument, here are several attempts
 at counter-arguments I have seen, and my response to them. Feel free to skip
-to [the first chapter](first.html) if you just want to learn some Rust!
+to [the first chapter](first.md) if you just want to learn some Rust!
 
 
 
@@ -303,7 +303,7 @@ can get kinda gnarly, as we'll see.
 
 Ok. That's out of the way. Let's write a bajillion linked lists.
 
-[On to the first chapter!](first.html)
+[On to the first chapter!](first.md)
 
 
 [rust-std-list]: https://doc.rust-lang.org/std/collections/struct.LinkedList.html
