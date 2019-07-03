@@ -178,7 +178,7 @@ That's it. When a reference is tagged with a lifetime, we're saying that it
 has to be valid for that *entire* region. Different things place requirements on
 how long a reference must and can be valid for. The entire lifetime system is in
 turn just a constraint-solving system that tries to minimize the region of every
-reference. If it sucessfully finds a set of lifetimes that satisfies all the
+reference. If it successfully finds a set of lifetimes that satisfies all the
 constraints, your program compiles! Otherwise you get an error back saying that
 something didn't live long enough.
 
