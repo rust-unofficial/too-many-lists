@@ -24,8 +24,8 @@ The reason this is the case is because Rust models thread-safety in a
 first-class way with two traits: `Send` and `Sync`.
 
 A type is *Send* if it's safe to *move* to another thread. A type is *Sync* if
-it's safe to *share* between multiple threads. That is, if `T` is Sync, `&T` is
-Send. Safe in this case means it's impossible to cause *data races*, (not to
+it's safe to *share* between multiple threads. That is, if `T` is Send, `&T` is
+Sync. Safe in this case means it's impossible to cause *data races*, (not to
 be mistaken with the more general issue of *race conditions*).
 
 These are marker traits, which is a fancy way of saying they're traits that
