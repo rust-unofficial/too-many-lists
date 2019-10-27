@@ -121,7 +121,7 @@ pub fn pop(&mut self) -> Option<i32> {
         Link::Empty => {
             // TODO
         }
-        Link::More(ref node) => {
+        Link::More(node) => {
             // TODO
         }
     };
@@ -167,7 +167,7 @@ pub fn pop(&mut self) -> Option<i32> {
         Link::Empty => {
             result = None;
         }
-        Link::More(ref node) => {
+        Link::More(node) => {
             result = Some(node.elem);
             self.head = node.next;
         }
