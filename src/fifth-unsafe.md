@@ -35,7 +35,7 @@ are awful. That means we're going to have to use unsafe pointers.
 There are two kinds of raw pointer: `*const T` and `*mut T`. These are meant to
 be `const T*` and `T*` from C, but we really don't care about what C thinks they
 mean that much. You can only dereference a `*const T` to an `&T`, but much like
-the mutability of a variable, this is just a lint against incorrect usage. At
+the mutability of a variable, this is just a hint against incorrect usage. At
 most it just means you have to cast the `*const` to a `*mut` first. Although if
 you don't actually have permission to mutate the referrent of the pointer,
 you're gonna have a bad time.
