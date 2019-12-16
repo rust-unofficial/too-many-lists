@@ -20,6 +20,6 @@ deploy:
   skip-cleanup: true
   local-dir: book
   github-token: $GH_DEPLOY_TOKEN  # Set in the settings page of your repository, as a secure variable
-  keep-history: true
+  keep-history: false
   on:
     branch: master
