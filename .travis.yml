@@ -5,9 +5,12 @@ git:
   quiet: true
 
 install:
-  - curl -o /tmp/mdbook.tar.gz
-        -L 'https://github.com/rust-lang-nursery/mdBook/releases/download/v0.3.0/mdbook-v0.3.0-x86_64-unknown-linux-gnu.tar.gz'
-    && tar xf /tmp/mdbook.tar.gz -C ~/bin
+  - |
+    curl \
+      -sSL \
+      'https://github.com/rust-lang/mdBook/releases/download/v0.3.5/mdbook-v0.3.5-x86_64-unknown-linux-gnu.tar.gz' \
+    | tar -xzf - -C "$HOME/bin"
+  - export PATH="$PATH:$HOME/bin"
 
 script:
   - mdbook build
