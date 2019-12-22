@@ -168,7 +168,7 @@ impl<T> List<T> {
         });
 
         // Put the box in the right place, and then grab a reference to its Node
-        let new_tail = match self.tail.take() {
+        let old_tail = match self.tail.take() {
             Some(old_tail) => {
                 // If the old tail existed, update it to point to the new tail
                 old_tail.next = Some(new_tail);
@@ -230,7 +230,7 @@ impl<'a, T> List<'a, T> {
         });
 
         // Put the box in the right place, and then grab a reference to its Node
-        let new_tail = match self.tail.take() {
+        let old_tail = match self.tail.take() {
             Some(old_tail) => {
                 // If the old tail existed, update it to point to the new tail
                 old_tail.next = Some(new_tail);
