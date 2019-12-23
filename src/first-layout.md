@@ -132,13 +132,13 @@ Consider a list with two elements:
 [] = Stack
 () = Heap
 
-[Elem A, ptr] -> (Elem B, ptr) -> (Empty *junk*)
+[Elem A, ptr] -> (Elem B, ptr) -> (Empty, *junk*)
 ```
 
 There are two key issues:
 
 * We're allocating a node that just says "I'm not actually a Node"
-* One of our nodes isn't allocated at all.
+* One of our nodes isn't heap-allocated at all.
 
 On the surface, these two seem to cancel each-other out. We allocate an
 extra node, but one of our nodes doesn't need to be allocated at all.
