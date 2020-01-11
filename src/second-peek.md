@@ -34,7 +34,7 @@ error[E0507]: cannot move out of borrowed content
 *Sigh*. What now, Rust?
 
 Map takes `self` by value, which would move the Option out of the thing it's in.
-Previously this was fine because we had just `take`n it out, but now we actually
+Previously this was fine because we had just taken it out, but now we actually
 want to leave it where it was. The *correct* way to handle this is with the
 `as_ref` method on Option, which has the following definition:
 
