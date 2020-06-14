@@ -8,7 +8,7 @@ install:
   - |
     curl \
       -sSL \
-      'https://github.com/rust-lang/mdBook/releases/download/v0.3.5/mdbook-v0.3.5-x86_64-unknown-linux-gnu.tar.gz' \
+      'https://github.com/rust-lang/mdBook/releases/download/v0.3.7/mdbook-v0.3.7-x86_64-unknown-linux-gnu.tar.gz' \
     | tar -xzf - -C "$HOME/bin"
   - export PATH="$PATH:$HOME/bin"
 
