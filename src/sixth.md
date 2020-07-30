@@ -8,4 +8,4 @@ really want more!
 
 
 [The Rustonomicon]: https://doc.rust-lang.org/nightly/nomicon/
-[linked-list]: https://github.com/rust-lang/rust/blob/master/src/liballoc/collections/linked_list.rs
+[linked-list]: https://github.com/rust-lang/rust/blob/master/library/alloc/src/collections/linked_list.rs
