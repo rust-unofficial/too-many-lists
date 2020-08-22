@@ -121,7 +121,7 @@ As such, they have a super power: when moved, the old value *is* still usable.
 As a consequence, you can even move a Copy type out of a reference without
 replacement!
 
-All numeric primitives in rust (i32, u64, bool, f32, char, etc...) are Copy.
+All numeric primitives in Rust (i32, u64, bool, f32, char, etc...) are Copy.
 You can also declare any user-defined type to be Copy as well, as long as
 all its components are Copy.
 
@@ -201,7 +201,7 @@ this works:
 
 * We `take` the `Option<&mut>` so we have exclusive access to the mutable
   reference. No need to worry about someone looking at it again.
-* Rust understands that it's ok to shard a mutable reference into the subfields
+* Rust understands that it's ok to share a mutable reference into the subfields
   of the pointed-to struct, because there's no way to "go back up", and they're
   definitely disjoint.
 
