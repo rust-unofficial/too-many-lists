@@ -110,7 +110,7 @@ pub fn new() -> Self {
 }
 ```
 
-Bask in the Glory that is Self, guardian of refactoring and copy-pasta coding.
+Bask in the Glory that is Self, guardian of refactoring and copy-paste coding.
 Also of interest, we don't write `List<T>` when we construct an instance of
 list. That part's inferred for us based on the fact that we're returning it
 from a function that expects a `List<T>`.

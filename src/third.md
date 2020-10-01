@@ -21,4 +21,4 @@ pub mod second;
 pub mod third;
 ```
 
-No copy-pasta this time. This is a clean room operation.
+No copy-paste this time. This is a clean room operation.
