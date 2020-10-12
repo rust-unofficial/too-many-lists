@@ -127,7 +127,7 @@ warning: field is never used: `next`
    |     ^^^^^^^^^^^^^
 ```
 
-Seems legit. Rust continues to be a *completely* trivial to write. I bet we can just
+Seems legit. Rust continues to be *completely* trivial to write. I bet we can just
 find-and-replace Box with Rc and call it a day!
 
 ...
