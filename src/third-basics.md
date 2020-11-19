@@ -65,7 +65,7 @@ consumer can ever actually observe the use of these fields! Still, we seem good
 so far.
 
 `tail` is the logical inverse of this operation. It takes a list and returns the
-whole list with the first element removed. All that is is cloning the *second*
+whole list with the first element removed. All that is cloning the *second*
 element in the list (if it exists). Let's try this:
 
 ```rust ,ignore
