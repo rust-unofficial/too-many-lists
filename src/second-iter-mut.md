@@ -201,7 +201,7 @@ this works:
 
 * We `take` the `Option<&mut>` so we have exclusive access to the mutable
   reference. No need to worry about someone looking at it again.
-* Rust understands that it's ok to shard a mutable reference into the subfields
+* Rust understands that it's ok to share a mutable reference into the subfields
   of the pointed-to struct, because there's no way to "go back up", and they're
   definitely disjoint.
 
