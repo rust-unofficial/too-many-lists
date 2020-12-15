@@ -172,12 +172,12 @@ impl<T> List<T> {
             Some(old_tail) => {
                 // If the old tail existed, update it to point to the new tail
                 old_tail.next = Some(new_tail);
-                old_tail.next.as_mut().map(|node| &mut **node)
+                old_tail.next.as_deref_mut()
             }
             None => {
                 // Otherwise, update the head to point to it
                 self.head = Some(new_tail);
-                self.head.as_mut().map(|node| &mut **node)
+                self.head.as_deref_mut()
             }
         };
 
@@ -234,12 +234,12 @@ impl<'a, T> List<'a, T> {
             Some(old_tail) => {
                 // If the old tail existed, update it to point to the new tail
                 old_tail.next = Some(new_tail);
-                old_tail.next.as_mut().map(|node| &mut **node)
+                old_tail.next.as_deref_mut()
             }
             None => {
                 // Otherwise, update the head to point to it
                 self.head = Some(new_tail);
-                self.head.as_mut().map(|node| &mut **node)
+                self.head.as_deref_mut()
             }
         };
 
@@ -254,8 +254,8 @@ cargo build
 error[E0495]: cannot infer an appropriate lifetime for autoref due to conflicting requirements
   --> src/fifth.rs:35:27
    |
-35 |                 self.head.as_mut().map(|node| &mut **node)
-   |                           ^^^^^^
+35 |                 self.head.as_deref_mut()
+   |                           ^^^^^^^^^^^^
    |
 note: first, the lifetime cannot outlive the anonymous lifetime #1 defined on the method body at 18:5...
   --> src/fifth.rs:18:5
@@ -271,7 +271,7 @@ note: first, the lifetime cannot outlive the anonymous lifetime #1 defined on th
 note: ...so that reference does not outlive borrowed content
   --> src/fifth.rs:35:17
    |
-35 |                 self.head.as_mut().map(|node| &mut **node)
+35 |                 self.head.as_deref_mut()
    |                 ^^^^^^^^^
 note: but, the lifetime must be valid for the lifetime 'a as defined on the impl at 13:6...
   --> src/fifth.rs:13:6
