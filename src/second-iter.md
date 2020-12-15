@@ -425,7 +425,7 @@ pub struct Iter<'a, T> {
 
 impl<T> List<T> {
     pub fn iter<'a>(&'a self) -> Iter<'a, T> {
-        Iter { next: self.head.as_ref().map(|node| &**node) }
+        Iter { next: self.head.as_deref() }
     }
 }
 
@@ -434,7 +434,7 @@ impl<'a, T> Iterator for Iter<'a, T> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.next.map(|node| {
-            self.next = node.next.as_ref().map(|node| &**node);
+            self.next = node.next.as_deref();
             &node.elem
         })
     }
@@ -448,7 +448,10 @@ cargo build
 
 🎉 🎉 🎉
 
-You may be thinking "wow that `&**` thing is really janky", and you're not wrong.
+The as_deref and as-derf_mut functions are stable as of Rust 1.40. Before that you
+would need to do `map(|node| &**node)` and `map(|node| &mut**node)`.
+You may be thinking "wow that `&**` thing is really janky", and you're not wrong,
+but like a fine wine rust gets better over time and we no longer need to do such.
 Normally Rust is very good at doing this kind of conversion implicitly, through
 a process called *deref coercion*, where basically it can insert \*'s
 throughout your code to make it type-check. It can do this because we have the
@@ -456,7 +459,7 @@ borrow checker to ensure we never mess up pointers!
 
 But in this case the closure in conjunction with the fact that we
 have an `Option<&T>` instead of `&T` is a bit too complicated for it to work
-out, so we need to do this for it. Thankfully this is pretty rare, in my experience.
+out, so we need to help it by being explicit. Thankfully this is pretty rare, in my experience.
 
 Just for completeness' sake, we *could* give it a *different* hint with the *turbofish*:
 
@@ -518,7 +521,7 @@ Finally, it should be noted that we *can* actually apply lifetime elision here:
 ```rust ,ignore
 impl<T> List<T> {
     pub fn iter<'a>(&'a self) -> Iter<'a, T> {
-        Iter { next: self.head.as_ref().map(|node| &**node) }
+        Iter { next: self.head.as_deref() }
     }
 }
 ```
@@ -528,7 +531,7 @@ is equivalent to:
 ```rust ,ignore
 impl<T> List<T> {
     pub fn iter(&self) -> Iter<T> {
-        Iter { next: self.head.as_ref().map(|node| &**node) }
+        Iter { next: self.head.as_deref() }
     }
 }
 ```
@@ -541,7 +544,7 @@ you can use the Rust 2018 "explicitly elided lifetime" syntax,  `'_`:
 ```rust ,ignore
 impl<T> List<T> {
     pub fn iter(&self) -> Iter<'_, T> {
-        Iter { next: self.head.as_ref().map(|node| &**node) }
+        Iter { next: self.head.as_deref() }
     }
 }
 ```

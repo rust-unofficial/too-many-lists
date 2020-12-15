@@ -60,7 +60,7 @@ pub struct IterMut<'a, T> {
 
 impl<T> List<T> {
     pub fn iter_mut(&self) -> IterMut<'_, T> {
-        IterMut { next: self.head.as_mut().map(|node| &mut **node) }
+        IterMut { next: self.head.as_deref_mut() }
     }
 }
 
@@ -69,7 +69,7 @@ impl<'a, T> Iterator for IterMut<'a, T> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.next.map(|node| {
-            self.next = node.next.as_mut().map(|node| &mut **node);
+            self.next = node.next.as_deref_mut();
             &mut node.elem
         })
     }
@@ -83,7 +83,7 @@ error[E0596]: cannot borrow `self.head` as mutable, as it is behind a `&` refere
    |
 94 |     pub fn iter_mut(&self) -> IterMut<'_, T> {
    |                     ----- help: consider changing this to be a mutable reference: `&mut self`
-95 |         IterMut { next: self.head.as_mut().map(|node| &mut **node) }
+95 |         IterMut { next: self.head.as_deref_mut() }
    |                         ^^^^^^^^^ `self` is a `&` reference, so the data it refers to cannot be borrowed as mutable
 
 error[E0507]: cannot move out of borrowed content
@@ -99,7 +99,7 @@ one, so `iter_mut` needs to take `&mut self`. Just a silly copy-paste error.
 
 ```rust ,ignore
 pub fn iter_mut(&mut self) -> IterMut<'_, T> {
-    IterMut { next: self.head.as_mut().map(|node| &mut **node) }
+    IterMut { next: self.head.as_deref_mut() }
 }
 ```
 
@@ -136,7 +136,7 @@ the Option to get it.
 ```rust ,ignore
 fn next(&mut self) -> Option<Self::Item> {
     self.next.take().map(|node| {
-        self.next = node.next.as_mut().map(|node| &mut **node);
+        self.next = node.next.as_deref_mut();
         &mut node.elem
     })
 }
