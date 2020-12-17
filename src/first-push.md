@@ -16,7 +16,7 @@ First thing's first, we need to make a node to store our element in:
 ```rust ,ignore
     pub fn push(&mut self, elem: i32) {
         let new_node = Node {
-            elem: elem,
+            elem,
             next: ?????
         };
     }
@@ -28,7 +28,7 @@ What goes `next`? Well, the entire old list! Can we... just do that?
 impl List {
     pub fn push(&mut self, elem: i32) {
         let new_node = Node {
-            elem: elem,
+            elem,
             next: self.head,
         };
     }
@@ -62,7 +62,7 @@ What if we put something back? Namely, the node that we're creating:
 ```rust ,ignore
 pub fn push(&mut self, elem: i32) {
     let new_node = Box::new(Node {
-        elem: elem,
+        elem,
         next: self.head,
     });
 
@@ -100,7 +100,7 @@ and use it appropriately:
 ```rust ,ignore
 pub fn push(&mut self, elem: i32) {
     let new_node = Box::new(Node {
-        elem: elem,
+        elem,
         next: mem::replace(&mut self.head, Link::Empty),
     });
 

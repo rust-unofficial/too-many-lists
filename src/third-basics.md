@@ -36,7 +36,7 @@ Alright, let's give it a shot:
 ```rust ,ignore
 pub fn append(&self, elem: T) -> List<T> {
     List { head: Some(Rc::new(Node {
-        elem: elem,
+        elem,
         next: self.head.clone(),
     }))}
 }

@@ -84,7 +84,7 @@ impl<T> List<T> {
 
     pub fn push(&mut self, elem: T) {
         let new_tail = Box::new(Node {
-            elem: elem,
+            elem,
             // When you push onto the tail, your next is always None
             next: None,
         });
@@ -162,7 +162,7 @@ impl<T> List<T> {
 
     pub fn push(&mut self, elem: T) {
         let new_tail = Box::new(Node {
-            elem: elem,
+            elem,
             // When you push onto the tail, your next is always None
             next: None,
         });
@@ -224,7 +224,7 @@ impl<'a, T> List<'a, T> {
 
     pub fn push(&mut self, elem: T) {
         let new_tail = Box::new(Node {
-            elem: elem,
+            elem,
             // When you push onto the tail, your next is always None
             next: None,
         });
@@ -262,7 +262,7 @@ note: first, the lifetime cannot outlive the anonymous lifetime #1 defined on th
    |
 18 | /     pub fn push(&mut self, elem: T) {
 19 | |         let new_tail = Box::new(Node {
-20 | |             elem: elem,
+20 | |             elem,
 21 | |             // When you push onto the tail, your next is always None
 ...  |
 39 | |         self.tail = new_tail;

@@ -99,7 +99,7 @@ the previous reference version:
 ```rust ,ignore
 pub fn push(&mut self, elem: T) {
     let mut new_tail = Box::new(Node {
-        elem: elem,
+        elem,
         next: None,
     });
 
@@ -184,7 +184,7 @@ This declares the overall function to be safe. Let's do that one:
 ```rust ,ignore
 pub fn push(&mut self, elem: T) {
     let mut new_tail = Box::new(Node {
-        elem: elem,
+        elem,
         next: None,
     });
 

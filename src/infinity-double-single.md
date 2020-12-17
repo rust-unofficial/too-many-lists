@@ -49,7 +49,7 @@ impl<T> Stack<T> {
 
     pub fn push(&mut self, elem: T) {
         let new_node = Box::new(Node {
-            elem: elem,
+            elem,
             next: self.head.take(),
         });
 
@@ -92,7 +92,7 @@ And just rework `push` and `pop` a bit:
 ```rust ,ignore
 pub fn push(&mut self, elem: T) {
     let new_node = Box::new(Node {
-        elem: elem,
+        elem,
         next: None,
     });
 

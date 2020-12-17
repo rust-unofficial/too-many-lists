@@ -18,7 +18,7 @@ impl<T> List<T> {
 
     pub fn append(&self, elem: T) -> List<T> {
         List { head: Some(Rc::new(Node {
-            elem: elem,
+            elem,
             next: self.head.clone(),
         }))}
     }
