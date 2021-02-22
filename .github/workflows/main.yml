@@ -1,0 +1,42 @@
+name: Rust
+
+on:
+  push:
+    branches:
+      - 'master'
+      - '!gh-pages'
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install mdBook
+        run: |
+          pkgver=0.4.6
+          url="https://github.com/rust-lang/mdBook/releases/download/v${pkgver}/mdbook-v${pkgver}-x86_64-unknown-linux-gnu.tar.gz"
+          mkdir "$HOME/bin"
+          curl -sSL "$url" | tar -xzf - -C "$HOME/bin"
+          echo "$HOME/bin" >> $GITHUB_PATH
+
+      - name: Run mdBook
+        run: |
+          mdbook build
+
+      - name: Deploy docs to gh-pages branch
+        if: github.event_name != 'pull_request' && github.event.ref == 'refs/heads/master'
+        working-directory: book
+        run: |
+          # Bypassing Jekyll on GitHub Pages
+          touch .nojekyll
+          REV=$(git rev-parse --short HEAD)
+          git init
+          git config user.name "Actions"
+          git config user.email ""
+          git add -A .
+          git commit -qm "Documentation for ${{github.repository}}@${REV}"
+          git remote add upstream https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git push -q upstream HEAD:gh-pages --force
+        shell: bash
