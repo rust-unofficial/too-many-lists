@@ -15,8 +15,8 @@ Which reads approximately as "A List is either Empty or an Element followed by a
 List". This is a recursive definition expressed as a *sum type*, which is a
 fancy name for "a type that can have different values which may be different
 types". Rust calls sum types `enum`s! If you're coming from a C-like language,
-this is exactly the enum you know and love, but on meth. So let's transcribe
-this functional definition into Rust!
+this is exactly the enum you know and love, but in overdrive. So let's
+transcribe this functional definition into Rust!
 
 For now we'll avoid generics to keep things simple. We'll only support
 storing signed 32-bit integers:
@@ -314,7 +314,6 @@ an `enum` are totally public, and we're not allowed to publicly talk about
 private types. We could make all of `Node` totally public, but generally in Rust
 we favour keeping implementation details private. Let's make `List` a struct, so
 that we can hide the implementation details:
-
 
 ```rust ,ignore
 pub struct List {
