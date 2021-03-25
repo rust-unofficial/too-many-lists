@@ -448,7 +448,7 @@ cargo build
 
 🎉 🎉 🎉
 
-The as_deref and as-derf_mut functions are stable as of Rust 1.40. Before that you
+The as_deref and as_deref_mut functions are stable as of Rust 1.40. Before that you
 would need to do `map(|node| &**node)` and `map(|node| &mut**node)`.
 You may be thinking "wow that `&**` thing is really janky", and you're not wrong,
 but like a fine wine rust gets better over time and we no longer need to do such.
