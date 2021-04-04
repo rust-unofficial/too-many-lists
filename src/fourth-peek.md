@@ -191,7 +191,7 @@ fn peek() {
     assert!(list.peek_front().is_none());
     list.push_front(1); list.push_front(2); list.push_front(3);
 
-    assert_eq!(&*list.peek_front().unwrap(), &3);
+    assert_eq!(*list.peek_front().unwrap(), 3);
 }
 ```
 
