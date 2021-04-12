@@ -14,9 +14,9 @@ impl<T> List<T> {
 ```
 
 `push` and `pop` don't really make sense anymore. Instead we can provide
-`append` and `tail`, which provide approximately the same thing.
+`prepend` and `tail`, which provide approximately the same thing.
 
-Let's start with appending. It takes a list and an element, and returns a
+Let's start with prepending. It takes a list and an element, and returns a
 List. Like the mutable list case, we want to make a new node, that has the old
 list as its `next` value. The only novel thing is how to *get* that next value,
 because we're not allowed to mutate anything.
@@ -34,7 +34,7 @@ Clone implementation that does exactly the thing we want.
 Alright, let's give it a shot:
 
 ```rust ,ignore
-pub fn append(&self, elem: T) -> List<T> {
+pub fn prepend(&self, elem: T) -> List<T> {
     List { head: Some(Rc::new(Node {
         elem: elem,
         next: self.head.clone(),
@@ -133,7 +133,7 @@ mod test {
         let list = List::new();
         assert_eq!(list.head(), None);
 
-        let list = list.append(1).append(2).append(3);
+        let list = list.prepend(1).prepend(2).prepend(3);
         assert_eq!(list.head(), Some(&3));
 
         let list = list.tail();
@@ -199,7 +199,7 @@ impl<'a, T> Iterator for Iter<'a, T> {
 ```rust ,ignore
 #[test]
 fn iter() {
-    let list = List::new().append(1).append(2).append(3);
+    let list = List::new().prepend(1).prepend(2).prepend(3);
 
     let mut iter = list.iter();
     assert_eq!(iter.next(), Some(&3));
