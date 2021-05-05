@@ -184,7 +184,7 @@ something didn't live long enough.
 
 Within a function body you generally can't talk about lifetimes, and wouldn't
 want to *anyway*. The compiler has full information and can infer all the
-contraints to find the minimum lifetimes. However at the type and API-level,
+constraints to find the minimum lifetimes. However at the type and API-level,
 the compiler *doesn't* have all the information. It requires you to tell it
 about the relationship between different lifetimes so it can figure out what
 you're doing.
