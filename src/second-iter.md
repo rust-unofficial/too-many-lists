@@ -184,7 +184,7 @@ something didn't live long enough.
 
 Within a function body you generally can't talk about lifetimes, and wouldn't
 want to *anyway*. The compiler has full information and can infer all the
-contraints to find the minimum lifetimes. However at the type and API-level,
+constraints to find the minimum lifetimes. However at the type and API-level,
 the compiler *doesn't* have all the information. It requires you to tell it
 about the relationship between different lifetimes so it can figure out what
 you're doing.
@@ -448,10 +448,10 @@ cargo build
 
 🎉 🎉 🎉
 
-The as_deref and as-derf_mut functions are stable as of Rust 1.40. Before that you
+The as_deref and as_derf_mut functions are stable as of Rust 1.40. Before that you
 would need to do `map(|node| &**node)` and `map(|node| &mut**node)`.
 You may be thinking "wow that `&**` thing is really janky", and you're not wrong,
-but like a fine wine rust gets better over time and we no longer need to do such.
+but like a fine wine Rust gets better over time and we no longer need to do such.
 Normally Rust is very good at doing this kind of conversion implicitly, through
 a process called *deref coercion*, where basically it can insert \*'s
 throughout your code to make it type-check. It can do this because we have the
