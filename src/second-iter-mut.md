@@ -16,7 +16,7 @@ impl<'a, T> Iterator for Iter<'a, T> {
 }
 ```
 
-Which can be desugarred to:
+Which can be desugared to:
 
 ```rust ,ignore
 impl<'a, T> Iterator for Iter<'a, T> {
@@ -121,7 +121,7 @@ As such, they have a super power: when moved, the old value *is* still usable.
 As a consequence, you can even move a Copy type out of a reference without
 replacement!
 
-All numeric primitives in rust (i32, u64, bool, f32, char, etc...) are Copy.
+All numeric primitives in Rust (i32, u64, bool, f32, char, etc...) are Copy.
 You can also declare any user-defined type to be Copy as well, as long as
 all its components are Copy.
 
