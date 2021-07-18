@@ -77,7 +77,7 @@ pub fn peek_mut(&mut self) -> Option<&mut T> {
 ```
 
 ```text
-lists::cargo build
+> cargo build
 
 ```
 
