@@ -30,7 +30,7 @@ This just can't work with Boxes, because ownership of `B` is *shared*. Who
 should free it? If I drop list2, does it free B? With boxes we certainly would
 expect so!
 
-Functional languages &emdash; and indeed almost every other language &emdash; get away with
+Functional languages &mdash; and indeed almost every other language &mdash; get away with
 this by using *garbage collection*. With the magic of garbage collection, B will
 be freed only after everyone stops looking at it. Hooray!
 
@@ -41,7 +41,7 @@ Rust has today is *reference counting*. Reference counting can be thought of
 as a very simple GC. For many workloads, it has significantly less throughput
 than a tracing collector, and it completely falls over if you manage to
 build cycles. But hey, it's all we've got! Thankfully, for our usecase we'll never run into cycles
-(feel free to try to prove this to yourself &emdash; I sure won't).
+(feel free to try to prove this to yourself &mdash; I sure won't).
 
 So how do we do reference-counted garbage collection? `Rc`! Rc is just like
 Box, but we can duplicate it, and its memory will *only* be freed when *all*
