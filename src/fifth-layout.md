@@ -424,7 +424,7 @@ cardinal Rust sin: we stored a reference to ourselves *inside ourselves*.
 Somehow, we managed to convince Rust that this totally made sense in our
 `push` and `pop` implementations (I was legitimately shocked we did). I believe
 the reason is that Rust can't yet tell that the reference is into ourselves
-from just `push` and `pop` &emdash; or rather, Rust doesn't really have that notion
+from just `push` and `pop` &mdash; or rather, Rust doesn't really have that notion
 at all. Reference-into-yourself failing to work is just an emergent behaviour.
 
 As soon as we tried to *use* our list, everything quickly fell apart.
