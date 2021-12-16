@@ -30,7 +30,7 @@ This just can't work with Boxes, because ownership of `B` is *shared*. Who
 should free it? If I drop list2, does it free B? With boxes we certainly would
 expect so!
 
-Functional languages &emdash; and indeed almost every other language &emdash; get away with
+Functional languages — and indeed almost every other language — get away with
 this by using *garbage collection*. With the magic of garbage collection, B will
 be freed only after everyone stops looking at it. Hooray!
 
