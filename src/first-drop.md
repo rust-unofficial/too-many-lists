@@ -37,6 +37,24 @@ When `list` gets dropped, it will try to drop A, which will try to drop B,
 which will try to drop C. Some of you might rightly be getting nervous. This is
 recursive code, and recursive code can blow the stack!
 
+As an example, if we include a test that tries to push many items into our
+list, it will fail due to stack overflow.
+
+```rust, ignore
+#[test]
+fn long_list() {
+    let mut list = List::new();
+    for i in 0..100000 {
+        list.push(i);
+    }
+    drop(list);
+}
+```
+
+```text
+thread 'first::test::long_list' has overflowed its stack
+```
+
 Some of you might be thinking "this is clearly tail recursive, and any decent
 language would ensure that such code wouldn't blow the stack". This is, in fact,
 incorrect! To see why, let's try to write what the compiler has to do, by
@@ -97,15 +115,18 @@ impl Drop for List {
 }
 ```
 
+With our custom drop trait implementation, now both test works.
+
 ```text
 > cargo test
 
      Running target/debug/lists-5c71138492ad4b4a
 
-running 1 test
+running 2 tests
 test first::test::basics ... ok
+test first::test::long_list ... ok
 
-test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured
 
 ```
 
