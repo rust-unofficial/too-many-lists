@@ -1,5 +1,7 @@
 # Basics
 
+> **NARRATOR:** This section has a looming fundamental error in it, because that's the whole point of the book. However once we start using `unsafe` it's possible to do things wrong and still have everything compile and *seemingly* work. The fundamental mistake will be identified in the next section. Don't actually use the contents of this section in production code!
+
 Alright, back to basics. How do we construct our list?
 
 Before we just did:
@@ -21,7 +23,8 @@ error[E0308]: mismatched types
   --> src/fifth.rs:15:34
    |
 15 |         List { head: None, tail: None }
-   |                                  ^^^^ expected *-ptr, found enum `std::option::Option`
+   |                                  ^^^^ expected *-ptr, found 
+   |                                       enum `std::option::Option`
    |
    = note: expected type `*mut fifth::Node<T>`
               found type `std::option::Option<_>`
@@ -127,7 +130,8 @@ error[E0609]: no field `next` on type `*mut fifth::Node<T>`
 31 |             self.tail.next = Some(new_tail);
    |             ----------^^^^
    |             |
-   |             help: `self.tail` is a raw pointer; try dereferencing it: `(*self.tail).next`
+   |             help: `self.tail` is a raw pointer; 
+   |             try dereferencing it: `(*self.tail).next`
 ```
 
 Huh? We have a pointer to a Node, why can't we get the `next` field?
@@ -149,7 +153,8 @@ error[E0609]: no field `next` on type `*mut fifth::Node<T>`
 31 |             *self.tail.next = Some(new_tail);
    |             -----------^^^^
    |             |
-   |             help: `self.tail` is a raw pointer; try dereferencing it: `(*self.tail).next`
+   |             help: `self.tail` is a raw pointer; 
+   |             try dereferencing it: `(*self.tail).next`
 ```
 
 Uuuugh operator precedence.
@@ -161,16 +166,20 @@ Uuuugh operator precedence.
 ```text
 > cargo build
 
-error[E0133]: dereference of raw pointer is unsafe and requires unsafe function or block
+error[E0133]: dereference of raw pointer is unsafe and requires 
+              unsafe function or block
+
   --> src/fifth.rs:31:13
    |
 31 |             (*self.tail).next = Some(new_tail);
    |             ^^^^^^^^^^^^^^^^^ dereference of raw pointer
    |
-   = note: raw pointers may be NULL, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+   = note: raw pointers may be NULL, dangling or unaligned; 
+     they can violate aliasing rules and cause data races: 
+     all of these are undefined behavior
 ```
 
-THIS SHOULDN'T BE THIS HARD.
+THIS. SHOULDN'T. BE. THIS. HARD.
 
 Remember how I said Unsafe Rust is like an FFI language for Safe Rust? Well, the
 compiler wants us to explicitly delimit where we're doing this FFI-ing. We have
@@ -190,14 +199,13 @@ pub fn push(&mut self, elem: T) {
 
     let raw_tail: *mut _ = &mut *new_tail;
 
-    // Put the box in the right place, and then grab a reference to its Node
     if !self.tail.is_null() {
-        // If the old tail existed, update it to point to the new tail
+        // Hello Compiler, I Know I Am Doing Something Dangerous And
+        // I Promise To Be A Good Programmer Who Never Makes Mistakes.
         unsafe {
             (*self.tail).next = Some(new_tail);
         }
     } else {
-        // Otherwise, update the head to point to it
         self.head = Some(new_tail);
     }
 
@@ -237,13 +245,21 @@ safe.
 
 Super. Pedantic. But technically correct.
 
-However this raises an interesting problem: although we're supposed to delimit
-the scope of the unsafety with the `unsafe` block, it actually depends on
-state that was established outside of the block. Outside of the function, even!
+> **NARRATOR:** Somewhere on the other side of the world, a hardware engineer
+feels a shiver down her spine &mdash; someone must be insisting pointers
+are just integers again. She looks down at her proposal for a new hardware
+pointer authentication scheme and sheds a single tear. The compiler engineer
+next door feels nothing &mdash; they long ago learned to always wear a heavy
+sweater.
+
+Having only some of the pointer operations be *actually* unsafe raises an
+interesting problem: although we're supposed to delimit the scope of the
+unsafety with the `unsafe` block, it actually depends on state that was
+established outside of the block. Outside of the function, even!
 
 This is what I call unsafe *taint*. As soon as you use `unsafe` in a module,
 that whole module is tainted with unsafety. Everything has to be correctly
-written in order to make sure that invariants are upheld for the unsafe code.
+written in order to make sure all invariants are upheld for the unsafe code.
 
 This taint is manageable because of *privacy*. Outside of our module, all of our
 struct fields are totally private, so no one else can mess with our state in
@@ -328,8 +344,6 @@ corruption case in `pop` doesn't occur.
 ```text
 cargo test
 
-     Running target/debug/lists-5c71138492ad4b4a
-
 running 12 tests
 test fifth::test::basics ... ok
 test first::test::basics ... ok
@@ -344,9 +358,9 @@ test second::test::peek ... ok
 test third::test::basics ... ok
 test third::test::iter ... ok
 
-test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured
 ```
 
 Gold Star!
 
-
+> **NARRATOR:** Here it comes...

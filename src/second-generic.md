@@ -87,7 +87,7 @@ impl<T> Drop for List<T> {
 ...and that's it!
 
 
-```
+```text
 > cargo test
 
      Running target/debug/lists-5c71138492ad4b4a

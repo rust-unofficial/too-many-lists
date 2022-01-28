@@ -77,7 +77,7 @@ That uh... that didn't really clarify much (these docs assume we understand
 Rust better than we currently do). But it looks like we should add
 those `'a` things to our struct? Let's try that.
 
-```
+```rust ,ignore
 pub struct Iter<'a, T> {
     next: Option<&'a Node<T>>,
 }

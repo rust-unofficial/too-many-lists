@@ -196,7 +196,7 @@ fn peek() {
 ```
 
 
-```
+```text
 > cargo test
 
      Running target/debug/lists-5c71138492ad4b4a

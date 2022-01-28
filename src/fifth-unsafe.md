@@ -21,12 +21,16 @@ I *really* don't want to go really deep into it (well, I do. I did. [Read that
 book][nom]). That's ok, because with linked lists we can actually ignore almost
 all of it.
 
+> **NARRATOR:** This was a lie, but it did seemed true in 2015.
+
 The main Unsafe tool we'll be using are *raw pointers*. Raw pointers are
 basically C's pointers. They have no inherent aliasing rules. They have no
-lifetimes. They can be null. They can be dangling. They can point to
+lifetimes. They can be null. They can be misaligned. They can be dangling. They can point to
 uninitialized memory. They can be cast to and from integers. They can be cast
 to point to a different type. Mutability? Cast it. Pretty much everything goes,
 and that means pretty much anything can go wrong.
+
+> **NARRATOR:** no inherent aliasing rules, eh? Ah, the innocence of youth.
 
 This is some bad stuff and honestly you'll live a happier life never having
 to touch these. Unfortunately, we want to write linked lists, and linked lists

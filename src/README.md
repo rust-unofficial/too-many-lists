@@ -20,12 +20,12 @@ In this series I will teach you basic and advanced Rust programming
 entirely by having you implement 6 linked lists. In doing so, you should
 learn:
 
-* The following pointer types: `&`, `&mut`, `Box`, `Rc`, `Arc`, `*const`, `*mut`
+* The following pointer types: `&`, `&mut`, `Box`, `Rc`, `Arc`, `*const`, `*mut`, `NonNull`(?)
 * Ownership, borrowing, inherited mutability, interior mutability, Copy
 * All The Keywords: struct, enum, fn, pub, impl, use, ...
 * Pattern matching, generics, destructors
-* Testing
-* Basic Unsafe Rust
+* Testing, installing new toolchains, using `miri`
+* Unsafe Rust: raw pointers, aliasing, stacked borrows, UnsafeCell, variance
 
 Yes, linked lists are so truly awful that you deal with all of these concepts in
 making them real.
@@ -46,6 +46,9 @@ feed into my terminal. I'll also be using Rust's standard package manager, Cargo
 to develop the project. Cargo isn't necessary to write a Rust program, but it's
 *so much* better than using rustc directly. If you just want to futz around you
 can also run some simple programs in the browser via [play.rust-lang.org][play].
+
+In later sections, we'll be using "rustup" to install extra Rust tooling.
+I strongly recommend [installing all of your Rust toolchains using rustup](https://www.rust-lang.org/tools/install).
 
 Let's get started and make our project:
 
