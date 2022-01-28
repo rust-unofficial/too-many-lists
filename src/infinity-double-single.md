@@ -16,7 +16,7 @@ pub mod silly1;     // NEW!
 
 ```rust ,ignore
 // silly1.rs
-use second::List as Stack;
+use crate::second::List as Stack;
 
 struct List<T> {
     left: Stack<T>,

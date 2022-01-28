@@ -140,8 +140,8 @@ There are two key issues:
 * We're allocating a node that just says "I'm not actually a Node"
 * One of our nodes isn't heap-allocated at all.
 
-On the surface, these two seem to cancel each-other out. We allocate an
-extra node, but one of our nodes doesn't need to be allocated at all.
+On the surface, these two seem to cancel each-other out. We heap-allocate an
+extra node, but one of our nodes doesn't need to be heap-allocated at all.
 However, consider the following potential layout for our list:
 
 ```text

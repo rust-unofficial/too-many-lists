@@ -13,9 +13,9 @@ That was a lot of theory and ideas -- let's move on to the true heart and soul o
 
 > **NARRATOR:** Catching Undefined Behaviour in practice is a hairy business. After all, you're dealing with situations that the compiler literally *assumes* don't happen.
 >
-> If you're lucky, things will "seem to work" to work today, but they'll be a ticking time bomb for a Smarter Compiler or slight change to the code. If you're *really* lucky things will reliably crash so you can just catch the mistake and fix it. But if you're unlucky, then things will be broken in weird and baffling ways.
+> If you're lucky, things will "seem to work" today, but they'll be a ticking time bomb for a Smarter Compiler or slight change to the code. If you're *really* lucky things will reliably crash so you can just catch the mistake and fix it. But if you're unlucky, then things will be broken in weird and baffling ways.
 >
-> Miri tries to work around this by getting rust'c most naive and unoptimized view of the program and tracking extra state as it interprets. As far as "sanitizers" go, this is a fairly deterministic and robust approach but it will never be *perfect*. You need your test program to actually have an execution with that UB, and for a large enough program it's very easy to introduce all sorts of non-determinism (HashMaps use RNG by default!).
+> Miri tries to work around this by getting rustc's most naive and unoptimized view of the program and tracking extra state as it interprets. As far as "sanitizers" go, this is a fairly deterministic and robust approach but it will never be *perfect*. You need your test program to actually have an execution with that UB, and for a large enough program it's very easy to introduce all sorts of non-determinism (HashMaps use RNG by default!).
 >
 > We can never take miri approving of our program's execution as an absolute certain statement there's no UB. It's also possible for miri to *think* something's UB when it really isn't. But if we have a mental model of how things work, and miri seems to agree with us, that's a good sign that we're on the right track.
 

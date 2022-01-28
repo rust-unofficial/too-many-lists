@@ -23,7 +23,7 @@ because we're not allowed to mutate anything.
 
 The answer to our prayers is the Clone trait. Clone is implemented by almost
 every type, and provides a generic way to get "another one like this one" that
-is logically disjoint given only a shared reference. It's like a copy
+is logically disjoint, given only a shared reference. It's like a copy
 constructor in C++, but it's never implicitly invoked.
 
 Rc in particular uses Clone as the way to increment the reference count. So
