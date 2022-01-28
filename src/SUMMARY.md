@@ -45,3 +45,4 @@
 * [A Production Unsafe Deque](sixth.md)
 * [A Bunch of Silly Lists](infinity.md)
     * [The Double Single](infinity-double-single.md)
+    * [The Stack-Allocated Linked List](infinity-stack-allocated.md)
