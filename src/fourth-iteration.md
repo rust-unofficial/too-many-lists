@@ -168,9 +168,7 @@ us just split Refs up like that. The Ref we get out of `head.borrow()` is only
 allowed to live as long as `node_ref`, but we end up trashing that in our
 `Ref::map` call.
 
-Coincidentally, as of the moment I am writing this, the function we want was
-actually stabilized 2 days ago. That means it will be a few months before it
-hits the stable release. So let's continue along with the latest nightly build:
+The function we want exists, and it's called *[map_split][]*:
 
 ```rust ,ignore
 pub fn map_split<U, V, F>(orig: Ref<'b, T>, f: F) -> (Ref<'b, U>, Ref<'b, V>) where
@@ -328,3 +326,4 @@ writing safe *applications*. Not so much safe *libraries*.
 Anyway, that's me giving up on Iter and IterMut. We could do them, but *ugh*.
 
 [own-ref]: https://crates.io/crates/owning_ref
+[map-split]: https://doc.rust-lang.org/std/cell/struct.Ref.html#method.map_split

@@ -422,16 +422,54 @@ Oh my goodness.
 The compiler's not wrong for vomiting all over us. We just committed a
 cardinal Rust sin: we stored a reference to ourselves *inside ourselves*.
 Somehow, we managed to convince Rust that this totally made sense in our
-`push` and `pop` implementations (I was legitimately shocked we did). I believe
-the reason is that Rust can't yet tell that the reference is into ourselves
-from just `push` and `pop` &mdash; or rather, Rust doesn't really have that notion
-at all. Reference-into-yourself failing to work is just an emergent behaviour.
+`push` and `pop` implementations (I was legitimately shocked we did). 
 
-As soon as we tried to *use* our list, everything quickly fell apart.
-When we call `push` or `pop`, we promptly store a reference to ourselves in
-ourselves and become *trapped*. We are literally borrowing ourselves.
+The reason this *sort of* works is that Rust doesn't really have the notion
+of a pointer into yourself at all. Each part of the code is *technically* correct
+in isolation (we *can* call push and pop *once*) but then the absurdity of what
+we created takes affect and everything just *locks up*. 
 
-Our `pop` implementation hints at why this could be really dangerous:
+I'm sure there is *some* use for what we've written, but as far as *I'm* concerned it's
+just syntatically valid *gibberish*. We're saying we contain something with
+lifetime `'a`,  and that `push` and `pop` borrows *self* for that lifetime. 
+That's *weird* but Rust can look at each part of our code *individually* and
+it doesn't see any rules being broken.
+
+But as soon as we try to actually *use* the list, the compiler quickly goes 
+"yep you've borrowed `self` mutably for `'a`, so you can't use `self` anymore
+until the end of `'a`" but *also* "because you contain `'a`, it must be valid
+for the entire list's existence".
+
+It's *nearly* a contradiction but there *is* one solution: as soon as you `push`
+or `pop`, the list "pins" itself in place and can't be accessed anymore. It has
+swallowed its own proverbial tail, and ascended to a world of dreams.
+
+> **NARRATOR**: it didn't exist when this book was first written, but Rust
+> actually [formalized the notion of a *pin* into something useful][pin]! 
+> This was probably the most complex addition to the language since 
+> *the borrowchecker*. We don't *want* our list to be pinned though!
+>
+> Pins *are* necessary and useful for async-await/futures/coroutines because
+> the compiler needs to be able to bundle up all the local variables of a
+> function into some kind of struct and store them somewhere until the 
+> future/coroutine is ready to be resumed. Since local variables can reference
+> other local variables, and we want that to *work*, these structs can end
+> up containing references to themselves!
+>
+> So to `await` or `yield` Rust needs a way to be able to properly describe
+> and manipulate pinned values. Thankfully all of this stuff is *largely*
+> just hidden away in automatic compiler machinery and no one actually has to
+> think about `Pin` (or even *Futures*) under normal circumstances. The main
+> exception is that this stuff is very important for the folks building and
+> designing async *runtimes* like tokio.
+>
+> We will not be implementing an async runtime in this book. I know my friends
+> know all sorts of "cool" (messed up) *tricks* you can do with `Pin`,
+> but from what I can tell, I'd be happier to just not know them. I will
+> continue to tell myself that Pinned types aren't real and they can't hurt me. 
+
+Our `pop` implementation hints at why storing a reference to ourselves
+*inside* ourselves could be really dangerous:
 
 ```rust ,ignore
 // ...
@@ -481,3 +519,6 @@ I'm home. I'm ready.
 Hello `unsafe`.
 
 > **NARRATOR:** Wow, just incredible hubris from the author here.
+
+
+[pin]: https://doc.rust-lang.org/std/pin/index.html

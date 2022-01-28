@@ -221,19 +221,16 @@ recursively, and also work with infinite lists due to the magic of laziness.
 Specifically, linked lists are nice because they represent an iteration without
 the need for any mutable state. The next step is just visiting the next sublist.
 
-However it should be noted that Rust can pattern match on arrays and talk
-about sub-arrays [using slices][slices]! It's actually even more expressive
-than a functional list in some regards because you can talk about the last
-element or even "the array without the first and last two elements" or
-whatever other crazy thing you want.
+Rust most does this kind of thing with [iterators][]. They can be infinite 
+and you can map, filter, reverse, and concatenate them just like a functional list,
+and it will all be done just as lazily!
 
-It is true that you can't *build* a list using slices. You can only tear
-them apart.
-
-For laziness we instead have [iterators][]. These can be infinite and you
-can map, filter, reverse, and concatenate them just like a functional list,
-and it will all be done just as lazily. No surprise here: slices can also be
-coerced to an iterator.
+Rust also lets you easily talk about sub-arrays with *[slices][]*. Your usual
+head/tail split in a functional language is [just `slice.split_at_mut(1)`][split].
+For a long time, Rust had an experimental system for pattern matching on
+slices which was super cool, but the feature was simplified when it was
+stabilized. Still, [basic slice patterns][slice-pats] are neat! And of course,
+slices can be turned into iterators!
 
 *But yes, if you're limited to immutable semantics, linked lists can be very
 nice*.
@@ -313,7 +310,9 @@ Ok. That's out of the way. Let's write a bajillion linked lists.
 [cpp-std-list]: http://en.cppreference.com/w/cpp/container/list
 [github]: https://github.com/rust-unofficial/too-many-lists
 [bjarne]: https://www.youtube.com/watch?v=YQs6IC-vgmo
-[slices]: https://doc.rust-lang.org/edition-guide/rust-2018/slice-patterns.html
+[slices]: https://doc.rust-lang.org/std/primitive.slice.html
+[split]: https://doc.rust-lang.org/std/primitive.slice.html#method.split_at_mut
+[slice-pats]: https://doc.rust-lang.org/edition-guide/rust-2018/slice-patterns.html
 [iterators]: https://doc.rust-lang.org/std/iter/trait.Iterator.html
 [ghc]: https://wiki.haskell.org/GHC_optimisations#Fusion
 [play]: https://play.rust-lang.org/
