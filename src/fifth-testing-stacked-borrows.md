@@ -822,7 +822,7 @@ A line like `let sref2 = &*mref1` is a tricksy thing. *Syntactically* it looks l
 
 That said, if you do `&**` then you are in fact loading a value with the first `*`! `*` is weird!
 
-> **NARRATOR:** No one cares that you know the word "rvalue", *jonathan*. In Rust we call them *places*, which is totally different and *so* much cooler?
+> **NARRATOR:** No one cares that you know the word "lvalue", *Jonathan*. In Rust we call them *places*, which is totally different and *so* much cooler?
 
 
 
