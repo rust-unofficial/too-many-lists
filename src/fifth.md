@@ -1,4 +1,4 @@
-# An Unsafe Singly-Linked Queue
+# An Ok Unsafe Singly-Linked Queue
 
 Ok that reference-counted interior mutability stuff got a little out of
 control. Surely Rust doesn't really expect you to do that sort of thing
@@ -9,6 +9,10 @@ want to hide that it's happening. There's gotta be a better way!
 In this chapter we're going to roll back to singly-linked lists and
 implement a singly-linked queue to dip our toes into *raw pointers*
 and *Unsafe Rust*.
+
+> **NARRATOR:** And I will point out the mistakes.
+
+And we won't make *any* mistakes.
 
 Let's add a new file called `fifth.rs`:
 

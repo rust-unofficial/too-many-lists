@@ -260,7 +260,7 @@ What about our `Rc`s. Who said we even needed to store references?
 Why can't we just Clone the whole Rc to get a nice owning handle into the middle
 of the list?
 
-```rust
+```rust ,ignore
 pub struct Iter<T>(Option<Rc<Node<T>>>);
 
 impl<T> List<T> {

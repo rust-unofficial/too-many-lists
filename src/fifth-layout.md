@@ -51,14 +51,14 @@ that push and pop are fast, and walking over the whole list is definitely *not*
 fast.
 
 One key observation is that we're wasting a ton of work doing *the same thing*
-over and over. Can we memoize this work? Why, yes! We can store a pointer to
+over and over. Can we "cache" all that work and reuse it? Why, yes! We can store a pointer to
 the end of the list, and just jump straight to there!
 
 It turns out that only one inversion of `push` and `pop` works with this.
 To invert `pop` we would have to move the "tail" pointer backwards, but
 because our list is singly-linked, we can't do that efficiently.
 If we instead invert `push` we only have to move the "head" pointer
-forwards, which is easy.
+forward, which is easy.
 
 Let's try that:
 
@@ -110,7 +110,7 @@ I'm going a bit faster with the impl details now since we should be pretty
 comfortable with this sort of thing. Not that you should necessarily expect
 to produce this code on the first try. I'm just skipping over some of the
 trial-and-error we've had to deal with before. I actually made a ton of mistakes
-writing this code that I'm not showing. You can only see me leave off a `mut` or
+writing this code that I'm not showing, but you can only see me leave off a `mut` or
 `;` so many times before it stops being instructive. Don't worry, we'll see
 plenty of *other* error messages!
 
@@ -200,7 +200,7 @@ error[E0106]: missing lifetime specifier
   |                  ^ expected lifetime parameter
 ```
 
-Oh right, we need to give references in types lifetimes. Hmm... what's the
+Oh right, we need to give lifetimes to references in types. Hmm... what's the
 lifetime of this reference? Well, this seems like IterMut, right? Let's try
 what we did for IterMut, and just add a generic `'a`:
 
@@ -451,7 +451,7 @@ So what can we do? Go back to `Rc<RefCell>>` hell?
 
 Please. No.
 
-No instead we're going to go off the rails and use *raw pointers*.
+No, instead we're going to go off the rails and use *raw pointers*.
 Our layout is going to look like this:
 
 ```rust ,ignore
@@ -468,8 +468,11 @@ struct Node<T> {
 }
 ```
 
+
 And that's that. None of this wimpy reference-counted-dynamic-borrow-checking
 nonsense! Real. Hard. Unchecked. Pointers.
+
+> **NARRATOR:** This implementation was in fact still dangerously wrong, but it wasn't yet time to learn that lesson. The next section will learn that the hard way, as usual.
 
 Let's be C everyone. Let's be C all day.
 
@@ -477,3 +480,4 @@ I'm home. I'm ready.
 
 Hello `unsafe`.
 
+> **NARRATOR:** Wow, just incredible hubris from the author here.
