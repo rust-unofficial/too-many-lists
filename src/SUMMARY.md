@@ -43,6 +43,8 @@
     * [Extras](fifth-extras.md)
     * [Final Code](fifth-final.md)
 * [A Production Unsafe Deque](sixth.md)
+    * [Layout](sixth-layout.md)
+    * [Unsafe](sixth-basics.md)    
 * [A Bunch of Silly Lists](infinity.md)
     * [The Double Single](infinity-double-single.md)
     * [The Stack-Allocated Linked List](infinity-stack-allocated.md)
