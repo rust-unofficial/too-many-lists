@@ -139,7 +139,7 @@ pub fn push(&mut self, elem: T) {
 ```
 
 
-Hey that code's actuallyy looking a lot cleaner now that we're sticking to raw pointers!
+Hey that code's actually looking a lot cleaner now that we're sticking to raw pointers!
 
 On to pop, which is also pretty similar to how we left it, although we've got to remember to use `Box::from_raw` to clean up the allocation:
 

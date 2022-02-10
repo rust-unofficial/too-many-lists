@@ -6,7 +6,7 @@ So let's allocate memory on the stack the easy way: by calling a function and ge
 
 Any time you're doing something recursively, you can just pass a pointer to the current step's state to the next step. If that pointer itself is *part* of the state, then you've created a linked list that's stack-allocated!
 
-Now of course we're in the *silly* part of the book so we're going to do this in a silly way: by making the linked list the star and forcing all the user's code to live in a swap of callbacks. Everybody loves nested callbacks!
+Now of course we're in the *silly* part of the book so we're going to do this in a silly way: by making the linked list the star and forcing all the user's code to live in a swamp of callbacks. Everybody loves nested callbacks!
 
 Our List type will just be a Node with a reference to another Node:
 
@@ -244,7 +244,7 @@ error[E0521]: borrowed data escapes outside of closure
 
 Hmm no that's still some hot garbage.
 
-The problem is that our list is accidentally(?😉) relying on *variance*. [Variance is a complicated subject](https://doc.rust-lang.org/nomicon/subtyping.html) but let's look at it in simplified terms here:
+The problem is that our list is accidentally(😉) relying on *variance*. [Variance is a complicated subject](https://doc.rust-lang.org/nomicon/subtyping.html) but let's look at it in simplified terms here:
 
 Each list contains a reference to a List with *the exact same type as itself*. From the perspective of the inner-most list, that means all lists are using the same lifetime as itself, but this is *objectively* false: each node in the list lives strictly longer than the next one, because they are literally in nested scopes!
 
@@ -271,7 +271,7 @@ List::push(None, 3, |list| {
 })
 ```
 
-The problem with forgetting details is that *somewhere else might rememeber
+The problem with forgetting details is that *somewhere else might remember
 those details and expect them to remain true*. That is a very big problem
 once you introduce *mutation*. If you're not careful, the code that doesn't
 remember the "and more" that we threw away might think it's fine to write
@@ -291,7 +291,7 @@ So while you *can* shorten the lifetime of a mutable reference, once you start
 lifetimes anymore. 
 
 Specifically `&mut &'big mut T` cannot be converted to `&mut &'small mut T`, 
-where `'big` is smaller than `'small`. Or more formally, `&'a mut T` is covariant
+where `'big` is bigger than `'small`. Or more formally, `&'a mut T` is covariant
 over `'a` but invariant over `T`.
 
 Fun fact: Java actually specifically *lets* you do this kind of thing, but it
