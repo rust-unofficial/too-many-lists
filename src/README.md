@@ -192,7 +192,7 @@ But this is a worst-case scenario. In the best-case, an array stack only has
 three pointers of overhead for the entire array. Basically no overhead.
 
 Linked lists on the other hand unconditionally waste space per element.
-A singly-linked lists wastes one pointer while a doubly-linked list wastes
+A singly-linked list wastes one pointer while a doubly-linked list wastes
 two. Unlike an array, the relative wasteage is proportional to the size of
 the element. If you have *huge* elements this approaches 0 waste. If you have
 tiny elements (say, bytes), then this can be as much as 16x memory overhead
