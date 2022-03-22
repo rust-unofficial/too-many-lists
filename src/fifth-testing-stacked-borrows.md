@@ -474,7 +474,7 @@ unsafe {
 ```text
 cargo run
 
-error[E0606]: casting `&&mut i32` as `*mut i32` is invalid
+error[E0606]: casting `&mut i32` as `*mut i32` is invalid
   --> src\main.rs:11:16
    |
 11 |     let ptr4 = sref3 as *mut i32;
@@ -487,7 +487,7 @@ Oh whoops, we were actually messing around with `& &mut` instead of `&`! Rust is
 ```text
 cargo run
 
-error[E0606]: casting `&i32` as `*mut i32` is invalid
+error[E0606]: casting `&&i32` as `*mut i32` is invalid
   --> src\main.rs:11:16
    |
 11 |     let ptr4 = sref3 as *mut i32;
