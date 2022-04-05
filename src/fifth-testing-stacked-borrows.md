@@ -459,7 +459,7 @@ unsafe {
     let mut data = 10;
     let mref1 = &mut data;
     let ptr2 = mref1 as *mut i32;
-    let sref3 = &*mref1;
+    let sref3 = &mref1;
     let ptr4 = sref3 as *mut i32;
 
     *ptr4 += 4;
@@ -481,7 +481,7 @@ error[E0606]: casting `&&mut i32` as `*mut i32` is invalid
    |                ^^^^^^^^^^^^^^^^^
 ```
 
-Oh whoops, we were actually messing around with `& &mut` instead of `&`! Rust is very good at papering over that when it doesn't matter. Let's properly reborrow it with `let sref3 = &mref1`:
+Oh whoops, we were actually messing around with `& &mut` instead of `&`! Rust is very good at papering over that when it doesn't matter. Let's properly reborrow it with `let sref3 = &*mref1`:
 
 
 ```text
