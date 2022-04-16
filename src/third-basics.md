@@ -109,7 +109,7 @@ reference to the first element. That's just `peek` from the mutable list:
 
 ```rust ,ignore
 pub fn head(&self) -> Option<&T> {
-    self.head.as_ref().map(|node| &node.elem )
+    self.head.as_ref().map(|node| &node.elem)
 }
 ```
 

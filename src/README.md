@@ -221,7 +221,7 @@ recursively, and also work with infinite lists due to the magic of laziness.
 Specifically, linked lists are nice because they represent an iteration without
 the need for any mutable state. The next step is just visiting the next sublist.
 
-Rust most does this kind of thing with [iterators][]. They can be infinite 
+Rust mostly does this kind of thing with [iterators][]. They can be infinite 
 and you can map, filter, reverse, and concatenate them just like a functional list,
 and it will all be done just as lazily!
 
