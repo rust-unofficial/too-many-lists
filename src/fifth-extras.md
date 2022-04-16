@@ -155,10 +155,12 @@ impl<'a, T> Iterator for Iter<'a, T> {
     type Item = &'a T;
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.next.map(|node| {
-            self.next = node.next.as_deref();
-            &node.elem
-        })
+        unsafe {
+            self.next.map(|node| {
+                self.next = node.next.as_ref();
+                &node.elem
+            })
+        }
     }
 }
 
@@ -166,10 +168,12 @@ impl<'a, T> Iterator for IterMut<'a, T> {
     type Item = &'a mut T;
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.next.take().map(|node| {
-            self.next = node.next.as_deref_mut();
-            &mut node.elem
-        })
+        unsafe {
+            self.next.take().map(|node| {
+                self.next = node.next.as_mut();
+                &mut node.elem
+            })
+        }
     }
 }
 ```
