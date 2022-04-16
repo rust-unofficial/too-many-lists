@@ -333,6 +333,7 @@ pub fn pop(&'a mut self) -> Option<T> {
 And write a quick test for that:
 
 ```rust ,ignore
+#[cfg(test)]
 mod test {
     use super::List;
     #[test]
