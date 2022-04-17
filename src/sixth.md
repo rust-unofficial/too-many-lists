@@ -1,4 +1,4 @@
-# An Production Unsafe Doubly-Linked Deque
+# A Production-Quality Unsafe Doubly-Linked Deque
 
 We finally made it. My greatests nemesis: **[std::collections::LinkedList][linked-list], the Doubly-Linked Deque**. 
 
