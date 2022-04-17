@@ -16,9 +16,9 @@ We have this:
 
 This lets you traverse the list from either direction, or seek back and forth with a [cursor](https://doc.rust-lang.org/std/collections/struct.LinkedList.html#method.cursor_back_mut).
 
-In exchange for this flexibility, every node has to store twice as many pointers, and every operations has to fix up way more pointers. It's a significant enough complication that it's a lot easier to make a mistake, so we're going to be doing a lot of testing.
+In exchange for this flexibility, every node has to store twice as many pointers, and every operation has to fix up way more pointers. It's a significant enough complication that it's a lot easier to make a mistake, so we're going to be doing a lot of testing.
 
-You might have also noticed that I intentionally haven't drawn the *ends* of the list. This is because this one of the places where there are genuinely defensible options for our implementation. We *definitely* need our implementation to have two pointers: one to the start of the list, and one to the end of the list.
+You might have also noticed that I intentionally haven't drawn the *ends* of the list. This is because this is one of the places where there are genuinely defensible options for our implementation. We *definitely* need our implementation to have two pointers: one to the start of the list, and one to the end of the list.
 
 There are two notable ways to do this in my mind: "traditional" and "dummy node".
 
@@ -64,23 +64,26 @@ Problem 2: What *value* is stored in the dummy node? Sure if it's an integer it'
 
 * Make every node store [`MaybeUninit<T>`](https://doc.rust-lang.org/std/mem/union.MaybeUninit.html). Horrifying and annoying.
 
-* *Really* careful and clever inheritance-style type punning so the dummy node doesn't include the data field. This is also tempting but it's extremely dangerous and annoying. Read [BTreeMap's sourcecode](https://doc.rust-lang.org/1.55.0/src/alloc/collections/btree/node.rs.html#49-104) if you want to see that kind of perverted stuff.
+* *Really* careful and clever inheritance-style type punning so the dummy node doesn't include the data field. This is also tempting but it's extremely dangerous and annoying. Read [BTreeMap's source](https://doc.rust-lang.org/1.55.0/src/alloc/collections/btree/node.rs.html#49-104) if you want to see that kind of perverted stuff.
 
-The problems really outweight the convenience for a language like Rust, so we're going to stick to the traditional layout. We'll be using the same basic design as we did for the unsafe queue in the previous chapter:
+The problems really outweigh the convenience for a language like Rust, so we're going to stick to the traditional layout. We'll be using the same basic design as we did for the unsafe queue in the previous chapter:
 
 ```rust
-pub type Link<T> = *mut Node<T>;
-
-pub struct List<T> {
+pub struct LinkedList<T> {
     front: Link<T>,
     back: Link<T>,
+    len: usize,
 }
 
-pub struct Node<T> {
-    prev: Link<T>,
-    next: Link<T>,
+type Link<T> = *mut Node<T>;
+
+struct Node<T> {
+    front: Link<T>,
+    back: Link<T>,
     elem: T, 
 }
 ```
 
-This isn't quite a *true* production-quality layout yet. It's *fine* but there's magic tricks we can do to tell Rust what we're doing a bit better. Something we'll look at later. Maybe.
+(Now that we have reached the doubly-linked-deque, we have finally earned the right to call ourselves LinkedList, for this is the True Linked List.)
+
+This isn't quite a *true* production-quality layout yet. It's *fine* but there's magic tricks we can do to tell Rust what we're doing a bit better. To do that we're going to need to go... deeper.
