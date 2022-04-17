@@ -55,6 +55,8 @@ LinkedList had won. I was defeated and forced into exile.
 
 But you're here now. You've come this far. Surely now you can understand the depths of LinkedList's debauchery! Come, I will you show you everything you need to know to help me destroy it once and for all &mdash; everything you need to know to implement an unsafe production-quality Doubly-Linked Deque.
 
+How production-quality? Well we're going to completely rewrite my ancient Rust 1.0 linked-list crate, the one that is objectively better than the one in std. The one with Cursors on stable Rust, from 2015! Something the 2022 stdlib still doesn't have!
+
 
 
 
