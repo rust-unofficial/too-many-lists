@@ -128,6 +128,8 @@ error[E0308]: mismatched types
 
 Ok cool, we've proved it's invariant, but uh, now our tests fail. No worries, rustdoc lets you say that's expected by annotating the fence with compile_fail!
 
+(Actually we only proved it's "not covariant" but honestly if you manage to make a type "accidentaly and incorrectly contravariant" then, congrats?)
+
 ```rust ,ignore
     /// ```compile_fail
     /// use linked_list::IterMut;
