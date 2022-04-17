@@ -153,7 +153,18 @@ test src\lib.rs - assert_properties::iter_mut_invariant (line 458) - compile fai
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
 ```
 
-Yay! I recommend always making the test without compile_fail so that you can confirm that it fails to compile *for the right reason*. For instance, this test will also fail if you fail to include the `use` at the start, which, is not what we want!
+Yay! I recommend always making the test without compile_fail so that you can confirm that it fails to compile *for the right reason*. For instance, this test will also fail if you fail to include the `use` at the start, which, is not what we want! Oh wait, we can actually just specify the error code we want next to the compile_fail:
+
+```rust ,ignore
+    /// ```compile_fail,E0308
+    /// use linked_list::IterMut;
+    /// 
+    /// fn iter_mut_covariant<'i, 'a, T>(x: IterMut<'i, &'static T>) -> IterMut<'i, &'a T> { x }
+    /// ```
+    fn iter_mut_invariant() {}
+```
+
+Hopefully the compiler won't change that... it's *probably* fine. 🙃
 
 ...also, did you notice the part where we actually made IterMut invariant? It was easy to miss, since I "just" copy-pasted Iter and dumped it at the end. It's the last line here:
 
@@ -216,3 +227,4 @@ test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; 
 ```
 
 Eyyy!!! The system works! I love having tests that actually do their job, so that I don't have to be quite so horrified of looming mistakes!
+
