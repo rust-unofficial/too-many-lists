@@ -94,7 +94,7 @@ See it doesn't compile eith-- wait what??? Vec is magic??????
 
 Well, yes. But also, no. The magic was inside us all along, and that magic is ✨*Variance*✨.
 
-Read the [nomicon's chapter on subtyping]([Variance](https://doc.rust-lang.org/nightly/nomicon/subtyping.html) if you want all the gorey details, but basically subtyping *isn't* always safe. In particular it's not safe when mutable references are involved because you can use things like `mem::swap` and suddenly oops dangling pointers!
+Read the [nomicon's chapter on subtyping](https://doc.rust-lang.org/nightly/nomicon/subtyping.html) if you want all the gorey details, but basically subtyping *isn't* always safe. In particular it's not safe when mutable references are involved because you can use things like `mem::swap` and suddenly oops dangling pointers!
 
 Things that are "like mutable references" are *invariant* which means they block subtyping from happening on their generic parameters. So for safety, `&mut T` is invariant over T, and `Cell<T>` is invariant over T because `&Cell<T>` is basically just `&mut T` (because of interior mutability).
 

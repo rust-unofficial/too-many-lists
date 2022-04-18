@@ -172,7 +172,7 @@ impl<T> LinkedList<T> {
 
 What can panic here? Well, knowing that honestly requires you to be a bit of a Rust expert, but thankfully, I am!
 
-The only places I can see in this code that *possibly* can panic (barring some absolute fuckery where someone recompiles the stdlib with debug_asserts enabled, but this is not something you should ever do) are Box::new (for out-of-memory conditions) and and the len arithmetic. All of that stuff is at the very end or very start of our methods, so yep, we're being nice and safe!
+The only places I can see in this code that *possibly* can panic (barring some absolute fuckery where someone recompiles the stdlib with debug_asserts enabled, but this is not something you should ever do) are `Box::new` (for out-of-memory conditions) and the len arithmetic. All of that stuff is at the very end or very start of our methods, so yep, we're being nice and safe!
 
-...were you surprised by Box::new being able to panic? Panics will get you like that! Try to preserve those invariants so you don't need to worry about it!
+...were you surprised by `Box::new` being able to panic? Panics will get you like that! Try to preserve those invariants so you don't need to worry about it!
 
