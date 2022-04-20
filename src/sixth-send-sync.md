@@ -155,7 +155,9 @@ test src\lib.rs - assert_properties::iter_mut_invariant (line 458) - compile fai
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
 ```
 
-Yay! I recommend always making the test without compile_fail so that you can confirm that it fails to compile *for the right reason*. For instance, this test will also fail if you fail to include the `use` at the start, which, is not what we want! Oh wait, we can actually just specify the error code we want next to the compile_fail:
+Yay! I recommend always making the test without compile_fail so that you can confirm that it fails to compile *for the right reason*. For instance, that test will also fail (and therefore pass) if you forget the `use`, which, is not what we want! While it's conceptually appealing to be able to "require" a specific error from the compiler, this would be an absolute nightmare that would effectively make it a breaking change *for the compiler to produce better errors*. We want the compiler to get better, so, no you don't get to have that.
+
+(Oh wait, we can actually just specify the error code we want next to the compile_fail **but this only works on nightly and is a bad idea to rely on for the reasons state above. It will be silently ignored on not-nightly.**)
 
 ```rust ,ignore
     /// ```compile_fail,E0308
@@ -165,8 +167,6 @@ Yay! I recommend always making the test without compile_fail so that you can con
     /// ```
     fn iter_mut_invariant() {}
 ```
-
-Hopefully the compiler won't change that... it's *probably* fine. 🙃
 
 ...also, did you notice the part where we actually made IterMut invariant? It was easy to miss, since I "just" copy-pasted Iter and dumped it at the end. It's the last line here:
 
