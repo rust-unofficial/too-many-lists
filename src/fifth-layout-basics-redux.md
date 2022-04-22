@@ -32,7 +32,7 @@ And here's our new layout:
 ```rust
 pub struct List<T> {
     head: Link<T>,
-    tail: *mut Node<T>,
+    tail: Link<T>,
 }
 
 type Link<T> = *mut Node<T>; // MUCH BETTER
