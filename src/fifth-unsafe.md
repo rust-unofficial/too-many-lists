@@ -21,7 +21,7 @@ I *really* don't want to go really deep into it (well, I do. I did. [Read that
 book][nom]). That's ok, because with linked lists we can actually ignore almost
 all of it.
 
-> **NARRATOR:** This was a lie, but it did seemed true in 2015.
+> **NARRATOR:** This was a lie, but it did seem true in 2015.
 
 The main Unsafe tool we'll be using are *raw pointers*. Raw pointers are
 basically C's pointers. They have no inherent aliasing rules. They have no
