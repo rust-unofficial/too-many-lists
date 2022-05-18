@@ -86,3 +86,51 @@ test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured
 ```
 
 Nice!
+
+For the sake of curiosity, let's try to iterate twice over the list:
+
+```rust ,ignore
+#[test]
+fn into_iter() {
+    let mut list = List::new();
+    list.push(1); list.push(2); list.push(3);
+
+    let mut iter = list.into_iter();
+    assert_eq!(iter.next(), Some(3));
+    assert_eq!(iter.next(), Some(2));
+    assert_eq!(iter.next(), Some(1));
+    assert_eq!(iter.next(), None);
+
+    let mut iter = list.into_iter();
+    assert_eq!(iter.next(), Some(3));
+    assert_eq!(iter.next(), Some(2));
+    assert_eq!(iter.next(), Some(1));
+    assert_eq!(iter.next(), None);
+}
+```
+
+```text
+> cargo build
+error[E0382]: use of moved value: `list`
+   --> src/second.rs:167:24
+    |
+158 |         let mut list = List::new();
+    |             -------- move occurs because `list` has type `second::List<i32>`, which does not implement the `Copy` trait
+...
+161 |         let mut iter = list.into_iter();
+    |                             ----------- `list` moved due to this method call
+...
+167 |         let mut iter = list.into_iter();
+    |                        ^^^^ value used here after move
+    |
+note: this function takes ownership of the receiver `self`, which moves `list`
+   --> src/second.rs:45:22
+    |
+45  |     pub fn into_iter(self) -> IntoIter<T> {
+    |                      ^^^^
+```
+
+This is the cost of `into_iter`. In order for `next` to return values and not
+references, to give ownership to the result to the caller, our `into_iter` had
+to take ownership of the list; which mean the list can't be used anymore. Which
+is exactly what we do in the next section.
