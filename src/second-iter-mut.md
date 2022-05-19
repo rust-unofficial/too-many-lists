@@ -163,6 +163,7 @@ fn iter_mut() {
     assert_eq!(iter.next(), Some(&mut 3));
     assert_eq!(iter.next(), Some(&mut 2));
     assert_eq!(iter.next(), Some(&mut 1));
+    assert_eq!(iter.next(), None);
 }
 ```
 
