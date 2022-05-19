@@ -326,4 +326,4 @@ writing safe *applications*. Not so much safe *libraries*.
 Anyway, that's me giving up on Iter and IterMut. We could do them, but *ugh*.
 
 [own-ref]: https://crates.io/crates/owning_ref
-[map-split]: https://doc.rust-lang.org/std/cell/struct.Ref.html#method.map_split
+[map_split]: https://doc.rust-lang.org/std/cell/struct.Ref.html#method.map_split
