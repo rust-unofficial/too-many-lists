@@ -50,6 +50,13 @@ about precise asymptotic bounds, just "fast" vs "slow". Queues guarantee
 that push and pop are fast, and walking over the whole list is definitely *not*
 fast.
 
+Purely functional programmers have devised complex solutions for queues with
+constant worst-time operations, such as [real-time queue][], using techniques
+such as laziness, memoization and scheduling. As far as our book is concerned,
+this is cheating. It replaces a good understanding of pointers by some
+more-or-less clever mathematical tricks. We will happily ignore it and keep our
+data structure as a simple sequence of nodes.
+
 One key observation is that we're wasting a ton of work doing *the same thing*
 over and over. Can we "cache" all that work and reuse it? Why, yes! We can store a pointer to
 the end of the list, and just jump straight to there!
@@ -523,3 +530,4 @@ Hello `unsafe`.
 
 
 [pin]: https://doc.rust-lang.org/std/pin/index.html
+[real-time queue]: https://en.wikipedia.org/wiki/Queue_(abstract_data_type)#Real-time_queue
