@@ -37,7 +37,7 @@ reference, here's what we're going to be making:
 2. [An Ok Singly-Linked Stack](second.md)
 3. [A Persistent Singly-Linked Stack](third.md)
 4. [A Bad But Safe Doubly-Linked Deque](fourth.md)
-5. [An Ok Unsafe Doubly-Linked Deque](fifth.md)
+5. [An Ok Unsafe Singly-Linked Queue](fifth.md)
 6. [A Production Unsafe Doubly-Linked Deque](sixth.md)
 7. [Bonus: A Bunch of Silly Lists](infinity.md)
 
