@@ -112,7 +112,11 @@ Here we `replace` self.head temporarily with Link::Empty before replacing it
 with the new head of the list. I'm not gonna lie: this is a pretty unfortunate
 thing to have to do. Sadly, we must (for now).
 
-But hey, that's `push` all done! Probably. We should probably test it, honestly.
+If you are more of a "graphical example" person, an example of adding 20 to non-empty stack can be found in the next figure:
+
+![Usage of push and how mem::replace becomes handy](img/first-push-example.png)
+
+So... that's `push` all done! Probably. We should probably test it, honestly.
 Right now the easiest way to do that is probably to write `pop`, and make sure
 that it produces the right results.
 
