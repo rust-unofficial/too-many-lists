@@ -312,15 +312,15 @@ Rust is mad at us again. We marked the `List` as public (because we want people
 to be able to use it), but not the `Node`. The problem is that the internals of
 an `enum` are totally public, and we're not allowed to publicly talk about
 private types. We could make all of `Node` totally public, but generally in Rust
-we favour keeping implementation details private. Let's make `List` a struct, so
+we favour keeping implementation details private. Let's wrap `List` inside a struct, so
 that we can hide the implementation details:
 
 ```rust ,ignore
-pub struct List {
+pub struct List {  // our new wrapper struct
     head: Link,
 }
 
-enum Link {
+enum Link {  // previously known as List
     Empty,
     More(Box<Node>),
 }
