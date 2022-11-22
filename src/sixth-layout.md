@@ -1,6 +1,6 @@
 # Layout
 
-Let us begin by first studying the structure of our enemy. A Doubly-Linked List is conceptually simple, but that's how it decieves and manipulates you. It's the same kind of linked list we've looked at over and over, but the links go both ways. Double the links, double the evil.
+Let us begin by first studying the structure of our enemy. A Doubly-Linked List is conceptually simple, but that's how it deceives and manipulates you. It's the same kind of linked list we've looked at over and over, but the links go both ways. Double the links, double the evil.
 
 So rather than this (gonna drop the Some/None stuff to keep it cleaner):
 
