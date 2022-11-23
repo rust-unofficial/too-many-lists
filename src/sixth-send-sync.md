@@ -79,7 +79,7 @@ unsafe impl<'a, T: Sync> Sync for IterMut<'a, T> {}
 
 Note that we have to write *unsafe impl* here: these are *unsafe traits*! Unsafe code (like concurrency libraries) gets to rely on us only implementing these traits correctly! Since there's no actual code, the guarantee we're making is just that, yes, we are indeed safe to Send or Share between threads!
 
-Don't just slap these on lightly, but I am a Certified Professional here to say: yep there's are totally fine. Note how we don't need to implement Send and Sync for IntoIter: it just contains LinkedList, so it auto-derives Send and Sync &mdash; I told you they were actually opt out! (You opt out with the hillarious syntax of `impl !Send for MyType {}`.)
+Don't just slap these on lightly, but I am a Certified Professional here to say: yep there's are totally fine. Note how we don't need to implement Send and Sync for IntoIter: it just contains LinkedList, so it auto-derives Send and Sync &mdash; I told you they were actually opt out! (You opt out with the hilarious syntax of `impl !Send for MyType {}`.)
 
 ```text
 cargo build
