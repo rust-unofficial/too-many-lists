@@ -1,14 +1,3 @@
-# Final Code
-
-I can't believe I actually just made you sit through me actually reimplementing std::collections::LinkedList from scratch, with all the fiddly little pedantry and mistakes I made along the way.
-
-I did it, the book is done, I can finally rest.
-
-Alright, here's all 1200 lines of our complete rewrite of  in all of its glory. This should be the same text as [this commit](https://github.com/contain-rs/linked-list/commit/5b69cc29454595172a5167a09277660342b78092).
-
-I'll put some polish and docs back on and publish 0.1.0 later.
-
-```rust
 use std::cmp::Ordering;
 use std::fmt::{self, Debug};
 use std::hash::{Hash, Hasher};
@@ -541,7 +530,7 @@ impl<'a, T> CursorMut<'a, T> {
                 // What self will become
                 let new_len = old_len - old_idx;
                 let new_front = self.cur;
-                let new_back = self.list.back;
+                let new_back = None;
                 let new_idx = Some(0);
 
                 // What the output will become
@@ -1214,5 +1203,40 @@ mod test {
 
         assert_eq!(from_front, re_reved);
     }
+
+    #[test]
+    fn split_before_first() {
+        let mut m: LinkedList<u32> = LinkedList::new();
+        m.extend([1, 2, 3, 4, 5, 6]);
+        let mut cursor = m.cursor_mut();
+        cursor.move_next();
+        assert_eq!(cursor.current(), Some(&mut 1));
+
+        let left = cursor.split_before();
+        assert!(left.is_empty());
+        assert!(left.front.is_none() && left.back.is_none());
+
+        assert_eq!(cursor.current(), Some(&mut 1));
+        assert_eq!(m.iter().cloned().collect::<Vec<_>>(), &[1, 2, 3, 4, 5, 6]);
+        assert_eq!(m.len(), 6);
+    }
+
+    #[test]
+    fn split_after_last() {
+        let mut m: LinkedList<u32> = LinkedList::new();
+        m.extend([1, 2, 3, 4, 5, 6]);
+        assert_eq!(m.iter().cloned().collect::<Vec<_>>(), &[1, 2, 3, 4, 5, 6]);
+        let mut cursor = m.cursor_mut();
+
+        cursor.move_prev();
+        assert_eq!(cursor.current(), Some(&mut 6));
+
+        let right = cursor.split_after();
+        assert!(right.is_empty());
+        assert!(right.front.is_none() && right.back.is_none());
+
+        assert_eq!(cursor.current(), Some(&mut 6));
+        assert_eq!(m.iter().cloned().collect::<Vec<_>>(), &[1, 2, 3, 4, 5, 6]);
+        assert_eq!(m.len(), 6);
+    }
 }
-```
