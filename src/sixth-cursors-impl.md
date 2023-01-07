@@ -196,13 +196,16 @@ pub fn split_before(&mut self) -> LinkedList<T> {
 
             // What the output will become
             let output_len = old_len - new_len;
-            let output_front = self.list.front;
+            let mut output_front = self.list.front;
             let output_back = prev;
 
             // Break the links between cur and prev
             if let Some(prev) = prev {
                 (*cur.as_ptr()).front = None;
                 (*prev.as_ptr()).back = None;
+            } else {
+                // We're at the first node, need to unset the head we "optimistically" set before.
+                output_front = None;
             }
 
             // Produce the result:
@@ -232,6 +235,8 @@ Note that this if-let is handling the "normal case, but prev is the ghost" situa
 if let Some(prev) = prev {
     (*cur.as_ptr()).front = None;
     (*prev.as_ptr()).back = None;
+} else {
+    output_front = None;
 }
 ```
 
@@ -589,13 +594,16 @@ impl<'a, T> CursorMut<'a, T> {
 
                 // What the output will become
                 let output_len = old_len - new_len;
-                let output_front = self.list.front;
+                let mut output_front = self.list.front;
                 let output_back = prev;
 
                 // Break the links between cur and prev
                 if let Some(prev) = prev {
                     (*cur.as_ptr()).front = None;
                     (*prev.as_ptr()).back = None;
+                } else {
+                    // We're at the first node, need to unset the head we "optimistically" set before.
+                    output_front = None;
                 }
 
                 // Produce the result:
@@ -652,12 +660,15 @@ impl<'a, T> CursorMut<'a, T> {
                 // What the output will become
                 let output_len = old_len - new_len;
                 let output_front = next;
-                let output_back = self.list.back;
+                let mut output_back = self.list.back;
 
                 // Break the links between cur and next
                 if let Some(next) = next {
                     (*cur.as_ptr()).back = None;
                     (*next.as_ptr()).front = None;
+                } else {
+                    // We're at the first node, need to unset the tail we "optimistically" set before.
+                    output_back = None;
                 }
 
                 // Produce the result:
