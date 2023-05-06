@@ -276,9 +276,9 @@ Even though `data` is one "allocation" (local variable), `ref1_at_0` is only bor
 unsafe {
     let mut data = [0; 10];
     let ref1_at_0 = &mut data[0];           // Reference to 0th element
-    let ref2_at_1 = &mut data[1];           // Reference to 1th element
+    let ref2_at_1 = &mut data[1];           // Reference to 1st element
     let ptr3_at_0 = ref1_at_0 as *mut i32;  // Ptr to 0th element
-    let ptr4_at_1 = ref2_at_1 as *mut i32;   // Ptr to 1th element
+    let ptr4_at_1 = ref2_at_1 as *mut i32;   // Ptr to 1st element
 
     *ptr4_at_1 += 4;
     *ptr3_at_0 += 3;
@@ -296,7 +296,7 @@ error[E0499]: cannot borrow `data[_]` as mutable more than once at a time
   |
 4 |     let ref1_at_0 = &mut data[0];           // Reference to 0th element
   |                     ------------ first mutable borrow occurs here
-5 |     let ref2_at_1 = &mut data[1];           // Reference to 1th element
+5 |     let ref2_at_1 = &mut data[1];           // Reference to 1st element
   |                     ^^^^^^^^^^^^ second mutable borrow occurs here
 6 |     let ptr3_at_0 = ref1_at_0 as *mut i32;  // Ptr to 0th element
   |                     --------- first borrow later used here
@@ -315,9 +315,9 @@ unsafe {
     let (slice2_at_0, slice3_at_1) = slice1.split_at_mut(1); 
     
     let ref4_at_0 = &mut slice2_at_0[0];    // Reference to 0th element
-    let ref5_at_1 = &mut slice3_at_1[0];    // Reference to 1th element
+    let ref5_at_1 = &mut slice3_at_1[0];    // Reference to 1st element
     let ptr6_at_0 = ref4_at_0 as *mut i32;  // Ptr to 0th element
-    let ptr7_at_1 = ref5_at_1 as *mut i32;  // Ptr to 1th element
+    let ptr7_at_1 = ref5_at_1 as *mut i32;  // Ptr to 1st element
 
     *ptr7_at_1 += 7;
     *ptr6_at_0 += 6;
@@ -353,9 +353,9 @@ unsafe {
     let ptr2_all = slice1_all.as_mut_ptr(); // Pointer for the entire array
     
     let ptr3_at_0 = ptr2_all;               // Pointer to 0th elem (the same)
-    let ptr4_at_1 = ptr2_all.add(1);        // Pointer to 1th elem
+    let ptr4_at_1 = ptr2_all.add(1);        // Pointer to 1st elem
     let ref5_at_0 = &mut *ptr3_at_0;        // Reference to 0th elem
-    let ref6_at_1 = &mut *ptr4_at_1;        // Reference to 1th elem
+    let ref6_at_1 = &mut *ptr4_at_1;        // Reference to 1st elem
 
     *ref6_at_1 += 6;
     *ref5_at_0 += 5;
