@@ -36,9 +36,10 @@ let mut list = List::new();
 list.push(1); list.push(2); list.push(3);
 
 let mut iter = list.iter();
-let x = iter.next().unwrap();
-let y = iter.next().unwrap();
-let z = iter.next().unwrap();
+let ref_to = iter.next().unwrap();
+let x = ref_to;
+let y = ref_to;
+let z = ref_to;
 ```
 
 Cool!
