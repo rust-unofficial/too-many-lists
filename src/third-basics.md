@@ -222,7 +222,7 @@ test second::test::peek ... ok
 test third::test::basics ... ok
 test third::test::iter ... ok
 
-test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured
 
 ```
 
