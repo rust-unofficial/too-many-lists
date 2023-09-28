@@ -80,7 +80,7 @@ In this case, we have two options to make our code a bit more robust:
 
 * Kill the debug_asserts and trust ourselves to write better tests with dedicated "integrity check" functions that won't run in user code ever.
 
-In principle I like the first option, but it doesn't actually work great for a doubly-linked list, because everything is doubly-redundantly encoded. Option::take wouldn't fix the problem here, but moving the debug_assert down a line would. But really, why make things harder for ourselves? Let's just remove those debug_asserts, and make sure anything can panic is at the start or end of our methods, where our invariants should be known to hold.
+In principle I like the first option, but it doesn't actually work great for a doubly-linked list, because everything is doubly-redundantly encoded. Option::take wouldn't fix the problem here, but moving the debug_assert down a line would. But really, why make things harder for ourselves? Let's just remove those debug_asserts, and make sure anything that can panic is at the start or end of our methods, where our invariants should be known to hold.
 
 (In this way it's perhaps more accurate to think of them as *preconditions* and *postconditions* but you really should endeavour to treat them as invariants as much as possible!)
 
