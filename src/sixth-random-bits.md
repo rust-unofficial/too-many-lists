@@ -98,7 +98,7 @@ Ok there's actually a few things worth noting here.
 
 First, a nasty namespace clash. For whatever reason std now has macros named Hash and Debug, and so if you don't have the traits imported, you'll get really cryptic errors about macros instead of the proper "missing trait".
 
-The other intersting thing to talk about is Hash itself. Do you see how we hash in `len`? That's actually really important! If collections don't hash in lengths, [they can accidentally make themselves vulnerable to prefix collisions](https://doc.rust-lang.org/std/hash/trait.Hash.html#prefix-collisions). For instance, what distinguishes `["he", "llo"]` from `["hello"]`? If no one is hashing lengths or some other "separator", nothing! Making it too easy for hash collisions to accidentally or maliciously happen can result in serious sadness, so just do it!
+The other interesting thing to talk about is Hash itself. Do you see how we hash in `len`? That's actually really important! If collections don't hash in lengths, [they can make themselves vulnerable to prefix collisions](https://doc.rust-lang.org/std/hash/trait.Hash.html#prefix-collisions). For instance, `[]`, `[()]` and `[(), ()]` are all zero-sized types: without hashing in the length they will all hash to the same value. Making it too easy for hash collisions to accidentally or maliciously happen can result in serious sadness, so be careful!
 
 Alright, here's our current code:
 
