@@ -86,7 +86,7 @@ let ref2 = &mut *ref1;
 println!("{}", data);
 ```
 
-The compiles and runs fine. What's the deal? 
+The code compiles and runs fine. What's the deal? 
 
 Well we can see what's going on by swapping the two uses:
 
