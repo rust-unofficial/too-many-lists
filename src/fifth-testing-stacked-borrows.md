@@ -6,7 +6,7 @@
 > * Only the one on the top of the stack is "live" (has exclusive access)
 > * When you access a lower one it becomes "live" and the ones above it get popped
 > * You're not allowed to use pointers that have been popped from the borrow stack
-> * The borrowchecker ensures safe code code obeys this
+> * The borrowchecker ensures safe code obeys this
 > * Miri theoretically checks that raw pointers obey this at runtime
 
 That was a lot of theory and ideas -- let's move on to the true heart and soul of this book: writing some bad code and getting our tools to scream at us. We're going to go through a *ton* of examples to try to see if our mental model makes sense, and to try to get an intuitive feel for stacked borrows.
