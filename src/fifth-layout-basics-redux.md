@@ -111,7 +111,7 @@ So instead we're going to use the very nice [Box::into_raw][] function:
 >  let x = unsafe { Box::from_raw(ptr) };
 > ```
 
-Nice, that looks *literally* designed for our use case. It also matches the rules we're trying to follow: start with safe stuff, turn into into raw pointers, and then only convert back to safe stuff at the end (when we want to Drop it).
+Nice, that looks *literally* designed for our use case. It also matches the rules we're trying to follow: start with safe stuff, turn into raw pointers, and then only convert back to safe stuff at the end (when we want to Drop it).
 
 This is basically exactly like doing the weird `real_next` thing but without having to faff around storing the Box when it's the exact same pointer as the raw pointer anyway.
 
