@@ -28,9 +28,6 @@ fn assert_properties() {
     is_send::<IterMut<i32>>();
     is_sync::<IterMut<i32>>();
 
-    is_send::<Cursor<i32>>();
-    is_sync::<Cursor<i32>>();
-
     fn linked_list_covariant<'a, T>(x: LinkedList<&'static T>) -> LinkedList<&'a T> { x }
     fn iter_covariant<'i, 'a, T>(x: Iter<'i, &'static T>) -> Iter<'i, &'a T> { x }
     fn into_iter_covariant<'a, T>(x: IntoIter<&'static T>) -> IntoIter<&'a T> { x }
