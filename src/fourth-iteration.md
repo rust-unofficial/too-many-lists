@@ -168,7 +168,7 @@ us just split Refs up like that. The Ref we get out of `head.borrow()` is only
 allowed to live as long as `node_ref`, but we end up trashing that in our
 `Ref::map` call.
 
-The function we want exists, and it's called *[map_split][]*:
+The function we want exists, and it's called *[map_split][map-split]*:
 
 ```rust ,ignore
 pub fn map_split<U, V, F>(orig: Ref<'b, T>, f: F) -> (Ref<'b, U>, Ref<'b, V>) where
