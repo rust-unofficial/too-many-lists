@@ -57,6 +57,10 @@ impl<T> Iterator for IntoIter<T> {
 And let's write a test:
 
 ```rust ,ignore
+// --snip--
+use super::Iterator;
+// --snip--
+
 #[test]
 fn into_iter() {
     let mut list = List::new();
