@@ -226,7 +226,7 @@ warning: field is never used: `elem`
 
 Yay!
 
-It's kind've interesting that that's the *only* place we've had to write an
+It's kind of interesting that that's the *only* place we've had to write an
 unsafe block so far. We do raw pointer stuff all over the place, what's up with
 that?
 
