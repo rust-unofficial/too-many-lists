@@ -26,10 +26,9 @@ impl<'a, T> Iterator for Iter<'a, T> {
 }
 ```
 
-The signature of `next` establishes *no* constraint between the lifetime
+The signature of `next` establishes _no_ constraint between the lifetime
 of the input and the output! Why do we care? It means we can call `next`
 over and over unconditionally!
-
 
 ```rust ,ignore
 let mut list = List::new();
@@ -43,8 +42,8 @@ let z = iter.next().unwrap();
 
 Cool!
 
-This is *definitely fine* for shared references because the whole point is that
-you can have tons of them at once. However mutable references *can't* coexist.
+This is _definitely fine_ for shared references because the whole point is that
+you can have tons of them at once. However mutable references _can't_ coexist.
 The whole point is that they're exclusive.
 
 The end result is that it's notably harder to write IterMut using safe
@@ -114,10 +113,10 @@ makes perfect sense. Our good friend Box manages an allocation on the heap for
 us, and we certainly don't want two pieces of code to think that they need to
 free its memory.
 
-However for other types this is *garbage*. Integers have no
+However for other types this is _garbage_. Integers have no
 ownership semantics; they're just meaningless numbers! This is why integers are
 marked as Copy. Copy types are known to be perfectly copyable by a bitwise copy.
-As such, they have a super power: when moved, the old value *is* still usable.
+As such, they have a super power: when moved, the old value _is_ still usable.
 As a consequence, you can even move a Copy type out of a reference without
 replacement!
 
@@ -126,12 +125,11 @@ You can also declare any user-defined type to be Copy as well, as long as
 all its components are Copy.
 
 Critically to why this code was working, shared references are also Copy!
-Because `&` is copy, `Option<&>` is *also* Copy. So when we did `self.next.map` it
+Because `&` is copy, `Option<&>` is _also_ Copy. So when we did `self.next.map` it
 was fine because the Option was just copied. Now we can't do that, because
 `&mut` isn't Copy (if you copied an &mut, you'd have two &mut's to the same
 location in memory, which is forbidden). Instead, we should properly `take`
 the Option to get it.
-
 
 ```rust ,ignore
 fn next(&mut self) -> Option<Self::Item> {
@@ -150,7 +148,6 @@ fn next(&mut self) -> Option<Self::Item> {
 Uh... wow. Holy shit! IterMut Just Works!
 
 Let's test this:
-
 
 ```rust ,ignore
 #[test]
@@ -188,7 +185,7 @@ Holy shit.
 
 What.
 
-Ok I mean it actually *is* supposed to work, but there's usually something
+Ok I mean it actually _is_ supposed to work, but there's usually something
 stupid that gets in the way! Let's be clear here:
 
 We have just implemented a piece of code that takes a singly-linked list, and
@@ -199,14 +196,14 @@ have to do anything wild.
 That's kind of a big deal, if you ask me. There are a couple reasons why
 this works:
 
-* We `take` the `Option<&mut>` so we have exclusive access to the mutable
+- We `take` the `Option<&mut>` so we have exclusive access to the mutable
   reference. No need to worry about someone looking at it again.
-* Rust understands that it's ok to shard a mutable reference into the subfields
+- Rust understands that it's ok to share a mutable reference into the subfields
   of the pointed-to struct, because there's no way to "go back up", and they're
   definitely disjoint.
 
 It turns out that you can apply this basic logic to get a safe IterMut for an
 array or a tree as well! You can even make the iterator DoubleEnded, so that
-you can consume the iterator from the front *and* the back at once! Woah!
+you can consume the iterator from the front _and_ the back at once! Woah!
 
 [ownership]: first-ownership.md
