@@ -377,6 +377,46 @@ DONE.
 
 Done.
 
+> **Community Contribution:** After completing the exercises a small bug was discovered when creating an empty slice from the list.
+
+```rust ,ignore
+    #[test]
+    fn test_empty_slice() {
+        let mut list = LinkedList::new();
+        list.push_back(7);
+        list.push_back(8);
+        list.push_back(9);
+
+        let mut cur = list.cursor_mut();
+        cur.move_next(); // Point at the first node
+        let result = cur.split_before(); // Everything before the first node
+
+        assert_eq!(result.len, 0);
+        assert_eq!(result.front(), None);
+        assert_eq!(result.back(), None);
+
+        assert_eq!(list.len, 3);
+        assert_eq!(list.front(), Some(7).as_ref());
+
+        let mut cur = list.cursor_mut();
+        cur.move_prev(); // Point at the last node
+        let result = cur.split_after(); // Everything after the last node
+
+        assert_eq!(result.len, 0);
+        assert_eq!(result.front(), None);
+        assert_eq!(result.back(), None);
+    }
+```
+
+In this case, we attempt to create a slice from all the elements before the first node (which should be empty). This is because the `split_before` method does not set the front and back pointers to None when the list is empty. This can be fixed by adding the following line to the `split_before` method:
+
+```rust ,ignore
+        if self.len == 0 {
+            self.front = None;
+            self.back = None;
+        }
+```
+
 We did it. We made a god damn production-quality LinkedList, with basically all the same functionality as the one in std. Are we missing little convenience methods here and there? Absolutely. Will I add them into the final published version of the crate? Probably!
 
 But, I am, So Very Tired.
