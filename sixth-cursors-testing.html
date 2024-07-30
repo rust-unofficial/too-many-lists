@@ -1,0 +1,645 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Testing Cursors - Learning Rust With Entirely Too Many Linked Lists</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Learning Rust With Entirely Too Many Linked Lists">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="first.html"><strong aria-hidden="true">2.</strong> A Bad Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="first-layout.html"><strong aria-hidden="true">2.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="first-new.html"><strong aria-hidden="true">2.2.</strong> New</a></li><li class="chapter-item expanded "><a href="first-ownership.html"><strong aria-hidden="true">2.3.</strong> Ownership 101</a></li><li class="chapter-item expanded "><a href="first-push.html"><strong aria-hidden="true">2.4.</strong> Push</a></li><li class="chapter-item expanded "><a href="first-pop.html"><strong aria-hidden="true">2.5.</strong> Pop</a></li><li class="chapter-item expanded "><a href="first-test.html"><strong aria-hidden="true">2.6.</strong> Testing</a></li><li class="chapter-item expanded "><a href="first-drop.html"><strong aria-hidden="true">2.7.</strong> Drop</a></li><li class="chapter-item expanded "><a href="first-final.html"><strong aria-hidden="true">2.8.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="second.html"><strong aria-hidden="true">3.</strong> An Ok Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="second-option.html"><strong aria-hidden="true">3.1.</strong> Option</a></li><li class="chapter-item expanded "><a href="second-generic.html"><strong aria-hidden="true">3.2.</strong> Generic</a></li><li class="chapter-item expanded "><a href="second-peek.html"><strong aria-hidden="true">3.3.</strong> Peek</a></li><li class="chapter-item expanded "><a href="second-into-iter.html"><strong aria-hidden="true">3.4.</strong> IntoIter</a></li><li class="chapter-item expanded "><a href="second-iter.html"><strong aria-hidden="true">3.5.</strong> Iter</a></li><li class="chapter-item expanded "><a href="second-iter-mut.html"><strong aria-hidden="true">3.6.</strong> IterMut</a></li><li class="chapter-item expanded "><a href="second-final.html"><strong aria-hidden="true">3.7.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="third.html"><strong aria-hidden="true">4.</strong> A Persistent Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="third-layout.html"><strong aria-hidden="true">4.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="third-basics.html"><strong aria-hidden="true">4.2.</strong> Basics</a></li><li class="chapter-item expanded "><a href="third-drop.html"><strong aria-hidden="true">4.3.</strong> Drop</a></li><li class="chapter-item expanded "><a href="third-arc.html"><strong aria-hidden="true">4.4.</strong> Arc</a></li><li class="chapter-item expanded "><a href="third-final.html"><strong aria-hidden="true">4.5.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="fourth.html"><strong aria-hidden="true">5.</strong> A Bad Safe Deque</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fourth-layout.html"><strong aria-hidden="true">5.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="fourth-building.html"><strong aria-hidden="true">5.2.</strong> Building</a></li><li class="chapter-item expanded "><a href="fourth-breaking.html"><strong aria-hidden="true">5.3.</strong> Breaking</a></li><li class="chapter-item expanded "><a href="fourth-peek.html"><strong aria-hidden="true">5.4.</strong> Peek</a></li><li class="chapter-item expanded "><a href="fourth-symmetry.html"><strong aria-hidden="true">5.5.</strong> Symmetric Cases</a></li><li class="chapter-item expanded "><a href="fourth-iteration.html"><strong aria-hidden="true">5.6.</strong> Iteration</a></li><li class="chapter-item expanded "><a href="fourth-final.html"><strong aria-hidden="true">5.7.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="fifth.html"><strong aria-hidden="true">6.</strong> An Ok Unsafe Queue</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fifth-layout.html"><strong aria-hidden="true">6.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="fifth-unsafe.html"><strong aria-hidden="true">6.2.</strong> Unsafe</a></li><li class="chapter-item expanded "><a href="fifth-basics.html"><strong aria-hidden="true">6.3.</strong> Basics</a></li><li class="chapter-item expanded "><a href="fifth-miri.html"><strong aria-hidden="true">6.4.</strong> Miri</a></li><li class="chapter-item expanded "><a href="fifth-stacked-borrows.html"><strong aria-hidden="true">6.5.</strong> Stacked Borrows</a></li><li class="chapter-item expanded "><a href="fifth-testing-stacked-borrows.html"><strong aria-hidden="true">6.6.</strong> Testing Stacked Borrows</a></li><li class="chapter-item expanded "><a href="fifth-layout-basics-redux.html"><strong aria-hidden="true">6.7.</strong> Layout + Basics Redux</a></li><li class="chapter-item expanded "><a href="fifth-extras.html"><strong aria-hidden="true">6.8.</strong> Extras</a></li><li class="chapter-item expanded "><a href="fifth-final.html"><strong aria-hidden="true">6.9.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="sixth.html"><strong aria-hidden="true">7.</strong> A Production Unsafe Deque</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="sixth-layout.html"><strong aria-hidden="true">7.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="sixth-variance.html"><strong aria-hidden="true">7.2.</strong> Variance and Subtyping</a></li><li class="chapter-item expanded "><a href="sixth-basics.html"><strong aria-hidden="true">7.3.</strong> Basics</a></li><li class="chapter-item expanded "><a href="sixth-panics.html"><strong aria-hidden="true">7.4.</strong> Panic Safety</a></li><li class="chapter-item expanded "><a href="sixth-combinatorics.html"><strong aria-hidden="true">7.5.</strong> Boring Combinatorics</a></li><li class="chapter-item expanded "><a href="sixth-random-bits.html"><strong aria-hidden="true">7.6.</strong> Filling In Random Bits</a></li><li class="chapter-item expanded "><a href="sixth-testing.html"><strong aria-hidden="true">7.7.</strong> Testing</a></li><li class="chapter-item expanded "><a href="sixth-send-sync.html"><strong aria-hidden="true">7.8.</strong> Send, Sync, and Compile Tests</a></li><li class="chapter-item expanded "><a href="sixth-cursors-intro.html"><strong aria-hidden="true">7.9.</strong> An Introduction To Cursors</a></li><li class="chapter-item expanded "><a href="sixth-cursors-impl.html"><strong aria-hidden="true">7.10.</strong> Implementing Cursors</a></li><li class="chapter-item expanded "><a href="sixth-cursors-testing.html" class="active"><strong aria-hidden="true">7.11.</strong> Testing Cursors</a></li><li class="chapter-item expanded "><a href="sixth-final.html"><strong aria-hidden="true">7.12.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="infinity.html"><strong aria-hidden="true">8.</strong> A Bunch of Silly Lists</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="infinity-double-single.html"><strong aria-hidden="true">8.1.</strong> The Double Single</a></li><li class="chapter-item expanded "><a href="infinity-stack-allocated.html"><strong aria-hidden="true">8.2.</strong> The Stack-Allocated Linked List</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Learning Rust With Entirely Too Many Linked Lists</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/rust-unofficial/too-many-lists" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#testing-cursors" id="testing-cursors">Testing Cursors</a></h1>
+<p>Time to find out how many horribly embarassing mistakes I made in the previous section!</p>
+<p>Oh god we made our API unlike both std and the old impl. Alright well I'm just gonna hastily cobble together something from both of them. Yeah let's &quot;borrow&quot; these tests from std:</p>
+<pre><code class="language-rust ignore">    #[test]
+    fn test_cursor_move_peek() {
+        let mut m: LinkedList&lt;u32&gt; = LinkedList::new();
+        m.extend([1, 2, 3, 4, 5, 6]);
+        let mut cursor = m.cursor_mut();
+        cursor.move_next();
+        assert_eq!(cursor.current(), Some(&amp;mut 1));
+        assert_eq!(cursor.peek_next(), Some(&amp;mut 2));
+        assert_eq!(cursor.peek_prev(), None);
+        assert_eq!(cursor.index(), Some(0));
+        cursor.move_prev();
+        assert_eq!(cursor.current(), None);
+        assert_eq!(cursor.peek_next(), Some(&amp;mut 1));
+        assert_eq!(cursor.peek_prev(), Some(&amp;mut 6));
+        assert_eq!(cursor.index(), None);
+        cursor.move_next();
+        cursor.move_next();
+        assert_eq!(cursor.current(), Some(&amp;mut 2));
+        assert_eq!(cursor.peek_next(), Some(&amp;mut 3));
+        assert_eq!(cursor.peek_prev(), Some(&amp;mut 1));
+        assert_eq!(cursor.index(), Some(1));
+
+        let mut cursor = m.cursor_mut();
+        cursor.move_prev();
+        assert_eq!(cursor.current(), Some(&amp;mut 6));
+        assert_eq!(cursor.peek_next(), None);
+        assert_eq!(cursor.peek_prev(), Some(&amp;mut 5));
+        assert_eq!(cursor.index(), Some(5));
+        cursor.move_next();
+        assert_eq!(cursor.current(), None);
+        assert_eq!(cursor.peek_next(), Some(&amp;mut 1));
+        assert_eq!(cursor.peek_prev(), Some(&amp;mut 6));
+        assert_eq!(cursor.index(), None);
+        cursor.move_prev();
+        cursor.move_prev();
+        assert_eq!(cursor.current(), Some(&amp;mut 5));
+        assert_eq!(cursor.peek_next(), Some(&amp;mut 6));
+        assert_eq!(cursor.peek_prev(), Some(&amp;mut 4));
+        assert_eq!(cursor.index(), Some(4));
+    }
+
+    #[test]
+    fn test_cursor_mut_insert() {
+        let mut m: LinkedList&lt;u32&gt; = LinkedList::new();
+        m.extend([1, 2, 3, 4, 5, 6]);
+        let mut cursor = m.cursor_mut();
+        cursor.move_next();
+        cursor.splice_before(Some(7).into_iter().collect());
+        cursor.splice_after(Some(8).into_iter().collect());
+        // check_links(&amp;m);
+        assert_eq!(m.iter().cloned().collect::&lt;Vec&lt;_&gt;&gt;(), &amp;[7, 1, 8, 2, 3, 4, 5, 6]);
+        let mut cursor = m.cursor_mut();
+        cursor.move_next();
+        cursor.move_prev();
+        cursor.splice_before(Some(9).into_iter().collect());
+        cursor.splice_after(Some(10).into_iter().collect());
+        check_links(&amp;m);
+        assert_eq!(m.iter().cloned().collect::&lt;Vec&lt;_&gt;&gt;(), &amp;[10, 7, 1, 8, 2, 3, 4, 5, 6, 9]);
+        
+        /* remove_current not impl'd
+        let mut cursor = m.cursor_mut();
+        cursor.move_next();
+        cursor.move_prev();
+        assert_eq!(cursor.remove_current(), None);
+        cursor.move_next();
+        cursor.move_next();
+        assert_eq!(cursor.remove_current(), Some(7));
+        cursor.move_prev();
+        cursor.move_prev();
+        cursor.move_prev();
+        assert_eq!(cursor.remove_current(), Some(9));
+        cursor.move_next();
+        assert_eq!(cursor.remove_current(), Some(10));
+        check_links(&amp;m);
+        assert_eq!(m.iter().cloned().collect::&lt;Vec&lt;_&gt;&gt;(), &amp;[1, 8, 2, 3, 4, 5, 6]);
+        */
+
+        let mut cursor = m.cursor_mut();
+        cursor.move_next();
+        let mut p: LinkedList&lt;u32&gt; = LinkedList::new();
+        p.extend([100, 101, 102, 103]);
+        let mut q: LinkedList&lt;u32&gt; = LinkedList::new();
+        q.extend([200, 201, 202, 203]);
+        cursor.splice_after(p);
+        cursor.splice_before(q);
+        check_links(&amp;m);
+        assert_eq!(
+            m.iter().cloned().collect::&lt;Vec&lt;_&gt;&gt;(),
+            &amp;[200, 201, 202, 203, 1, 100, 101, 102, 103, 8, 2, 3, 4, 5, 6]
+        );
+        let mut cursor = m.cursor_mut();
+        cursor.move_next();
+        cursor.move_prev();
+        let tmp = cursor.split_before();
+        assert_eq!(m.into_iter().collect::&lt;Vec&lt;_&gt;&gt;(), &amp;[]);
+        m = tmp;
+        let mut cursor = m.cursor_mut();
+        cursor.move_next();
+        cursor.move_next();
+        cursor.move_next();
+        cursor.move_next();
+        cursor.move_next();
+        cursor.move_next();
+        cursor.move_next();
+        let tmp = cursor.split_after();
+        assert_eq!(tmp.into_iter().collect::&lt;Vec&lt;_&gt;&gt;(), &amp;[102, 103, 8, 2, 3, 4, 5, 6]);
+        check_links(&amp;m);
+        assert_eq!(m.iter().cloned().collect::&lt;Vec&lt;_&gt;&gt;(), &amp;[200, 201, 202, 203, 1, 100, 101]);
+    }
+
+    fn check_links&lt;T&gt;(_list: &amp;LinkedList&lt;T&gt;) {
+        // would be good to do this!
+    }
+</code></pre>
+<p>Moment of truth!</p>
+<pre><code class="language-text">cargo test
+
+   Compiling linked-list v0.0.3
+    Finished test [unoptimized + debuginfo] target(s) in 1.03s
+     Running unittests src\lib.rs
+
+running 14 tests
+test test::test_basic_front ... ok
+test test::test_basic ... ok
+test test::test_debug ... ok
+test test::test_iterator_mut_double_end ... ok
+test test::test_ord ... ok
+test test::test_cursor_move_peek ... FAILED
+test test::test_cursor_mut_insert ... FAILED
+test test::test_iterator ... ok
+test test::test_mut_iter ... ok
+test test::test_eq ... ok
+test test::test_rev_iter ... ok
+test test::test_iterator_double_end ... ok
+test test::test_hashmap ... ok
+test test::test_ord_nan ... ok
+
+failures:
+
+---- test::test_cursor_move_peek stdout ----
+thread 'test::test_cursor_move_peek' panicked at 'assertion failed: `(left == right)`
+  left: `None`,
+ right: `Some(1)`', src\lib.rs:1079:9
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- test::test_cursor_mut_insert stdout ----
+thread 'test::test_cursor_mut_insert' panicked at 'assertion failed: `(left == right)`
+  left: `[200, 201, 202, 203, 10, 100, 101, 102, 103, 7, 1, 8, 2, 3, 4, 5, 6, 9]`,
+ right: `[200, 201, 202, 203, 1, 100, 101, 102, 103, 8, 2, 3, 4, 5, 6]`', src\lib.rs:1153:9
+
+
+failures:
+    test::test_cursor_move_peek
+    test::test_cursor_mut_insert
+
+test result: FAILED. 12 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+</code></pre>
+<p>I'll admit, I had some hubris here and was hoping I nailed it. This is why we write tests (but maybe I just did a bad job of porting the tests..?).</p>
+<p>What's the first failure?</p>
+<pre><code class="language-rust ignore">let mut m: LinkedList&lt;u32&gt; = LinkedList::new();
+m.extend([1, 2, 3, 4, 5, 6]);
+let mut cursor = m.cursor_mut();
+
+cursor.move_next();
+assert_eq!(cursor.current(), Some(&amp;mut 1));
+assert_eq!(cursor.peek_next(), Some(&amp;mut 2));
+assert_eq!(cursor.peek_prev(), None);
+assert_eq!(cursor.index(), Some(0));
+
+cursor.move_prev();
+assert_eq!(cursor.current(), None);
+assert_eq!(cursor.peek_next(), Some(&amp;mut 1)); // DIES HERE
+</code></pre>
+<p>Geez I really messed up some basic functionality. Wait,</p>
+<blockquote>
+<p>Head empty, Option methods and (omitted) compiler errors do all thinking now.</p>
+</blockquote>
+<p>Well I am nothing if not honest.</p>
+<pre><code class="language-rust ignore">pub fn peek_next(&amp;mut self) -&gt; Option&lt;&amp;mut T&gt; {
+    unsafe {
+        self.cur
+            .and_then(|node| (*node.as_ptr()).back)
+            .map(|node| &amp;mut (*node.as_ptr()).elem)
+    }
+}
+</code></pre>
+<p>...Yeah this is just wrong. If <code>self.cur</code> is None, we aren't just supposed to give up, we need to check <code>self.list.front</code> too, because we're on the ghost! So we just need to add an or_else to the chain:</p>
+<pre><code class="language-rust ignore">pub fn peek_next(&amp;mut self) -&gt; Option&lt;&amp;mut T&gt; {
+    unsafe {
+        self.cur
+            .and_then(|node| (*node.as_ptr()).back)
+            .or_else(|| self.list.front)
+            .map(|node| &amp;mut (*node.as_ptr()).elem)
+    }
+}
+
+pub fn peek_prev(&amp;mut self) -&gt; Option&lt;&amp;mut T&gt; {
+    unsafe {
+        self.cur
+            .and_then(|node| (*node.as_ptr()).front)
+            .or_else(|| self.list.back)
+            .map(|node| &amp;mut (*node.as_ptr()).elem)
+    }
+}
+</code></pre>
+<p>Did that fix it?</p>
+<pre><code class="language-text">---- test::test_cursor_move_peek stdout ----
+thread 'test::test_cursor_move_peek' panicked at 'assertion failed: `(left == right)`
+  left: `Some(6)`,
+ right: `None`', src\lib.rs:1078:9
+</code></pre>
+<p>Wait now it's wrong <em>further back</em>. Ok I need to stop head-emptying peek because apparently it's a lot harder than I was willing to give it credit for. Just trying to blindly chain these cases is a disaster, let's have a proper if for the cases of ghost vs not:</p>
+<pre><code class="language-rust ignore">pub fn peek_next(&amp;mut self) -&gt; Option&lt;&amp;mut T&gt; {
+    unsafe {
+        let next = if let Some(cur) = self.cur {
+            // Normal case, try to follow the cur node's back pointer
+            (*cur.as_ptr()).back
+        } else {
+            // Ghost case, try to use the list's front pointer
+            self.list.front
+        };
+
+        // Yield the element if the next node exists
+        next.map(|node| &amp;mut (*node.as_ptr()).elem)
+    }
+}
+
+pub fn peek_prev(&amp;mut self) -&gt; Option&lt;&amp;mut T&gt; {
+    unsafe {
+        let prev = if let Some(cur) = self.cur {
+            // Normal case, try to follow the cur node's front pointer
+            (*cur.as_ptr()).front
+        } else {
+            // Ghost case, try to use the list's back pointer
+            self.list.back
+        };
+
+        // Yield the element if the prev node exists
+        prev.map(|node| &amp;mut (*node.as_ptr()).elem)
+    }
+}
+</code></pre>
+<p>Feelin' confident about this one!</p>
+<pre><code class="language-text">failures:
+
+---- test::test_cursor_mut_insert stdout ----
+thread 'test::test_cursor_mut_insert' panicked at 'assertion failed: `(left == right)`
+  left: `[200, 201, 202, 203, 10, 100, 101, 102, 103, 7, 1, 8, 2, 3, 4, 5, 6, 9]`,
+ right: `[200, 201, 202, 203, 1, 100, 101, 102, 103, 8, 2, 3, 4, 5, 6]`', src\lib.rs:1168:9
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    test::test_cursor_mut_insert
+
+test result: FAILED. 13 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+</code></pre>
+<p>Yesss. Ok one more failure to go... oh.</p>
+<p>Did you notice the part where I commented out some code for testing remove_current? Yeah I wasn't paying attention to the fact that this test is stateful. Let's just create a new list with the state the remove_current part would have left us in:</p>
+<pre><code class="language-rust ignore">let mut m: LinkedList&lt;u32&gt; = LinkedList::new();
+m.extend([1, 8, 2, 3, 4, 5, 6]);
+</code></pre>
+<pre><code class="language-text"> cargo test
+   Compiling linked-list v0.0.3
+    Finished test [unoptimized + debuginfo] target(s) in 0.70s
+     Running unittests src\lib.rs
+
+running 14 tests
+test test::test_basic_front ... ok
+test test::test_basic ... ok
+test test::test_cursor_move_peek ... ok
+test test::test_eq ... ok
+test test::test_cursor_mut_insert ... ok
+test test::test_iterator ... ok
+test test::test_iterator_double_end ... ok
+test test::test_ord_nan ... ok
+test test::test_mut_iter ... ok
+test test::test_hashmap ... ok
+test test::test_debug ... ok
+test test::test_ord ... ok
+test test::test_iterator_mut_double_end ... ok
+test test::test_rev_iter ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests linked-list
+
+running 1 test
+test src\lib.rs - assert_properties::iter_mut_invariant (line 803) - compile fail ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+</code></pre>
+<p>Heyyyy look at thaaat... ok now I'm getting paranoid. Let's properly fill in check_links and test it under miri:</p>
+<pre><code class="language-rust ignore">fn check_links&lt;T: Eq + std::fmt::Debug&gt;(list: &amp;LinkedList&lt;T&gt;) {
+    let from_front: Vec&lt;_&gt; = list.iter().collect();
+    let from_back: Vec&lt;_&gt; = list.iter().rev().collect();
+    let re_reved: Vec&lt;_&gt; = from_back.into_iter().rev().collect();
+
+    assert_eq!(from_front, re_reved);
+}
+</code></pre>
+<p>Is this the best way to do this? No. Is it fine? Yes.</p>
+<pre><code class="language-text">$env:MIRIFLAGS=&quot;-Zmiri-tag-raw-pointers&quot;
+cargo miri test
+   Compiling linked-list v0.0.3
+    Finished test [unoptimized + debuginfo] target(s) in 0.25s
+     Running unittests src\lib.rs
+
+running 14 tests
+test test::test_basic ... ok
+test test::test_basic_front ... ok
+test test::test_cursor_move_peek ... ok
+test test::test_cursor_mut_insert ... ok
+test test::test_debug ... ok
+test test::test_eq ... ok
+test test::test_hashmap ... ok
+test test::test_iterator ... ok
+test test::test_iterator_double_end ... ok
+test test::test_iterator_mut_double_end ... ok
+test test::test_mut_iter ... ok
+test test::test_ord ... ok
+test test::test_ord_nan ... ok
+test test::test_rev_iter ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
+
+   Doc-tests linked-list
+
+running 1 test
+test src\lib.rs - assert_properties::iter_mut_invariant (line 803) - compile fail ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+</code></pre>
+<p>DONE.</p>
+<p>Done.</p>
+<p>We did it. We made a god damn production-quality LinkedList, with basically all the same functionality as the one in std. Are we missing little convenience methods here and there? Absolutely. Will I add them into the final published version of the crate? Probably!</p>
+<p>But, I am, So Very Tired.</p>
+<p>So. We win.</p>
+<p>Wait fuck. We're being production quality. Ok one last final boss: clippy.</p>
+<pre><code class="language-text">cargo clippy
+
+cargo clippy
+    Checking linked-list v0.0.3 (C:\Users\ninte\dev\contain\linked-list)
+warning: redundant pattern matching, consider using `is_some()`
+   --&gt; src\lib.rs:189:19
+    |
+189 |         while let Some(_) = self.pop_front() { }
+    |         ----------^^^^^^^------------------- help: try this: `while self.pop_front().is_some()`
+    |
+    = note: `#[warn(clippy::redundant_pattern_matching)]` on by default
+    = note: this will change drop order of the result, as well as all temporaries
+    = note: add `#[allow(clippy::redundant_pattern_matching)]` if this is important
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#redundant_pattern_matching
+
+warning: method `into_iter` can be confused for the standard trait method `std::iter::IntoIterator::into_iter`
+   --&gt; src\lib.rs:210:5
+    |
+210 | /     pub fn into_iter(self) -&gt; IntoIter&lt;T&gt; {
+211 | |         IntoIter {
+212 | |             list: self
+213 | |         }
+214 | |     }
+    | |_____^
+    |
+    = note: `#[warn(clippy::should_implement_trait)]` on by default
+    = help: consider implementing the trait `std::iter::IntoIterator` or choosing a less ambiguous method name
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#should_implement_trait
+
+warning: redundant pattern matching, consider using `is_some()`
+   --&gt; src\lib.rs:228:19
+    |
+228 |         while let Some(_) = self.pop_front() { }
+    |         ----------^^^^^^^------------------- help: try this: `while self.pop_front().is_some()`
+    |
+    = note: this will change drop order of the result, as well as all temporaries
+    = note: add `#[allow(clippy::redundant_pattern_matching)]` if this is important
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#redundant_pattern_matching
+
+warning: re-implementing `PartialEq::ne` is unnecessary
+   --&gt; src\lib.rs:275:5
+    |
+275 | /     fn ne(&amp;self, other: &amp;Self) -&gt; bool {
+276 | |         self.len() != other.len() || self.iter().ne(other)
+277 | |     }
+    | |_____^
+    |
+    = note: `#[warn(clippy::partialeq_ne_impl)]` on by default
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#partialeq_ne_impl
+
+warning: `linked-list` (lib) generated 4 warnings
+    Finished dev [unoptimized + debuginfo] target(s) in 0.29s
+</code></pre>
+<p>Alright clippy, let's do this.</p>
+<p>Complaint 1 (and 3): we use <code>while let Some(_) = </code> instead of <code>while .is_some()</code>. The loop is empty so this truly doesn't matter but ok fine, clippy, I'll do things your way.</p>
+<p>Complaint 2: We have an actual inherent into_iter method. Wait, what <em>checks std</em> ok, point to clippy. IntoIterator is in the prelude (and basically a lang item) so, we don't need an inherent version too.</p>
+<p>Complaint 4: we copied a weird cargocult from std. <em>shrug</em> fine I'll remove it.</p>
+<pre><code class="language-text">cargo clippy
+    Finished dev [unoptimized + debuginfo] target(s) in 0.00s
+</code></pre>
+<p>Nice. Just one last thing to do before calling it production quality: fmt.</p>
+<pre><code class="language-text">cargo fmt
+</code></pre>
+<p>...yeah it added some newlines and removed some trailing whitespace. Nothing interesting.</p>
+<p><strong>WE ARE NOW TRULY FINALLY DONE!!!!!!!!!!!!!!!!!!!!!</strong></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="sixth-cursors-impl.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="sixth-final.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="sixth-cursors-impl.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="sixth-final.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

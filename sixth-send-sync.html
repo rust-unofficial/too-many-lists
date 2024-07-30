@@ -1,0 +1,419 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Send, Sync, and Compile Tests - Learning Rust With Entirely Too Many Linked Lists</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Learning Rust With Entirely Too Many Linked Lists">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="first.html"><strong aria-hidden="true">2.</strong> A Bad Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="first-layout.html"><strong aria-hidden="true">2.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="first-new.html"><strong aria-hidden="true">2.2.</strong> New</a></li><li class="chapter-item expanded "><a href="first-ownership.html"><strong aria-hidden="true">2.3.</strong> Ownership 101</a></li><li class="chapter-item expanded "><a href="first-push.html"><strong aria-hidden="true">2.4.</strong> Push</a></li><li class="chapter-item expanded "><a href="first-pop.html"><strong aria-hidden="true">2.5.</strong> Pop</a></li><li class="chapter-item expanded "><a href="first-test.html"><strong aria-hidden="true">2.6.</strong> Testing</a></li><li class="chapter-item expanded "><a href="first-drop.html"><strong aria-hidden="true">2.7.</strong> Drop</a></li><li class="chapter-item expanded "><a href="first-final.html"><strong aria-hidden="true">2.8.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="second.html"><strong aria-hidden="true">3.</strong> An Ok Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="second-option.html"><strong aria-hidden="true">3.1.</strong> Option</a></li><li class="chapter-item expanded "><a href="second-generic.html"><strong aria-hidden="true">3.2.</strong> Generic</a></li><li class="chapter-item expanded "><a href="second-peek.html"><strong aria-hidden="true">3.3.</strong> Peek</a></li><li class="chapter-item expanded "><a href="second-into-iter.html"><strong aria-hidden="true">3.4.</strong> IntoIter</a></li><li class="chapter-item expanded "><a href="second-iter.html"><strong aria-hidden="true">3.5.</strong> Iter</a></li><li class="chapter-item expanded "><a href="second-iter-mut.html"><strong aria-hidden="true">3.6.</strong> IterMut</a></li><li class="chapter-item expanded "><a href="second-final.html"><strong aria-hidden="true">3.7.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="third.html"><strong aria-hidden="true">4.</strong> A Persistent Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="third-layout.html"><strong aria-hidden="true">4.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="third-basics.html"><strong aria-hidden="true">4.2.</strong> Basics</a></li><li class="chapter-item expanded "><a href="third-drop.html"><strong aria-hidden="true">4.3.</strong> Drop</a></li><li class="chapter-item expanded "><a href="third-arc.html"><strong aria-hidden="true">4.4.</strong> Arc</a></li><li class="chapter-item expanded "><a href="third-final.html"><strong aria-hidden="true">4.5.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="fourth.html"><strong aria-hidden="true">5.</strong> A Bad Safe Deque</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fourth-layout.html"><strong aria-hidden="true">5.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="fourth-building.html"><strong aria-hidden="true">5.2.</strong> Building</a></li><li class="chapter-item expanded "><a href="fourth-breaking.html"><strong aria-hidden="true">5.3.</strong> Breaking</a></li><li class="chapter-item expanded "><a href="fourth-peek.html"><strong aria-hidden="true">5.4.</strong> Peek</a></li><li class="chapter-item expanded "><a href="fourth-symmetry.html"><strong aria-hidden="true">5.5.</strong> Symmetric Cases</a></li><li class="chapter-item expanded "><a href="fourth-iteration.html"><strong aria-hidden="true">5.6.</strong> Iteration</a></li><li class="chapter-item expanded "><a href="fourth-final.html"><strong aria-hidden="true">5.7.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="fifth.html"><strong aria-hidden="true">6.</strong> An Ok Unsafe Queue</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fifth-layout.html"><strong aria-hidden="true">6.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="fifth-unsafe.html"><strong aria-hidden="true">6.2.</strong> Unsafe</a></li><li class="chapter-item expanded "><a href="fifth-basics.html"><strong aria-hidden="true">6.3.</strong> Basics</a></li><li class="chapter-item expanded "><a href="fifth-miri.html"><strong aria-hidden="true">6.4.</strong> Miri</a></li><li class="chapter-item expanded "><a href="fifth-stacked-borrows.html"><strong aria-hidden="true">6.5.</strong> Stacked Borrows</a></li><li class="chapter-item expanded "><a href="fifth-testing-stacked-borrows.html"><strong aria-hidden="true">6.6.</strong> Testing Stacked Borrows</a></li><li class="chapter-item expanded "><a href="fifth-layout-basics-redux.html"><strong aria-hidden="true">6.7.</strong> Layout + Basics Redux</a></li><li class="chapter-item expanded "><a href="fifth-extras.html"><strong aria-hidden="true">6.8.</strong> Extras</a></li><li class="chapter-item expanded "><a href="fifth-final.html"><strong aria-hidden="true">6.9.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="sixth.html"><strong aria-hidden="true">7.</strong> A Production Unsafe Deque</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="sixth-layout.html"><strong aria-hidden="true">7.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="sixth-variance.html"><strong aria-hidden="true">7.2.</strong> Variance and Subtyping</a></li><li class="chapter-item expanded "><a href="sixth-basics.html"><strong aria-hidden="true">7.3.</strong> Basics</a></li><li class="chapter-item expanded "><a href="sixth-panics.html"><strong aria-hidden="true">7.4.</strong> Panic Safety</a></li><li class="chapter-item expanded "><a href="sixth-combinatorics.html"><strong aria-hidden="true">7.5.</strong> Boring Combinatorics</a></li><li class="chapter-item expanded "><a href="sixth-random-bits.html"><strong aria-hidden="true">7.6.</strong> Filling In Random Bits</a></li><li class="chapter-item expanded "><a href="sixth-testing.html"><strong aria-hidden="true">7.7.</strong> Testing</a></li><li class="chapter-item expanded "><a href="sixth-send-sync.html" class="active"><strong aria-hidden="true">7.8.</strong> Send, Sync, and Compile Tests</a></li><li class="chapter-item expanded "><a href="sixth-cursors-intro.html"><strong aria-hidden="true">7.9.</strong> An Introduction To Cursors</a></li><li class="chapter-item expanded "><a href="sixth-cursors-impl.html"><strong aria-hidden="true">7.10.</strong> Implementing Cursors</a></li><li class="chapter-item expanded "><a href="sixth-cursors-testing.html"><strong aria-hidden="true">7.11.</strong> Testing Cursors</a></li><li class="chapter-item expanded "><a href="sixth-final.html"><strong aria-hidden="true">7.12.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="infinity.html"><strong aria-hidden="true">8.</strong> A Bunch of Silly Lists</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="infinity-double-single.html"><strong aria-hidden="true">8.1.</strong> The Double Single</a></li><li class="chapter-item expanded "><a href="infinity-stack-allocated.html"><strong aria-hidden="true">8.2.</strong> The Stack-Allocated Linked List</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Learning Rust With Entirely Too Many Linked Lists</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/rust-unofficial/too-many-lists" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#send-sync-and-compile-tests" id="send-sync-and-compile-tests">Send, Sync, and Compile Tests</a></h1>
+<p>Ok actually we do have one more pair of traits to think about, but they're special. We have to deal with Rust's Holy Roman Empire: The Unsafe Opt-In Built-In Traits (OIBITs): <a href="https://doc.rust-lang.org/nomicon/send-and-sync.html">Send and Sync</a>, which are in fact opt-out and built-out (1 out of 3 is pretty good!).</p>
+<p>Like Copy, these traits have absolutely no code associated with them, and are just markers that your type has a particular property. Send says that your type is safe to send to another thread. Sync says your type is safe to share between threads (&amp;Self: Send).</p>
+<p>The same argument for LinkedList being covariant applies here: generally normal collections which don't use fancy interior mutability tricks are safe to make Send and Sync.</p>
+<p>But I said they're <em>opt out</em>. So actually, are we already? How would we know?</p>
+<p>Let's add some new magic to our code: random private garbage that won't compile unless our types have the properties we expect:</p>
+<pre><code class="language-rust ignore">#[allow(dead_code)]
+fn assert_properties() {
+    fn is_send&lt;T: Send&gt;() {}
+    fn is_sync&lt;T: Sync&gt;() {}
+
+    is_send::&lt;LinkedList&lt;i32&gt;&gt;();
+    is_sync::&lt;LinkedList&lt;i32&gt;&gt;();
+
+    is_send::&lt;IntoIter&lt;i32&gt;&gt;();
+    is_sync::&lt;IntoIter&lt;i32&gt;&gt;();
+
+    is_send::&lt;Iter&lt;i32&gt;&gt;();
+    is_sync::&lt;Iter&lt;i32&gt;&gt;();
+
+    is_send::&lt;IterMut&lt;i32&gt;&gt;();
+    is_sync::&lt;IterMut&lt;i32&gt;&gt;();
+
+    is_send::&lt;Cursor&lt;i32&gt;&gt;();
+    is_sync::&lt;Cursor&lt;i32&gt;&gt;();
+
+    fn linked_list_covariant&lt;'a, T&gt;(x: LinkedList&lt;&amp;'static T&gt;) -&gt; LinkedList&lt;&amp;'a T&gt; { x }
+    fn iter_covariant&lt;'i, 'a, T&gt;(x: Iter&lt;'i, &amp;'static T&gt;) -&gt; Iter&lt;'i, &amp;'a T&gt; { x }
+    fn into_iter_covariant&lt;'a, T&gt;(x: IntoIter&lt;&amp;'static T&gt;) -&gt; IntoIter&lt;&amp;'a T&gt; { x }
+}
+</code></pre>
+<pre><code class="language-text">cargo build
+   Compiling linked-list v0.0.3 
+error[E0277]: `NonNull&lt;Node&lt;i32&gt;&gt;` cannot be sent between threads safely
+   --&gt; src\lib.rs:433:5
+    |
+433 |     is_send::&lt;LinkedList&lt;i32&gt;&gt;();
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^ `NonNull&lt;Node&lt;i32&gt;&gt;` cannot be sent between threads safely
+    |
+    = help: within `LinkedList&lt;i32&gt;`, the trait `Send` is not implemented for `NonNull&lt;Node&lt;i32&gt;&gt;`
+    = note: required because it appears within the type `Option&lt;NonNull&lt;Node&lt;i32&gt;&gt;&gt;`
+note: required because it appears within the type `LinkedList&lt;i32&gt;`
+   --&gt; src\lib.rs:8:12
+    |
+8   | pub struct LinkedList&lt;T&gt; {
+    |            ^^^^^^^^^^
+note: required by a bound in `is_send`
+   --&gt; src\lib.rs:430:19
+    |
+430 |     fn is_send&lt;T: Send&gt;() {}
+    |                   ^^^^ required by this bound in `is_send`
+
+&lt;a million more errors&gt;
+</code></pre>
+<p>Oh geez, what gives! I had that great Holy Roman Empire joke!</p>
+<p>Well, I lied to you when I said raw pointers have only one safety guard: this is the other. <code>*const</code> AND <code>*mut</code> explicitly opt out of Send and Sync to be safe, so we do <em>actually</em> have to opt back in:</p>
+<pre><code class="language-rust ignore">unsafe impl&lt;T: Send&gt; Send for LinkedList&lt;T&gt; {}
+unsafe impl&lt;T: Sync&gt; Sync for LinkedList&lt;T&gt; {}
+
+unsafe impl&lt;'a, T: Send&gt; Send for Iter&lt;'a, T&gt; {}
+unsafe impl&lt;'a, T: Sync&gt; Sync for Iter&lt;'a, T&gt; {}
+
+unsafe impl&lt;'a, T: Send&gt; Send for IterMut&lt;'a, T&gt; {}
+unsafe impl&lt;'a, T: Sync&gt; Sync for IterMut&lt;'a, T&gt; {}
+</code></pre>
+<p>Note that we have to write <em>unsafe impl</em> here: these are <em>unsafe traits</em>! Unsafe code (like concurrency libraries) gets to rely on us only implementing these traits correctly! Since there's no actual code, the guarantee we're making is just that, yes, we are indeed safe to Send or Share between threads!</p>
+<p>Don't just slap these on lightly, but I am a Certified Professional here to say: yep there's are totally fine. Note how we don't need to implement Send and Sync for IntoIter: it just contains LinkedList, so it auto-derives Send and Sync — I told you they were actually opt out! (You opt out with the hillarious syntax of <code>impl !Send for MyType {}</code>.)</p>
+<pre><code class="language-text">cargo build
+   Compiling linked-list v0.0.3
+    Finished dev [unoptimized + debuginfo] target(s) in 0.18s
+</code></pre>
+<p>Ok nice!</p>
+<p>...Wait, actually it would be really dangerous if stuff that <em>shouldn't</em> be these things wasn't. In particular, IterMut <em>definitely</em> shouldn't be covariant, because it's &quot;like&quot; <code>&amp;mut T</code>. But how can we check that?</p>
+<p>With Magic! Well, actually, with rustdoc! Ok well we don't have to use rustdoc for this, but it's the funniest way to do it. See, if you write a doccomment and include a code block, then rustdoc will try to compile and run it, so we can use that to make fresh anonymous &quot;programs&quot; that don't affect the main one:</p>
+<pre><code class="language-rust ignore">    /// ```
+    /// use linked_list::IterMut;
+    /// 
+    /// fn iter_mut_covariant&lt;'i, 'a, T&gt;(x: IterMut&lt;'i, &amp;'static T&gt;) -&gt; IterMut&lt;'i, &amp;'a T&gt; { x }
+    /// ```
+    fn iter_mut_invariant() {}
+</code></pre>
+<pre><code class="language-text">cargo test
+
+...
+
+   Doc-tests linked-list
+
+running 1 test
+test src\lib.rs - assert_properties::iter_mut_invariant (line 458) ... FAILED
+
+failures:
+
+---- src\lib.rs - assert_properties::iter_mut_invariant (line 458) stdout ----
+error[E0308]: mismatched types
+ --&gt; src\lib.rs:461:86
+  |
+6 | fn iter_mut_covariant&lt;'i, 'a, T&gt;(x: IterMut&lt;'i, &amp;'static T&gt;) -&gt; IterMut&lt;'i, &amp;'a T&gt; { x }
+  |                                                                                      ^ lifetime mismatch
+  |
+  = note: expected struct `linked_list::IterMut&lt;'_, &amp;'a T&gt;`
+             found struct `linked_list::IterMut&lt;'_, &amp;'static T&gt;`
+</code></pre>
+<p>Ok cool, we've proved it's invariant, but uh, now our tests fail. No worries, rustdoc lets you say that's expected by annotating the fence with compile_fail!</p>
+<p>(Actually we only proved it's &quot;not covariant&quot; but honestly if you manage to make a type &quot;accidentaly and incorrectly contravariant&quot; then, congrats?)</p>
+<pre><code class="language-rust ignore">    /// ```compile_fail
+    /// use linked_list::IterMut;
+    /// 
+    /// fn iter_mut_covariant&lt;'i, 'a, T&gt;(x: IterMut&lt;'i, &amp;'static T&gt;) -&gt; IterMut&lt;'i, &amp;'a T&gt; { x }
+    /// ```
+    fn iter_mut_invariant() {}
+</code></pre>
+<pre><code class="language-text">cargo test
+   Compiling linked-list v0.0.3
+    Finished test [unoptimized + debuginfo] target(s) in 0.49s
+     Running unittests src\lib.rs
+
+...
+
+   Doc-tests linked-list
+
+running 1 test
+test src\lib.rs - assert_properties::iter_mut_invariant (line 458) - compile fail ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+</code></pre>
+<p>Yay! I recommend always making the test without compile_fail so that you can confirm that it fails to compile <em>for the right reason</em>. For instance, that test will also fail (and therefore pass) if you forget the <code>use</code>, which, is not what we want! While it's conceptually appealing to be able to &quot;require&quot; a specific error from the compiler, this would be an absolute nightmare that would effectively make it a breaking change <em>for the compiler to produce better errors</em>. We want the compiler to get better, so, no you don't get to have that.</p>
+<p>(Oh wait, we can actually just specify the error code we want next to the compile_fail <strong>but this only works on nightly and is a bad idea to rely on for the reasons state above. It will be silently ignored on not-nightly.</strong>)</p>
+<pre><code class="language-rust ignore">    /// ```compile_fail,E0308
+    /// use linked_list::IterMut;
+    /// 
+    /// fn iter_mut_covariant&lt;'i, 'a, T&gt;(x: IterMut&lt;'i, &amp;'static T&gt;) -&gt; IterMut&lt;'i, &amp;'a T&gt; { x }
+    /// ```
+    fn iter_mut_invariant() {}
+</code></pre>
+<p>...also, did you notice the part where we actually made IterMut invariant? It was easy to miss, since I &quot;just&quot; copy-pasted Iter and dumped it at the end. It's the last line here:</p>
+<pre><code class="language-rust ignore">pub struct IterMut&lt;'a, T&gt; {
+    front: Link&lt;T&gt;,
+    back: Link&lt;T&gt;,
+    len: usize,
+    _boo: PhantomData&lt;&amp;'a mut T&gt;,
+}
+</code></pre>
+<p>Let's try removing that PhantomData:</p>
+<pre><code class="language-text"> cargo build
+   Compiling linked-list v0.0.3 (C:\Users\ninte\dev\contain\linked-list)
+error[E0392]: parameter `'a` is never used
+  --&gt; src\lib.rs:30:20
+   |
+30 | pub struct IterMut&lt;'a, T&gt; {
+   |                    ^^ unused parameter
+   |
+   = help: consider removing `'a`, referring to it in a field, or using a marker such as `PhantomData`
+</code></pre>
+<p>Ha! The compiler has our back and won't just let us <em>not</em> use the lifetime. Let's try using the <em>wrong</em> example instead:</p>
+<pre><code class="language-rust ignore">    _boo: PhantomData&lt;&amp;'a T&gt;,
+</code></pre>
+<pre><code class="language-text">cargo build
+   Compiling linked-list v0.0.3 (C:\Users\ninte\dev\contain\linked-list)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.17s
+</code></pre>
+<p>It builds! Do our tests catch a problem now?</p>
+<pre><code class="language-text">cargo test
+
+...
+
+   Doc-tests linked-list
+
+running 1 test
+test src\lib.rs - assert_properties::iter_mut_invariant (line 458) - compile fail ... FAILED
+
+failures:
+
+---- src\lib.rs - assert_properties::iter_mut_invariant (line 458) stdout ----
+Test compiled successfully, but it's marked `compile_fail`.
+
+failures:
+    src\lib.rs - assert_properties::iter_mut_invariant (line 458)
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+</code></pre>
+<p>Eyyy!!! The system works! I love having tests that actually do their job, so that I don't have to be quite so horrified of looming mistakes!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="sixth-testing.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="sixth-cursors-intro.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="sixth-testing.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="sixth-cursors-intro.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

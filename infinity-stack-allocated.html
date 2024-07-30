@@ -1,0 +1,539 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>The Stack-Allocated Linked List - Learning Rust With Entirely Too Many Linked Lists</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Learning Rust With Entirely Too Many Linked Lists">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="first.html"><strong aria-hidden="true">2.</strong> A Bad Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="first-layout.html"><strong aria-hidden="true">2.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="first-new.html"><strong aria-hidden="true">2.2.</strong> New</a></li><li class="chapter-item expanded "><a href="first-ownership.html"><strong aria-hidden="true">2.3.</strong> Ownership 101</a></li><li class="chapter-item expanded "><a href="first-push.html"><strong aria-hidden="true">2.4.</strong> Push</a></li><li class="chapter-item expanded "><a href="first-pop.html"><strong aria-hidden="true">2.5.</strong> Pop</a></li><li class="chapter-item expanded "><a href="first-test.html"><strong aria-hidden="true">2.6.</strong> Testing</a></li><li class="chapter-item expanded "><a href="first-drop.html"><strong aria-hidden="true">2.7.</strong> Drop</a></li><li class="chapter-item expanded "><a href="first-final.html"><strong aria-hidden="true">2.8.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="second.html"><strong aria-hidden="true">3.</strong> An Ok Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="second-option.html"><strong aria-hidden="true">3.1.</strong> Option</a></li><li class="chapter-item expanded "><a href="second-generic.html"><strong aria-hidden="true">3.2.</strong> Generic</a></li><li class="chapter-item expanded "><a href="second-peek.html"><strong aria-hidden="true">3.3.</strong> Peek</a></li><li class="chapter-item expanded "><a href="second-into-iter.html"><strong aria-hidden="true">3.4.</strong> IntoIter</a></li><li class="chapter-item expanded "><a href="second-iter.html"><strong aria-hidden="true">3.5.</strong> Iter</a></li><li class="chapter-item expanded "><a href="second-iter-mut.html"><strong aria-hidden="true">3.6.</strong> IterMut</a></li><li class="chapter-item expanded "><a href="second-final.html"><strong aria-hidden="true">3.7.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="third.html"><strong aria-hidden="true">4.</strong> A Persistent Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="third-layout.html"><strong aria-hidden="true">4.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="third-basics.html"><strong aria-hidden="true">4.2.</strong> Basics</a></li><li class="chapter-item expanded "><a href="third-drop.html"><strong aria-hidden="true">4.3.</strong> Drop</a></li><li class="chapter-item expanded "><a href="third-arc.html"><strong aria-hidden="true">4.4.</strong> Arc</a></li><li class="chapter-item expanded "><a href="third-final.html"><strong aria-hidden="true">4.5.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="fourth.html"><strong aria-hidden="true">5.</strong> A Bad Safe Deque</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fourth-layout.html"><strong aria-hidden="true">5.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="fourth-building.html"><strong aria-hidden="true">5.2.</strong> Building</a></li><li class="chapter-item expanded "><a href="fourth-breaking.html"><strong aria-hidden="true">5.3.</strong> Breaking</a></li><li class="chapter-item expanded "><a href="fourth-peek.html"><strong aria-hidden="true">5.4.</strong> Peek</a></li><li class="chapter-item expanded "><a href="fourth-symmetry.html"><strong aria-hidden="true">5.5.</strong> Symmetric Cases</a></li><li class="chapter-item expanded "><a href="fourth-iteration.html"><strong aria-hidden="true">5.6.</strong> Iteration</a></li><li class="chapter-item expanded "><a href="fourth-final.html"><strong aria-hidden="true">5.7.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="fifth.html"><strong aria-hidden="true">6.</strong> An Ok Unsafe Queue</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fifth-layout.html"><strong aria-hidden="true">6.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="fifth-unsafe.html"><strong aria-hidden="true">6.2.</strong> Unsafe</a></li><li class="chapter-item expanded "><a href="fifth-basics.html"><strong aria-hidden="true">6.3.</strong> Basics</a></li><li class="chapter-item expanded "><a href="fifth-miri.html"><strong aria-hidden="true">6.4.</strong> Miri</a></li><li class="chapter-item expanded "><a href="fifth-stacked-borrows.html"><strong aria-hidden="true">6.5.</strong> Stacked Borrows</a></li><li class="chapter-item expanded "><a href="fifth-testing-stacked-borrows.html"><strong aria-hidden="true">6.6.</strong> Testing Stacked Borrows</a></li><li class="chapter-item expanded "><a href="fifth-layout-basics-redux.html"><strong aria-hidden="true">6.7.</strong> Layout + Basics Redux</a></li><li class="chapter-item expanded "><a href="fifth-extras.html"><strong aria-hidden="true">6.8.</strong> Extras</a></li><li class="chapter-item expanded "><a href="fifth-final.html"><strong aria-hidden="true">6.9.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="sixth.html"><strong aria-hidden="true">7.</strong> A Production Unsafe Deque</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="sixth-layout.html"><strong aria-hidden="true">7.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="sixth-variance.html"><strong aria-hidden="true">7.2.</strong> Variance and Subtyping</a></li><li class="chapter-item expanded "><a href="sixth-basics.html"><strong aria-hidden="true">7.3.</strong> Basics</a></li><li class="chapter-item expanded "><a href="sixth-panics.html"><strong aria-hidden="true">7.4.</strong> Panic Safety</a></li><li class="chapter-item expanded "><a href="sixth-combinatorics.html"><strong aria-hidden="true">7.5.</strong> Boring Combinatorics</a></li><li class="chapter-item expanded "><a href="sixth-random-bits.html"><strong aria-hidden="true">7.6.</strong> Filling In Random Bits</a></li><li class="chapter-item expanded "><a href="sixth-testing.html"><strong aria-hidden="true">7.7.</strong> Testing</a></li><li class="chapter-item expanded "><a href="sixth-send-sync.html"><strong aria-hidden="true">7.8.</strong> Send, Sync, and Compile Tests</a></li><li class="chapter-item expanded "><a href="sixth-cursors-intro.html"><strong aria-hidden="true">7.9.</strong> An Introduction To Cursors</a></li><li class="chapter-item expanded "><a href="sixth-cursors-impl.html"><strong aria-hidden="true">7.10.</strong> Implementing Cursors</a></li><li class="chapter-item expanded "><a href="sixth-cursors-testing.html"><strong aria-hidden="true">7.11.</strong> Testing Cursors</a></li><li class="chapter-item expanded "><a href="sixth-final.html"><strong aria-hidden="true">7.12.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="infinity.html"><strong aria-hidden="true">8.</strong> A Bunch of Silly Lists</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="infinity-double-single.html"><strong aria-hidden="true">8.1.</strong> The Double Single</a></li><li class="chapter-item expanded "><a href="infinity-stack-allocated.html" class="active"><strong aria-hidden="true">8.2.</strong> The Stack-Allocated Linked List</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Learning Rust With Entirely Too Many Linked Lists</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/rust-unofficial/too-many-lists" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#the-stack-allocated-linked-list" id="the-stack-allocated-linked-list">The Stack-Allocated Linked List</a></h1>
+<p>This book is largely focused on <em>heap-allocated</em> linked lists, because those are the most common and practical, but we don't <em>have</em> to use heap allocation. Heap allocation is nice because it makes it easy to dynamically allocate memory. Stack allocation is less friendly in this regard — things like C's <code>alloca</code> are widely regarded as Very Cursed And Problematic.</p>
+<p>So let's allocate memory on the stack the easy way: by calling a function and getting a new stack frame with more space! This is a very silly solution to our problem but also genuinely practical and useful. It's done all the time, potentially without actually even thinking about it as a linked list! </p>
+<p>Any time you're doing something recursively, you can just pass a pointer to the current step's state to the next step. If that pointer itself is <em>part</em> of the state, then you've created a linked list that's stack-allocated!</p>
+<p>Now of course we're in the <em>silly</em> part of the book so we're going to do this in a silly way: by making the linked list the star and forcing all the user's code to live in a swamp of callbacks. Everybody loves nested callbacks!</p>
+<p>Our List type will just be a Node with a reference to another Node:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct List&lt;'a, T&gt; {
+    pub data: T,
+    pub prev: Option&lt;&amp;'a List&lt;'a, T&gt;&gt;,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>And it will have only one operation, <code>push</code>, which will take the old list, the state for the current node, and a callback. The new list will be produced in the callback. We will also let callbacks return any value, which <code>push</code> will return when it completes:</p>
+<pre><code class="language-rust ignore">impl&lt;'a, T&gt; List&lt;'a, T&gt; {
+    pub fn push&lt;U&gt;(
+        prev: Option&lt;&amp;'a List&lt;'a, T&gt;&gt;, 
+        data: T, 
+        callback: impl FnOnce(&amp;List&lt;'a, T&gt;) -&gt; U,
+    ) -&gt; U {
+        let list = List { data, prev };
+        callback(&amp;list)
+    }
+}
+</code></pre>
+<p>That's it! We can use it like this:</p>
+<pre><code class="language-rust ignore">List::push(None, 3, |list| {
+    println!(&quot;{}&quot;, list.data);
+    List::push(Some(list), 5, |list| {
+        println!(&quot;{}&quot;, list.data);
+        List::push(Some(list), 13, |list| {
+            println!(&quot;{}&quot;, list.data);
+        })
+    })
+})
+</code></pre>
+<p>It's beautiful. 😿</p>
+<p>The user can already traverse this list by using while-let to walk over the <code>prev</code> values, but just for fun, let's implement an iterator, which is the usual:</p>
+<pre><code class="language-rust ignore">impl&lt;'a, T&gt; List&lt;'a, T&gt; {
+    pub fn iter(&amp;'a self) -&gt; Iter&lt;'a, T&gt; {
+        Iter { next: Some(self) }
+    }
+}
+
+impl&lt;'a, T&gt; Iterator for Iter&lt;'a, T&gt; {
+    type Item = &amp;'a T;
+
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        self.next.map(|node| {
+            self.next = node.prev;
+            &amp;node.data
+        })
+    }
+}
+</code></pre>
+<p>Let's test it out:</p>
+<pre><code class="language-rust ignore">#[cfg(test)]
+mod test {
+    use super::List;
+
+    #[test]
+    fn elegance() {
+        List::push(None, 3, |list| {
+            assert_eq!(list.iter().copied().sum::&lt;i32&gt;(), 3);
+            List::push(Some(list), 5, |list| {
+                assert_eq!(list.iter().copied().sum::&lt;i32&gt;(), 5 + 3);
+                List::push(Some(list), 13, |list| {
+                    assert_eq!(list.iter().copied().sum::&lt;i32&gt;(), 13 + 5 + 3);
+                })
+            })
+        })
+    }
+}
+</code></pre>
+<pre><code class="language-text">&gt; cargo test
+
+running 18 tests
+test fifth::test::into_iter ... ok
+test fifth::test::iter ... ok
+test fifth::test::iter_mut ... ok
+test fifth::test::basics ... ok
+test fifth::test::miri_food ... ok
+test first::test::basics ... ok
+test second::test::into_iter ... ok
+test fourth::test::peek ... ok
+test fourth::test::into_iter ... ok
+test second::test::iter_mut ... ok
+test fourth::test::basics ... ok
+test second::test::basics ... ok
+test second::test::iter ... ok
+test third::test::basics ... ok
+test silly1::test::walk_aboot ... ok
+test silly2::test::elegance ... ok
+test second::test::peek ... ok
+test third::test::iter ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out;
+</code></pre>
+<p>Now at this point you might be wonder &quot;hey can I mutate the data stored in a node?&quot;. Maybe! Let's try to make the list use mutable references instead of shared ones:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct List&lt;'a, T&gt; {
+    pub data: T,
+    pub prev: Option&lt;&amp;'a mut List&lt;'a, T&gt;&gt;,
+}
+
+pub struct Iter&lt;'a, T&gt; {
+    next: Option&lt;&amp;'a List&lt;'a, T&gt;&gt;,
+}
+
+impl&lt;'a, T&gt; List&lt;'a, T&gt; {
+    pub fn push&lt;U&gt;(
+        prev: Option&lt;&amp;'a mut List&lt;'a, T&gt;&gt;, 
+        data: T, 
+        callback: impl FnOnce(&amp;mut List&lt;'a, T&gt;) -&gt; U,
+    ) -&gt; U {
+        let mut list = List { data, prev };
+        callback(&amp;mut list)
+    }
+
+    pub fn iter(&amp;'a self) -&gt; Iter&lt;'a, T&gt; {
+        Iter { next: Some(self) }
+    }
+}
+
+impl&lt;'a, T&gt; Iterator for Iter&lt;'a, T&gt; {
+    type Item = &amp;'a T;
+
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        self.next.map(|node| {
+            self.next = node.prev.as_ref().map(|prev| &amp;**prev);
+            &amp;node.data
+        })
+    }
+}
+
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-text">&gt; cargo test
+
+error[E0521]: borrowed data escapes outside of closure
+  --&gt; src\silly2.rs:47:32
+   |
+46 |  List::push(Some(list), 13, |list| {
+   |                              ----
+   |                              |
+   |              `list` declared here, outside of the closure body
+   |              `list` is a reference that is only valid in the closure body
+47 |      assert_eq!(list.iter().copied().sum::&lt;i32&gt;(), 13 + 5 + 3);
+   |                 ^^^^^^^^^^^ `list` escapes the closure body here
+
+error[E0521]: borrowed data escapes outside of closure
+  --&gt; src\silly2.rs:45:28
+   |
+44 |  List::push(Some(list), 5, |list| {
+   |                             ----
+   |                             |
+   |              `list` declared here, outside of the closure body
+   |              `list` is a reference that is only valid in the closure body
+45 |      assert_eq!(list.iter().copied().sum::&lt;i32&gt;(), 5 + 3);
+   |                 ^^^^^^^^^^^ `list` escapes the closure body here
+
+
+&lt;ad infinitum&gt;
+</code></pre>
+<p>Whelp. Seems like it doesn't like our iterator. Maybe we messed that up? Let's
+simplify the test a bit to check:</p>
+<pre><code class="language-rust ignore">#[test]
+fn elegance() {
+    List::push(None, 3, |list| {
+        assert_eq!(list.data, 3);
+        List::push(Some(list), 5, |list| {
+            assert_eq!(list.data, 5);
+            List::push(Some(list), 13, |list| {
+                assert_eq!(list.data, 13);
+            })
+        })
+    })
+}
+</code></pre>
+<pre><code class="language-text">&gt; cargo test
+
+error[E0521]: borrowed data escapes outside of closure
+  --&gt; src\silly2.rs:46:17
+   |
+44 |   List::push(Some(list), 5, |list| {
+   |                              ----
+   |                              |
+   |              `list` declared here, outside of the closure body
+   |              `list` is a reference that is only valid in the closure body
+45 |       assert_eq!(list.data, 5);
+46 | /     List::push(Some(list), 13, |list| {
+47 | |         assert_eq!(list.data, 13);
+48 | |     })
+   | |______^ `list` escapes the closure body here
+
+error[E0521]: borrowed data escapes outside of closure
+  --&gt; src\silly2.rs:44:13
+   |
+42 |   List::push(None, 3, |list| {
+   |                        ----
+   |                        |
+   |              `list` declared here, outside of the closure body
+   |              `list` is a reference that is only valid in the closure body
+43 |       assert_eq!(list.data, 3);
+44 | /     List::push(Some(list), 5, |list| {
+45 | |         assert_eq!(list.data, 5);
+46 | |         List::push(Some(list), 13, |list| {
+47 | |             assert_eq!(list.data, 13);
+48 | |         })
+49 | |     })
+   | |______________^ `list` escapes the closure body here
+</code></pre>
+<p>Hmm no that's still some hot garbage.</p>
+<p>The problem is that our list is accidentally(😉) relying on <em>variance</em>. <a href="https://doc.rust-lang.org/nomicon/subtyping.html">Variance is a complicated subject</a> but let's look at it in simplified terms here:</p>
+<p>Each list contains a reference to a List with <em>the exact same type as itself</em>. From the perspective of the inner-most list, that means all lists are using the same lifetime as itself, but this is <em>objectively</em> false: each node in the list lives strictly longer than the next one, because they are literally in nested scopes!</p>
+<p>So... why did the code compile when we were using shared references? Because in many cases, the compiler knows it's safe to have something that lives &quot;too long&quot;! When we stuff a reference to a list into the next one, the compiler is quietly &quot;shrinking&quot; down the lifetimes to make them fit what the new list expects. This lifetime shrinking is <em>variance</em>. </p>
+<p>It's the exact same trick in languages with inheritance that let's you pass a Cat where an Animal (a supertype of a Cat) is expected. Intuitively we know it's fine to pass a Cat when an Animal is expected because a Cat is just an Animal <em>and more</em>. It's <em>fine</em> to forget the &quot;and more&quot; part for a while, right?</p>
+<p>Similarly, a larger lifetime is just a smaller lifetime <em>and more</em>. So it's fine to forget the &quot;and more&quot; here too!</p>
+<p>But of course you are now wondering: then why doesn't the mutable reference version work!?</p>
+<p>Well, variance <em>isn't</em> always safe. If our code <em>did</em> compile, we could have written a use-after-free like this:</p>
+<pre><code class="language-rust ignore">List::push(None, 3, |list| {
+    List::push(Some(list), 5, |list| {
+        List::push(Some(list), 13, |list| {
+            // HAHAHA all the lifetimes are the same, so the compiler will
+            // let me rewrite my parent to hold a mutable reference to myself!
+            // I will create all the use-after-frees!!
+            *list.prev.as_mut().unwrap().prev = Some(list);
+        })
+    })
+})
+</code></pre>
+<p>The problem with forgetting details is that <em>somewhere else might remember
+those details and expect them to remain true</em>. That is a very big problem
+once you introduce <em>mutation</em>. If you're not careful, the code that doesn't
+remember the &quot;and more&quot; that we threw away might think it's fine to write
+things to places that &quot;remember&quot; and <em>expect</em> the &quot;and more&quot; to still be there.</p>
+<p>Put in terms of inheritance: this code has to be illegal:</p>
+<pre><code class="language-rust ignore">let mut my_kitty = Cat;                  // Make a Cat (long lifetime)
+let animal: &amp;mut Animal = &amp;mut my_kitty; // Forget it's a Cat (shorten lifetime)
+*animal = Dog;                           // Write a Dog (short lifetime)
+my_kitty.meow();                         // Meowing Dog! (Use After Free)
+</code></pre>
+<p>So while you <em>can</em> shorten the lifetime of a mutable reference, once you start
+<em>nesting</em> them things become &quot;invariant&quot; and you're not allowed to shorten
+lifetimes anymore. </p>
+<p>Specifically <code>&amp;mut &amp;'big mut T</code> cannot be converted to <code>&amp;mut &amp;'small mut T</code>, 
+where <code>'big</code> is bigger than <code>'small</code>. Or more formally, <code>&amp;'a mut T</code> is covariant
+over <code>'a</code> but invariant over <code>T</code>.</p>
+<p>Fun fact: Java actually specifically <em>lets</em> you do this kind of thing, but it
+<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/ArrayStoreException.html">does runtime checks to prevent meowing dogs</a>.</p>
+<hr />
+<p>So what can we do to mutate the data? Use interior mutability! This lets us
+tell the compiler that we just want to be able to mutate the <em>data</em> but won't
+touch the references.</p>
+<p>We can just revert back to the previous version of our code with shared references,
+and use <code>Cell</code> in a new test:</p>
+<pre><code class="language-rust ignore">#[test]
+fn cell() {
+    use std::cell::Cell;
+
+    List::push(None, Cell::new(3), |list| {
+        List::push(Some(list), Cell::new(5), |list| {
+            List::push(Some(list), Cell::new(13), |list| {
+                // Multiply every value in the list by 10
+                for val in list.iter() {
+                    val.set(val.get() * 10)
+                }
+
+                let mut vals = list.iter();
+                assert_eq!(vals.next().unwrap().get(), 130);
+                assert_eq!(vals.next().unwrap().get(), 50);
+                assert_eq!(vals.next().unwrap().get(), 30);
+                assert_eq!(vals.next(), None);
+                assert_eq!(vals.next(), None);
+            })
+        })
+    })
+}
+</code></pre>
+<pre><code class="language-text">&gt; cargo test
+
+running 19 tests
+test fifth::test::into_iter ... ok
+test fifth::test::basics ... ok
+test fifth::test::iter_mut ... ok
+test fifth::test::iter ... ok
+test fourth::test::basics ... ok
+test fourth::test::into_iter ... ok
+test second::test::into_iter ... ok
+test first::test::basics ... ok
+test fourth::test::peek ... ok
+test second::test::basics ... ok
+test fifth::test::miri_food ... ok
+test silly2::test::cell ... ok
+test third::test::iter ... ok
+test second::test::iter_mut ... ok
+test second::test::peek ... ok
+test silly1::test::walk_aboot ... ok
+test silly2::test::elegance ... ok
+test third::test::basics ... ok
+test second::test::iter ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out;
+</code></pre>
+<p>Easy as recursive pie! ✨</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="infinity-double-single.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="infinity-double-single.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

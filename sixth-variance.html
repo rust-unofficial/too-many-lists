@@ -1,0 +1,407 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Variance and Subtyping - Learning Rust With Entirely Too Many Linked Lists</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Learning Rust With Entirely Too Many Linked Lists">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="first.html"><strong aria-hidden="true">2.</strong> A Bad Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="first-layout.html"><strong aria-hidden="true">2.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="first-new.html"><strong aria-hidden="true">2.2.</strong> New</a></li><li class="chapter-item expanded "><a href="first-ownership.html"><strong aria-hidden="true">2.3.</strong> Ownership 101</a></li><li class="chapter-item expanded "><a href="first-push.html"><strong aria-hidden="true">2.4.</strong> Push</a></li><li class="chapter-item expanded "><a href="first-pop.html"><strong aria-hidden="true">2.5.</strong> Pop</a></li><li class="chapter-item expanded "><a href="first-test.html"><strong aria-hidden="true">2.6.</strong> Testing</a></li><li class="chapter-item expanded "><a href="first-drop.html"><strong aria-hidden="true">2.7.</strong> Drop</a></li><li class="chapter-item expanded "><a href="first-final.html"><strong aria-hidden="true">2.8.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="second.html"><strong aria-hidden="true">3.</strong> An Ok Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="second-option.html"><strong aria-hidden="true">3.1.</strong> Option</a></li><li class="chapter-item expanded "><a href="second-generic.html"><strong aria-hidden="true">3.2.</strong> Generic</a></li><li class="chapter-item expanded "><a href="second-peek.html"><strong aria-hidden="true">3.3.</strong> Peek</a></li><li class="chapter-item expanded "><a href="second-into-iter.html"><strong aria-hidden="true">3.4.</strong> IntoIter</a></li><li class="chapter-item expanded "><a href="second-iter.html"><strong aria-hidden="true">3.5.</strong> Iter</a></li><li class="chapter-item expanded "><a href="second-iter-mut.html"><strong aria-hidden="true">3.6.</strong> IterMut</a></li><li class="chapter-item expanded "><a href="second-final.html"><strong aria-hidden="true">3.7.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="third.html"><strong aria-hidden="true">4.</strong> A Persistent Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="third-layout.html"><strong aria-hidden="true">4.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="third-basics.html"><strong aria-hidden="true">4.2.</strong> Basics</a></li><li class="chapter-item expanded "><a href="third-drop.html"><strong aria-hidden="true">4.3.</strong> Drop</a></li><li class="chapter-item expanded "><a href="third-arc.html"><strong aria-hidden="true">4.4.</strong> Arc</a></li><li class="chapter-item expanded "><a href="third-final.html"><strong aria-hidden="true">4.5.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="fourth.html"><strong aria-hidden="true">5.</strong> A Bad Safe Deque</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fourth-layout.html"><strong aria-hidden="true">5.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="fourth-building.html"><strong aria-hidden="true">5.2.</strong> Building</a></li><li class="chapter-item expanded "><a href="fourth-breaking.html"><strong aria-hidden="true">5.3.</strong> Breaking</a></li><li class="chapter-item expanded "><a href="fourth-peek.html"><strong aria-hidden="true">5.4.</strong> Peek</a></li><li class="chapter-item expanded "><a href="fourth-symmetry.html"><strong aria-hidden="true">5.5.</strong> Symmetric Cases</a></li><li class="chapter-item expanded "><a href="fourth-iteration.html"><strong aria-hidden="true">5.6.</strong> Iteration</a></li><li class="chapter-item expanded "><a href="fourth-final.html"><strong aria-hidden="true">5.7.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="fifth.html"><strong aria-hidden="true">6.</strong> An Ok Unsafe Queue</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fifth-layout.html"><strong aria-hidden="true">6.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="fifth-unsafe.html"><strong aria-hidden="true">6.2.</strong> Unsafe</a></li><li class="chapter-item expanded "><a href="fifth-basics.html"><strong aria-hidden="true">6.3.</strong> Basics</a></li><li class="chapter-item expanded "><a href="fifth-miri.html"><strong aria-hidden="true">6.4.</strong> Miri</a></li><li class="chapter-item expanded "><a href="fifth-stacked-borrows.html"><strong aria-hidden="true">6.5.</strong> Stacked Borrows</a></li><li class="chapter-item expanded "><a href="fifth-testing-stacked-borrows.html"><strong aria-hidden="true">6.6.</strong> Testing Stacked Borrows</a></li><li class="chapter-item expanded "><a href="fifth-layout-basics-redux.html"><strong aria-hidden="true">6.7.</strong> Layout + Basics Redux</a></li><li class="chapter-item expanded "><a href="fifth-extras.html"><strong aria-hidden="true">6.8.</strong> Extras</a></li><li class="chapter-item expanded "><a href="fifth-final.html"><strong aria-hidden="true">6.9.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="sixth.html"><strong aria-hidden="true">7.</strong> A Production Unsafe Deque</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="sixth-layout.html"><strong aria-hidden="true">7.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="sixth-variance.html" class="active"><strong aria-hidden="true">7.2.</strong> Variance and Subtyping</a></li><li class="chapter-item expanded "><a href="sixth-basics.html"><strong aria-hidden="true">7.3.</strong> Basics</a></li><li class="chapter-item expanded "><a href="sixth-panics.html"><strong aria-hidden="true">7.4.</strong> Panic Safety</a></li><li class="chapter-item expanded "><a href="sixth-combinatorics.html"><strong aria-hidden="true">7.5.</strong> Boring Combinatorics</a></li><li class="chapter-item expanded "><a href="sixth-random-bits.html"><strong aria-hidden="true">7.6.</strong> Filling In Random Bits</a></li><li class="chapter-item expanded "><a href="sixth-testing.html"><strong aria-hidden="true">7.7.</strong> Testing</a></li><li class="chapter-item expanded "><a href="sixth-send-sync.html"><strong aria-hidden="true">7.8.</strong> Send, Sync, and Compile Tests</a></li><li class="chapter-item expanded "><a href="sixth-cursors-intro.html"><strong aria-hidden="true">7.9.</strong> An Introduction To Cursors</a></li><li class="chapter-item expanded "><a href="sixth-cursors-impl.html"><strong aria-hidden="true">7.10.</strong> Implementing Cursors</a></li><li class="chapter-item expanded "><a href="sixth-cursors-testing.html"><strong aria-hidden="true">7.11.</strong> Testing Cursors</a></li><li class="chapter-item expanded "><a href="sixth-final.html"><strong aria-hidden="true">7.12.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="infinity.html"><strong aria-hidden="true">8.</strong> A Bunch of Silly Lists</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="infinity-double-single.html"><strong aria-hidden="true">8.1.</strong> The Double Single</a></li><li class="chapter-item expanded "><a href="infinity-stack-allocated.html"><strong aria-hidden="true">8.2.</strong> The Stack-Allocated Linked List</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Learning Rust With Entirely Too Many Linked Lists</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/rust-unofficial/too-many-lists" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#variance-and-phantomdata" id="variance-and-phantomdata">Variance and PhantomData</a></h1>
+<p>It's going to be annoying to punt on this now and fix it later, so we're going to do the Hardcore Layout stuff now.</p>
+<p>There are five terrible horsemen of making unsafe Rust collections:</p>
+<ol>
+<li><a href="https://doc.rust-lang.org/nightly/nomicon/subtyping.html">Variance</a></li>
+<li><a href="https://doc.rust-lang.org/nightly/nomicon/dropck.html">Drop Check</a></li>
+<li><a href="https://doc.rust-lang.org/nightly/std/ptr/struct.NonNull.html">NonNull Optimizations</a></li>
+<li><a href="https://doc.rust-lang.org/nightly/nomicon/vec/vec-alloc.html">The isize::MAX Allocation Rule</a></li>
+<li><a href="https://doc.rust-lang.org/nightly/nomicon/vec/vec-zsts.html">Zero-Sized Types</a></li>
+</ol>
+<p>Mercifully, the last 2 aren't going to be a problem for us. </p>
+<p>The third we <em>could</em> make into our problem but it's more trouble than it's worth -- if you've opted into a LinkedList you've already given up the battle on memory-effeciency 100-fold already.</p>
+<p>The second is something that I used to insist was really important and that std messes around with, but the defaults are safe, the ways to mess with it are unstable, and you need to try <em>so very hard</em> to ever notice the limitations of the defaults, so, don't worry about it.</p>
+<p>That just leaves us with Variance. To be honest, you can probably punt on this one too, but I still have my pride as a Collections Person, so we're going to Do The Variance Thing.</p>
+<p>So, surprise: Rust has subtyping. In particular, <code>&amp;'big T</code> is a <em>subtype</em> of <code>&amp;'small T</code>. Why? Well because if some code needs a reference that lives for some particular region of the program, it's usually perfectly fine to give it a reference that lives for <em>longer</em>. Like, intuitively that's just true, right?</p>
+<p>Why is this important? Well imagine some code that takes two values with the same type:</p>
+<pre><code class="language-rust ignore">fn take_two&lt;T&gt;(_val1: T, _val2: T) { }
+</code></pre>
+<p>This is some deeply boring code, and so we should expect it to work with T=&amp;u32 fine, right?</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn two_refs&lt;'big: 'small, 'small&gt;(
+    big: &amp;'big u32, 
+    small: &amp;'small u32,
+) {
+    take_two(big, small);
+}
+
+fn take_two&lt;T&gt;(_val1: T, _val2: T) { }
+<span class="boring">}
+</span></code></pre></pre>
+<p>Yep, that compiles fine!</p>
+<p>Now let's have some fun and wrap it in, oh, I don't know, <code>std::cell::Cell</code>:</p>
+<pre><pre class="playground"><code class="language-rust compilefail">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::cell::Cell;
+
+fn two_refs&lt;'big: 'small, 'small&gt;(
+    // NOTE: these two lines changed
+    big: Cell&lt;&amp;'big u32&gt;, 
+    small: Cell&lt;&amp;'small u32&gt;,
+) {
+    take_two(big, small);
+}
+
+fn take_two&lt;T&gt;(_val1: T, _val2: T) { }
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-text">error[E0623]: lifetime mismatch
+ --&gt; src/main.rs:7:19
+  |
+4 |     big: Cell&lt;&amp;'big u32&gt;, 
+  |               ---------
+5 |     small: Cell&lt;&amp;'small u32&gt;,
+  |                 ----------- these two types are declared with different lifetimes...
+6 | ) {
+7 |     take_two(big, small);
+  |                   ^^^^^ ...but data from `small` flows into `big` here
+</code></pre>
+<p>Huh??? We didn't touch the lifetimes, why's the compiler angry now!?</p>
+<p>Ah well, the lifetime &quot;subtyping&quot; stuff must be really simple, so it falls over if you wrap the references in anything, see look it breaks with Vec too:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn two_refs&lt;'big: 'small, 'small&gt;(
+    big: Vec&lt;&amp;'big u32&gt;, 
+    small: Vec&lt;&amp;'small u32&gt;,
+) {
+    take_two(big, small);
+}
+
+fn take_two&lt;T&gt;(_val1: T, _val2: T) { }
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-text">    Finished dev [unoptimized + debuginfo] target(s) in 1.07s
+     Running `target/debug/playground`
+</code></pre>
+<p>See it doesn't compile eith-- wait what??? Vec is magic??????</p>
+<p>Well, yes. But also, no. The magic was inside us all along, and that magic is ✨<em>Variance</em>✨.</p>
+<p>Read the <a href="https://doc.rust-lang.org/nightly/nomicon/subtyping.html">nomicon's chapter on subtyping</a> if you want all the gorey details, but basically subtyping <em>isn't</em> always safe. In particular it's not safe when mutable references are involved because you can use things like <code>mem::swap</code> and suddenly oops dangling pointers!</p>
+<p>Things that are &quot;like mutable references&quot; are <em>invariant</em> which means they block subtyping from happening on their generic parameters. So for safety, <code>&amp;mut T</code> is invariant over T, and <code>Cell&lt;T&gt;</code> is invariant over T because <code>&amp;Cell&lt;T&gt;</code> is basically just <code>&amp;mut T</code> (because of interior mutability).</p>
+<p>Almost everything that isn't invariant is <em>covariant</em>, and that just means that subtyping &quot;passes through&quot; it and continues to work normally (there are also contravariant types that make subtyping go backwards but they are really rare and no one likes them so I won't mention them again).</p>
+<p>Collections generally contain a mutable pointer to their data, so you might expect them to be invariant too, but in fact, they don't need to be! Because of Rust's ownership system, <code>Vec&lt;T&gt;</code> is semantically equivalent to <code>T</code>, and that means it's safe for it to be covariant!</p>
+<p>Unfortunately, this definition is invariant:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct LinkedList&lt;T&gt; {
+    front: Link&lt;T&gt;,
+    back: Link&lt;T&gt;,
+    len: usize,
+}
+
+type Link&lt;T&gt; = *mut Node&lt;T&gt;;
+
+struct Node&lt;T&gt; {
+    front: Link&lt;T&gt;,
+    back: Link&lt;T&gt;,
+    elem: T, 
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>But how is Rust actually deciding the variance of things? Well in the good-old-days before 1.0 we messed around with just letting people specify the variance they wanted and... it was an absolute train-wreck! Subtyping and variance is really hard to wrap your head around, and core developers genuinely disagreed on basic terminology! So we moved to a &quot;variance by example&quot; approach: the compiler just looks at your fields and copies their variances. If there's any kind of disagreement, then invariance always wins, because that's safe.</p>
+<p>So what's in our type definitions that Rust is getting mad about? <code>*mut</code>!</p>
+<p>Raw pointers in Rust really just try to let you do whatever, but they have exactly one safety feature: because most people have no idea that variance and subtyping are a thing in Rust, and being <em>incorrectly</em> covariant would be horribly dangerous, <code>*mut T</code> is invariant, because there's a good chance it's being used &quot;as&quot; <code>&amp;mut T</code>.</p>
+<p>This is extremely annoying for Exactly Me as a person who has spent a lot of time writing collections in Rust. This is why when I made <a href="https://doc.rust-lang.org/std/ptr/struct.NonNull.html">std::ptr::NonNull</a>, I added this little piece of magic:</p>
+<blockquote>
+<p>Unlike <code>*mut T</code>, <code>NonNull&lt;T&gt;</code> was chosen to be covariant over <code>T</code>. This makes it possible to use <code>NonNull&lt;T&gt;</code> when building covariant types, but introduces the risk of unsoundness if used in a type that shouldn’t actually be covariant.</p>
+</blockquote>
+<p>But hey, it's interface is built around <code>*mut T</code>, what's the deal! Is it just magic?! Let's look:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub struct NonNull&lt;T&gt; {
+    pointer: *const T,
+}
+
+
+impl&lt;T&gt; NonNull&lt;T&gt; {
+    pub unsafe fn new_unchecked(ptr: *mut T) -&gt; Self {
+        // SAFETY: the caller must guarantee that `ptr` is non-null.
+        unsafe { NonNull { pointer: ptr as *const T } }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>NOPE. NO MAGIC HERE! NonNull just abuses the fact that <code>*const T</code> is covariant and stores that instead, casting back and forth between <code>*mut T</code> at the API boundary to make it &quot;look like&quot; it's storing a <code>*mut T</code>. That's the whole trick! That's how collections in Rust are covariant! And it's miserable! So I made the Good Pointer Type do it for you! You're welcome! Enjoy your subtyping footgun!</p>
+<p>The solution to all your problems is to use NonNull, and then if you want to have nullable pointers again, use <code>Option&lt;NonNull&lt;T&gt;&gt;</code>. Are we really going to bother doing that..?</p>
+<p>Yep! It sucks, but we're making <em>production grade linked lists</em> so we're going to eat all our vegetables and do things the hard way (we could just use bare <code>*const T</code> and cast everywhere, but I genuinely want to see how painful this is... for Ergonomics Science).</p>
+<p>So here's our final type definitions:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::ptr::NonNull;
+
+// !!!This changed!!!
+pub struct LinkedList&lt;T&gt; {
+    front: Link&lt;T&gt;,
+    back: Link&lt;T&gt;,
+    len: usize,
+}
+
+type Link&lt;T&gt; = Option&lt;NonNull&lt;Node&lt;T&gt;&gt;&gt;;
+
+struct Node&lt;T&gt; {
+    front: Link&lt;T&gt;,
+    back: Link&lt;T&gt;,
+    elem: T, 
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>...wait nope, one last thing. Any time you do raw pointer stuff, you should add a Ghost to protect your pointers:</p>
+<pre><code class="language-rust ignore">use std::marker::PhantomData;
+
+pub struct LinkedList&lt;T&gt; {
+    front: Link&lt;T&gt;,
+    back: Link&lt;T&gt;,
+    len: usize,
+    /// We semantically store values of T by-value.
+    _boo: PhantomData&lt;T&gt;,
+}
+</code></pre>
+<p>In this case I don't think we <em>actually</em> need <a href="https://doc.rust-lang.org/std/marker/struct.PhantomData.html">PhantomData</a>, but any time you <em>do</em> use NonNull (or just raw pointers in general), you should always add it to be safe and make it clear to the compiler and others what you <em>think</em> you're doing.</p>
+<p>PhantomData is a way for us to give the compiler an extra &quot;example&quot; field that <em>conceptually</em> exists in your type but for various reasons (indirection, type erasure, ...) doesn't. In this case we're using NonNull because we're claiming our type behaves &quot;as if&quot; it stored a value T, so we add a PhantomData to make that explicit.</p>
+<p>The stdlib actually has other reasons to do this because it has access to the accursed <a href="https://doc.rust-lang.org/nightly/nomicon/dropck.html">Drop Check overrides</a>, but that feature has been reworked so many times that I don't actually know if the PhantomData thing <em>is</em> a thing for it anymore. I'm still going to cargo-cult it for all eternity, because Drop Check Magic is burned into my brain!</p>
+<p>(Node literally stores a T, so it doesn't have to do this, yay!)</p>
+<p>...ok for real we're done with layout now! On to actual basic functionality!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="sixth-layout.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="sixth-basics.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="sixth-layout.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="sixth-basics.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

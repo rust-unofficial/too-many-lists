@@ -1,0 +1,442 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Introduction - Learning Rust With Entirely Too Many Linked Lists</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Learning Rust With Entirely Too Many Linked Lists">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html" class="active"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="first.html"><strong aria-hidden="true">2.</strong> A Bad Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="first-layout.html"><strong aria-hidden="true">2.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="first-new.html"><strong aria-hidden="true">2.2.</strong> New</a></li><li class="chapter-item expanded "><a href="first-ownership.html"><strong aria-hidden="true">2.3.</strong> Ownership 101</a></li><li class="chapter-item expanded "><a href="first-push.html"><strong aria-hidden="true">2.4.</strong> Push</a></li><li class="chapter-item expanded "><a href="first-pop.html"><strong aria-hidden="true">2.5.</strong> Pop</a></li><li class="chapter-item expanded "><a href="first-test.html"><strong aria-hidden="true">2.6.</strong> Testing</a></li><li class="chapter-item expanded "><a href="first-drop.html"><strong aria-hidden="true">2.7.</strong> Drop</a></li><li class="chapter-item expanded "><a href="first-final.html"><strong aria-hidden="true">2.8.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="second.html"><strong aria-hidden="true">3.</strong> An Ok Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="second-option.html"><strong aria-hidden="true">3.1.</strong> Option</a></li><li class="chapter-item expanded "><a href="second-generic.html"><strong aria-hidden="true">3.2.</strong> Generic</a></li><li class="chapter-item expanded "><a href="second-peek.html"><strong aria-hidden="true">3.3.</strong> Peek</a></li><li class="chapter-item expanded "><a href="second-into-iter.html"><strong aria-hidden="true">3.4.</strong> IntoIter</a></li><li class="chapter-item expanded "><a href="second-iter.html"><strong aria-hidden="true">3.5.</strong> Iter</a></li><li class="chapter-item expanded "><a href="second-iter-mut.html"><strong aria-hidden="true">3.6.</strong> IterMut</a></li><li class="chapter-item expanded "><a href="second-final.html"><strong aria-hidden="true">3.7.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="third.html"><strong aria-hidden="true">4.</strong> A Persistent Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="third-layout.html"><strong aria-hidden="true">4.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="third-basics.html"><strong aria-hidden="true">4.2.</strong> Basics</a></li><li class="chapter-item expanded "><a href="third-drop.html"><strong aria-hidden="true">4.3.</strong> Drop</a></li><li class="chapter-item expanded "><a href="third-arc.html"><strong aria-hidden="true">4.4.</strong> Arc</a></li><li class="chapter-item expanded "><a href="third-final.html"><strong aria-hidden="true">4.5.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="fourth.html"><strong aria-hidden="true">5.</strong> A Bad Safe Deque</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fourth-layout.html"><strong aria-hidden="true">5.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="fourth-building.html"><strong aria-hidden="true">5.2.</strong> Building</a></li><li class="chapter-item expanded "><a href="fourth-breaking.html"><strong aria-hidden="true">5.3.</strong> Breaking</a></li><li class="chapter-item expanded "><a href="fourth-peek.html"><strong aria-hidden="true">5.4.</strong> Peek</a></li><li class="chapter-item expanded "><a href="fourth-symmetry.html"><strong aria-hidden="true">5.5.</strong> Symmetric Cases</a></li><li class="chapter-item expanded "><a href="fourth-iteration.html"><strong aria-hidden="true">5.6.</strong> Iteration</a></li><li class="chapter-item expanded "><a href="fourth-final.html"><strong aria-hidden="true">5.7.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="fifth.html"><strong aria-hidden="true">6.</strong> An Ok Unsafe Queue</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fifth-layout.html"><strong aria-hidden="true">6.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="fifth-unsafe.html"><strong aria-hidden="true">6.2.</strong> Unsafe</a></li><li class="chapter-item expanded "><a href="fifth-basics.html"><strong aria-hidden="true">6.3.</strong> Basics</a></li><li class="chapter-item expanded "><a href="fifth-miri.html"><strong aria-hidden="true">6.4.</strong> Miri</a></li><li class="chapter-item expanded "><a href="fifth-stacked-borrows.html"><strong aria-hidden="true">6.5.</strong> Stacked Borrows</a></li><li class="chapter-item expanded "><a href="fifth-testing-stacked-borrows.html"><strong aria-hidden="true">6.6.</strong> Testing Stacked Borrows</a></li><li class="chapter-item expanded "><a href="fifth-layout-basics-redux.html"><strong aria-hidden="true">6.7.</strong> Layout + Basics Redux</a></li><li class="chapter-item expanded "><a href="fifth-extras.html"><strong aria-hidden="true">6.8.</strong> Extras</a></li><li class="chapter-item expanded "><a href="fifth-final.html"><strong aria-hidden="true">6.9.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="sixth.html"><strong aria-hidden="true">7.</strong> A Production Unsafe Deque</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="sixth-layout.html"><strong aria-hidden="true">7.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="sixth-variance.html"><strong aria-hidden="true">7.2.</strong> Variance and Subtyping</a></li><li class="chapter-item expanded "><a href="sixth-basics.html"><strong aria-hidden="true">7.3.</strong> Basics</a></li><li class="chapter-item expanded "><a href="sixth-panics.html"><strong aria-hidden="true">7.4.</strong> Panic Safety</a></li><li class="chapter-item expanded "><a href="sixth-combinatorics.html"><strong aria-hidden="true">7.5.</strong> Boring Combinatorics</a></li><li class="chapter-item expanded "><a href="sixth-random-bits.html"><strong aria-hidden="true">7.6.</strong> Filling In Random Bits</a></li><li class="chapter-item expanded "><a href="sixth-testing.html"><strong aria-hidden="true">7.7.</strong> Testing</a></li><li class="chapter-item expanded "><a href="sixth-send-sync.html"><strong aria-hidden="true">7.8.</strong> Send, Sync, and Compile Tests</a></li><li class="chapter-item expanded "><a href="sixth-cursors-intro.html"><strong aria-hidden="true">7.9.</strong> An Introduction To Cursors</a></li><li class="chapter-item expanded "><a href="sixth-cursors-impl.html"><strong aria-hidden="true">7.10.</strong> Implementing Cursors</a></li><li class="chapter-item expanded "><a href="sixth-cursors-testing.html"><strong aria-hidden="true">7.11.</strong> Testing Cursors</a></li><li class="chapter-item expanded "><a href="sixth-final.html"><strong aria-hidden="true">7.12.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="infinity.html"><strong aria-hidden="true">8.</strong> A Bunch of Silly Lists</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="infinity-double-single.html"><strong aria-hidden="true">8.1.</strong> The Double Single</a></li><li class="chapter-item expanded "><a href="infinity-stack-allocated.html"><strong aria-hidden="true">8.2.</strong> The Stack-Allocated Linked List</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Learning Rust With Entirely Too Many Linked Lists</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/rust-unofficial/too-many-lists" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#learn-rust-with-entirely-too-many-linked-lists" id="learn-rust-with-entirely-too-many-linked-lists">Learn Rust With Entirely Too Many Linked Lists</a></h1>
+<blockquote>
+<p>Got any issues or want to check out all the final code at once?
+<a href="https://github.com/rust-unofficial/too-many-lists">Everything's on Github!</a></p>
+</blockquote>
+<blockquote>
+<p><strong>NOTE</strong>: The current edition of this book is written against Rust 2018,
+which was first released with rustc 1.31 (Dec 8, 2018). If your rust toolchain
+is new enough, the Cargo.toml file that <code>cargo new</code> creates should contain the
+line <code>edition = &quot;2018&quot;</code> (or if you're reading this in the far future, perhaps
+some even larger number!). Using an older toolchain is possible, but unlocks
+a secret <strong>hardmode</strong>, where you get extra compiler errors that go completely
+unmentioned in the text of this book. Wow, sounds like fun!</p>
+</blockquote>
+<p>I fairly frequently get asked how to implement a linked list in Rust. The
+answer honestly depends on what your requirements are, and it's obviously not
+super easy to answer the question on the spot. As such I've decided to write
+this book to comprehensively answer the question once and for all.</p>
+<p>In this series I will teach you basic and advanced Rust programming
+entirely by having you implement 6 linked lists. In doing so, you should
+learn:</p>
+<ul>
+<li>The following pointer types: <code>&amp;</code>, <code>&amp;mut</code>, <code>Box</code>, <code>Rc</code>, <code>Arc</code>, <code>*const</code>, <code>*mut</code>, <code>NonNull</code>(?)</li>
+<li>Ownership, borrowing, inherited mutability, interior mutability, Copy</li>
+<li>All The Keywords: struct, enum, fn, pub, impl, use, ...</li>
+<li>Pattern matching, generics, destructors</li>
+<li>Testing, installing new toolchains, using <code>miri</code></li>
+<li>Unsafe Rust: raw pointers, aliasing, stacked borrows, UnsafeCell, variance</li>
+</ul>
+<p>Yes, linked lists are so truly awful that you deal with all of these concepts in
+making them real.</p>
+<p>Everything's in the sidebar (may be collapsed on mobile), but for quick
+reference, here's what we're going to be making:</p>
+<ol>
+<li><a href="first.html">A Bad Singly-Linked Stack</a></li>
+<li><a href="second.html">An Ok Singly-Linked Stack</a></li>
+<li><a href="third.html">A Persistent Singly-Linked Stack</a></li>
+<li><a href="fourth.html">A Bad But Safe Doubly-Linked Deque</a></li>
+<li><a href="fifth.html">An Unsafe Singly-Linked Queue</a></li>
+<li><a href="sixth.html">TODO: An Ok Unsafe Doubly-Linked Deque</a></li>
+<li><a href="infinity.html">Bonus: A Bunch of Silly Lists</a></li>
+</ol>
+<p>Just so we're all the same page, I'll be writing out all the commands that I
+feed into my terminal. I'll also be using Rust's standard package manager, Cargo,
+to develop the project. Cargo isn't necessary to write a Rust program, but it's
+<em>so much</em> better than using rustc directly. If you just want to futz around you
+can also run some simple programs in the browser via <a href="https://play.rust-lang.org/">play.rust-lang.org</a>.</p>
+<p>In later sections, we'll be using &quot;rustup&quot; to install extra Rust tooling.
+I strongly recommend <a href="https://www.rust-lang.org/tools/install">installing all of your Rust toolchains using rustup</a>.</p>
+<p>Let's get started and make our project:</p>
+<pre><code class="language-text">&gt; cargo new --lib lists
+&gt; cd lists
+</code></pre>
+<p>We'll put each list in a separate file so that we don't lose any of our work.</p>
+<p>It should be noted that the <em>authentic</em> Rust learning experience involves
+writing code, having the compiler scream at you, and trying to figure out
+what the heck that means. I will be carefully ensuring that this occurs as
+frequently as possible. Learning to read and understand Rust's generally
+excellent compiler errors and documentation is <em>incredibly</em> important to
+being a productive Rust programmer.</p>
+<p>Although actually that's a lie. In writing this I encountered <em>way</em> more
+compiler errors than I show. In particular, in the later chapters I won't be
+showing a lot of the random &quot;I typed (copy-pasted) bad&quot; errors that you
+expect to encounter in every language. This is a <em>guided tour</em> of having the
+compiler scream at us.</p>
+<p>We're going to be going pretty slow, and I'm honestly not going to be very
+serious pretty much the entire time. I think programming should be fun, dang it!
+If you're the type of person who wants maximally information-dense, serious, and
+formal content, this book is not for you. Nothing I will ever make is for you.
+You are wrong.</p>
+<h1><a class="header" href="#an-obligatory-public-service-announcement" id="an-obligatory-public-service-announcement">An Obligatory Public Service Announcement</a></h1>
+<p>Just so we're totally 100% clear: I hate linked lists. With
+a passion. Linked lists are terrible data structures. Now of course there's
+several great use cases for a linked list:</p>
+<ul>
+<li>You want to do <em>a lot</em> of splitting or merging of big lists. <em>A lot</em>.</li>
+<li>You're doing some awesome lock-free concurrent thing.</li>
+<li>You're writing a kernel/embedded thing and want to use an intrusive list.</li>
+<li>You're using a pure functional language and the limited semantics and absence
+of mutation makes linked lists easier to work with.</li>
+<li>... and more!</li>
+</ul>
+<p>But all of these cases are <em>super rare</em> for anyone writing a Rust program. 99%
+of the time you should just use a Vec (array stack), and 99% of the other 1%
+of the time you should be using a VecDeque (array deque). These are blatantly
+superior data structures for most workloads due to less frequent allocation,
+lower memory overhead, true random access, and cache locality.</p>
+<p>Linked lists are as <em>niche</em> and <em>vague</em> of a data structure as a trie. Few would
+balk at me claiming a trie is a niche structure that your average programmer
+could happily never learn in an entire productive career -- and yet linked lists
+have some bizarre celebrity status. We teach every undergrad how to write a
+linked list. It's the only niche collection
+<a href="https://doc.rust-lang.org/std/collections/struct.LinkedList.html">I couldn't kill from std::collections</a>. It's
+<a href="http://en.cppreference.com/w/cpp/container/list"><em>the</em> list in C++</a>!</p>
+<p>We should all as a community say <em>no</em> to linked lists as a &quot;standard&quot; data
+structure. It's a fine data structure with several great use cases, but those
+use cases are <em>exceptional</em>, not common.</p>
+<p>Several people apparently read the first paragraph of this PSA and then stop
+reading. Like, literally they'll try to rebut my argument by listing one of the
+things in my list of <em>great use cases</em>. The thing right after the first
+paragraph!</p>
+<p>Just so I can link directly to a detailed argument, here are several attempts
+at counter-arguments I have seen, and my response to them. Feel free to skip
+to <a href="first.html">the first chapter</a> if you just want to learn some Rust!</p>
+<h2><a class="header" href="#performance-doesnt-always-matter" id="performance-doesnt-always-matter">Performance doesn't always matter</a></h2>
+<p>Yes! Maybe your application is I/O-bound or the code in question is in some
+cold case that just doesn't matter. But this isn't even an argument for using
+a linked list. This is an argument for using <em>whatever at all</em>. Why settle for
+a linked list? Use a linked hash map!</p>
+<p>If performance doesn't matter, then it's <em>surely</em> fine to apply the natural
+default of an array.</p>
+<h2><a class="header" href="#they-have-o1-split-append-insert-remove-if-you-have-a-pointer-there" id="they-have-o1-split-append-insert-remove-if-you-have-a-pointer-there">They have O(1) split-append-insert-remove if you have a pointer there</a></h2>
+<p>Yep! Although as <a href="https://www.youtube.com/watch?v=YQs6IC-vgmo">Bjarne Stroustrup notes</a> <em>this doesn't actually
+matter</em> if the time it takes to get that pointer completely dwarfs the
+time it would take to just copy over all the elements in an array (which is
+really quite fast).</p>
+<p>Unless you have a workload that is heavily dominated by splitting and merging
+costs, the penalty <em>every other</em> operation takes due to caching effects and code
+complexity will eliminate any theoretical gains.</p>
+<p><em>But yes, if you're profiling your application to spend a lot of time in
+splitting and merging, you may have gains in a linked list</em>.</p>
+<h2><a class="header" href="#i-cant-afford-amortization" id="i-cant-afford-amortization">I can't afford amortization</a></h2>
+<p>You've already entered a pretty niche space -- most can afford amortization.
+Still, arrays are amortized <em>in the worst case</em>. Just because you're using an
+array, doesn't mean you have amortized costs. If you can predict how many
+elements you're going to store (or even have an upper-bound), you can
+pre-reserve all the space you need. In my experience it's <em>very</em> common to be
+able to predict how many elements you'll need. In Rust in particular, all
+iterators provide a <code>size_hint</code> for exactly this case.</p>
+<p>Then <code>push</code> and <code>pop</code> will be truly O(1) operations. And they're going to be
+<em>considerably</em> faster than <code>push</code> and <code>pop</code> on linked list. You do a pointer
+offset, write the bytes, and increment an integer. No need to go to any kind of
+allocator.</p>
+<p>How's that for low latency?</p>
+<p><em>But yes, if you can't predict your load, there are worst-case
+latency savings to be had!</em></p>
+<h2><a class="header" href="#linked-lists-waste-less-space" id="linked-lists-waste-less-space">Linked lists waste less space</a></h2>
+<p>Well, this is complicated. A &quot;standard&quot; array resizing strategy is to grow
+or shrink so that at most half the array is empty. This is indeed a lot of
+wasted space. Especially in Rust, we don't automatically shrink collections
+(it's a waste if you're just going to fill it back up again), so the wastage
+can approach infinity!</p>
+<p>But this is a worst-case scenario. In the best-case, an array stack only has
+three pointers of overhead for the entire array. Basically no overhead.</p>
+<p>Linked lists on the other hand unconditionally waste space per element.
+A singly-linked list wastes one pointer while a doubly-linked list wastes
+two. Unlike an array, the relative wasteage is proportional to the size of
+the element. If you have <em>huge</em> elements this approaches 0 waste. If you have
+tiny elements (say, bytes), then this can be as much as 16x memory overhead
+(8x on 32-bit)!</p>
+<p>Actually, it's more like 23x (11x on 32-bit) because padding will be added
+to the byte to align the whole node's size to a pointer.</p>
+<p>This is also assuming the best-case for your allocator: that allocating and
+deallocating nodes is being done densely and you're not losing memory to
+fragmentation.</p>
+<p><em>But yes, if you have huge elements, can't predict your load, and have a
+decent allocator, there are memory savings to be had!</em></p>
+<h2><a class="header" href="#i-use-linked-lists-all-the-time-in-functional-language" id="i-use-linked-lists-all-the-time-in-functional-language">I use linked lists all the time in &lt;functional language&gt;</a></h2>
+<p>Great! Linked lists are super elegant to use in functional languages
+because you can manipulate them without any mutation, can describe them
+recursively, and also work with infinite lists due to the magic of laziness.</p>
+<p>Specifically, linked lists are nice because they represent an iteration without
+the need for any mutable state. The next step is just visiting the next sublist.</p>
+<p>Rust mostly does this kind of thing with <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html">iterators</a>. They can be infinite 
+and you can map, filter, reverse, and concatenate them just like a functional list,
+and it will all be done just as lazily!</p>
+<p>Rust also lets you easily talk about sub-arrays with <em><a href="https://doc.rust-lang.org/std/primitive.slice.html">slices</a></em>. Your usual
+head/tail split in a functional language is <a href="https://doc.rust-lang.org/std/primitive.slice.html#method.split_at_mut">just <code>slice.split_at_mut(1)</code></a>.
+For a long time, Rust had an experimental system for pattern matching on
+slices which was super cool, but the feature was simplified when it was
+stabilized. Still, <a href="https://doc.rust-lang.org/edition-guide/rust-2018/slice-patterns.html">basic slice patterns</a> are neat! And of course,
+slices can be turned into iterators!</p>
+<p><em>But yes, if you're limited to immutable semantics, linked lists can be very
+nice</em>.</p>
+<p>Note that I'm not saying that functional programming is necessarily weak or
+bad. However it <em>is</em> fundamentally semantically limited: you're largely only
+allowed to talk about how things <em>are</em>, and not how they should be <em>done</em>. This
+is actually a <em>feature</em>, because it enables the compiler to do tons of <a href="https://wiki.haskell.org/GHC_optimisations#Fusion">exotic
+transformations</a> and potentially figure out the <em>best</em> way to do things
+without you having to worry about it. However this comes at the cost of being
+<em>able</em> to worry about it. There are usually escape hatches, but at some limit
+you're just writing procedural code again.</p>
+<p>Even in functional languages, you should endeavour to use the appropriate data
+structure for the job when you actually need a data structure. Yes,
+singly-linked lists are your primary tool for control flow, but they're a
+really poor way to actually store a bunch of data and query it.</p>
+<h2><a class="header" href="#linked-lists-are-great-for-building-concurrent-data-structures" id="linked-lists-are-great-for-building-concurrent-data-structures">Linked lists are great for building concurrent data structures!</a></h2>
+<p>Yes! Although writing a concurrent data structure is really a whole different
+beast, and isn't something that should be taken lightly. Certainly not something
+many people will even <em>consider</em> doing. Once one's been written, you're also not
+really choosing to use a linked list. You're choosing to use an MPSC queue or
+whatever. The implementation strategy is pretty far removed in this case!</p>
+<p><em>But yes, linked lists are the defacto heroes of the dark world of lock-free
+concurrency.</em></p>
+<h2><a class="header" href="#mumble-mumble-kernel-embedded-something-something-intrusive" id="mumble-mumble-kernel-embedded-something-something-intrusive">Mumble mumble kernel embedded something something intrusive.</a></h2>
+<p>It's niche. You're talking about a situation where you're not even using
+your language's <em>runtime</em>. Is that not a red flag that you're doing something
+strange?</p>
+<p>It's also wildly unsafe.</p>
+<p><em>But sure. Build your awesome zero-allocation lists on the stack.</em></p>
+<h2><a class="header" href="#iterators-dont-get-invalidated-by-unrelated-insertionsremovals" id="iterators-dont-get-invalidated-by-unrelated-insertionsremovals">Iterators don't get invalidated by unrelated insertions/removals</a></h2>
+<p>That's a delicate dance you're playing. Especially if you don't have
+a garbage collector. I might argue that your control flow and ownership
+patterns are probably a bit too tangled, depending on the details.</p>
+<p><em>But yes, you can do some really cool crazy stuff with cursors.</em></p>
+<h2><a class="header" href="#theyre-simple-and-great-for-teaching" id="theyre-simple-and-great-for-teaching">They're simple and great for teaching!</a></h2>
+<p>Well, yeah. You're reading a book dedicated to that premise.
+Well, singly-linked lists are pretty simple. Doubly-linked lists
+can get kinda gnarly, as we'll see.</p>
+<h1><a class="header" href="#take-a-breath" id="take-a-breath">Take a Breath</a></h1>
+<p>Ok. That's out of the way. Let's write a bajillion linked lists.</p>
+<p><a href="first.html">On to the first chapter!</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+                            <a rel="next" href="first.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+                    <a rel="next" href="first.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

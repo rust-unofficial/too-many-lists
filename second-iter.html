@@ -1,0 +1,696 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Iter - Learning Rust With Entirely Too Many Linked Lists</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Learning Rust With Entirely Too Many Linked Lists">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="first.html"><strong aria-hidden="true">2.</strong> A Bad Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="first-layout.html"><strong aria-hidden="true">2.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="first-new.html"><strong aria-hidden="true">2.2.</strong> New</a></li><li class="chapter-item expanded "><a href="first-ownership.html"><strong aria-hidden="true">2.3.</strong> Ownership 101</a></li><li class="chapter-item expanded "><a href="first-push.html"><strong aria-hidden="true">2.4.</strong> Push</a></li><li class="chapter-item expanded "><a href="first-pop.html"><strong aria-hidden="true">2.5.</strong> Pop</a></li><li class="chapter-item expanded "><a href="first-test.html"><strong aria-hidden="true">2.6.</strong> Testing</a></li><li class="chapter-item expanded "><a href="first-drop.html"><strong aria-hidden="true">2.7.</strong> Drop</a></li><li class="chapter-item expanded "><a href="first-final.html"><strong aria-hidden="true">2.8.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="second.html"><strong aria-hidden="true">3.</strong> An Ok Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="second-option.html"><strong aria-hidden="true">3.1.</strong> Option</a></li><li class="chapter-item expanded "><a href="second-generic.html"><strong aria-hidden="true">3.2.</strong> Generic</a></li><li class="chapter-item expanded "><a href="second-peek.html"><strong aria-hidden="true">3.3.</strong> Peek</a></li><li class="chapter-item expanded "><a href="second-into-iter.html"><strong aria-hidden="true">3.4.</strong> IntoIter</a></li><li class="chapter-item expanded "><a href="second-iter.html" class="active"><strong aria-hidden="true">3.5.</strong> Iter</a></li><li class="chapter-item expanded "><a href="second-iter-mut.html"><strong aria-hidden="true">3.6.</strong> IterMut</a></li><li class="chapter-item expanded "><a href="second-final.html"><strong aria-hidden="true">3.7.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="third.html"><strong aria-hidden="true">4.</strong> A Persistent Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="third-layout.html"><strong aria-hidden="true">4.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="third-basics.html"><strong aria-hidden="true">4.2.</strong> Basics</a></li><li class="chapter-item expanded "><a href="third-drop.html"><strong aria-hidden="true">4.3.</strong> Drop</a></li><li class="chapter-item expanded "><a href="third-arc.html"><strong aria-hidden="true">4.4.</strong> Arc</a></li><li class="chapter-item expanded "><a href="third-final.html"><strong aria-hidden="true">4.5.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="fourth.html"><strong aria-hidden="true">5.</strong> A Bad Safe Deque</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fourth-layout.html"><strong aria-hidden="true">5.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="fourth-building.html"><strong aria-hidden="true">5.2.</strong> Building</a></li><li class="chapter-item expanded "><a href="fourth-breaking.html"><strong aria-hidden="true">5.3.</strong> Breaking</a></li><li class="chapter-item expanded "><a href="fourth-peek.html"><strong aria-hidden="true">5.4.</strong> Peek</a></li><li class="chapter-item expanded "><a href="fourth-symmetry.html"><strong aria-hidden="true">5.5.</strong> Symmetric Cases</a></li><li class="chapter-item expanded "><a href="fourth-iteration.html"><strong aria-hidden="true">5.6.</strong> Iteration</a></li><li class="chapter-item expanded "><a href="fourth-final.html"><strong aria-hidden="true">5.7.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="fifth.html"><strong aria-hidden="true">6.</strong> An Ok Unsafe Queue</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fifth-layout.html"><strong aria-hidden="true">6.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="fifth-unsafe.html"><strong aria-hidden="true">6.2.</strong> Unsafe</a></li><li class="chapter-item expanded "><a href="fifth-basics.html"><strong aria-hidden="true">6.3.</strong> Basics</a></li><li class="chapter-item expanded "><a href="fifth-miri.html"><strong aria-hidden="true">6.4.</strong> Miri</a></li><li class="chapter-item expanded "><a href="fifth-stacked-borrows.html"><strong aria-hidden="true">6.5.</strong> Stacked Borrows</a></li><li class="chapter-item expanded "><a href="fifth-testing-stacked-borrows.html"><strong aria-hidden="true">6.6.</strong> Testing Stacked Borrows</a></li><li class="chapter-item expanded "><a href="fifth-layout-basics-redux.html"><strong aria-hidden="true">6.7.</strong> Layout + Basics Redux</a></li><li class="chapter-item expanded "><a href="fifth-extras.html"><strong aria-hidden="true">6.8.</strong> Extras</a></li><li class="chapter-item expanded "><a href="fifth-final.html"><strong aria-hidden="true">6.9.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="sixth.html"><strong aria-hidden="true">7.</strong> A Production Unsafe Deque</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="sixth-layout.html"><strong aria-hidden="true">7.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="sixth-variance.html"><strong aria-hidden="true">7.2.</strong> Variance and Subtyping</a></li><li class="chapter-item expanded "><a href="sixth-basics.html"><strong aria-hidden="true">7.3.</strong> Basics</a></li><li class="chapter-item expanded "><a href="sixth-panics.html"><strong aria-hidden="true">7.4.</strong> Panic Safety</a></li><li class="chapter-item expanded "><a href="sixth-combinatorics.html"><strong aria-hidden="true">7.5.</strong> Boring Combinatorics</a></li><li class="chapter-item expanded "><a href="sixth-random-bits.html"><strong aria-hidden="true">7.6.</strong> Filling In Random Bits</a></li><li class="chapter-item expanded "><a href="sixth-testing.html"><strong aria-hidden="true">7.7.</strong> Testing</a></li><li class="chapter-item expanded "><a href="sixth-send-sync.html"><strong aria-hidden="true">7.8.</strong> Send, Sync, and Compile Tests</a></li><li class="chapter-item expanded "><a href="sixth-cursors-intro.html"><strong aria-hidden="true">7.9.</strong> An Introduction To Cursors</a></li><li class="chapter-item expanded "><a href="sixth-cursors-impl.html"><strong aria-hidden="true">7.10.</strong> Implementing Cursors</a></li><li class="chapter-item expanded "><a href="sixth-cursors-testing.html"><strong aria-hidden="true">7.11.</strong> Testing Cursors</a></li><li class="chapter-item expanded "><a href="sixth-final.html"><strong aria-hidden="true">7.12.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="infinity.html"><strong aria-hidden="true">8.</strong> A Bunch of Silly Lists</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="infinity-double-single.html"><strong aria-hidden="true">8.1.</strong> The Double Single</a></li><li class="chapter-item expanded "><a href="infinity-stack-allocated.html"><strong aria-hidden="true">8.2.</strong> The Stack-Allocated Linked List</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Learning Rust With Entirely Too Many Linked Lists</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/rust-unofficial/too-many-lists" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#iter" id="iter">Iter</a></h1>
+<p>Alright, let's try to implement Iter. This time we won't be able to rely on
+List giving us all the features we want. We'll need to roll our own. The
+basic logic we want is to hold a pointer to the current node we want to yield
+next. Because that node may not exist (the list is empty or we're otherwise
+done iterating), we want that reference to be an Option. When we yield an
+element, we want to proceed to the current node's <code>next</code> node.</p>
+<p>Alright, let's try that:</p>
+<pre><code class="language-rust ignore">pub struct Iter&lt;T&gt; {
+    next: Option&lt;&amp;Node&lt;T&gt;&gt;,
+}
+
+impl&lt;T&gt; List&lt;T&gt; {
+    pub fn iter(&amp;self) -&gt; Iter&lt;T&gt; {
+        Iter { next: self.head.map(|node| &amp;node) }
+    }
+}
+
+impl&lt;T&gt; Iterator for Iter&lt;T&gt; {
+    type Item = &amp;T;
+
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        self.next.map(|node| {
+            self.next = node.next.map(|node| &amp;node);
+            &amp;node.elem
+        })
+    }
+}
+</code></pre>
+<pre><code class="language-text">&gt; cargo build
+
+error[E0106]: missing lifetime specifier
+  --&gt; src/second.rs:72:18
+   |
+72 |     next: Option&lt;&amp;Node&lt;T&gt;&gt;,
+   |                  ^ expected lifetime parameter
+
+error[E0106]: missing lifetime specifier
+  --&gt; src/second.rs:82:17
+   |
+82 |     type Item = &amp;T;
+   |                 ^ expected lifetime parameter
+</code></pre>
+<p>Oh god. Lifetimes. I've heard of these things. I hear they're a nightmare.</p>
+<p>Let's try something new: see that <code>error[E0106]</code> thing? That's a compiler error
+code. We can ask rustc to explain those with, well, <code>--explain</code>:</p>
+<pre><code class="language-text">&gt; rustc --explain E0106
+This error indicates that a lifetime is missing from a type. If it is an error
+inside a function signature, the problem may be with failing to adhere to the
+lifetime elision rules (see below).
+
+Here are some simple examples of where you'll run into this error:
+
+struct Foo { x: &amp;bool }        // error
+struct Foo&lt;'a&gt; { x: &amp;'a bool } // correct
+
+enum Bar { A(u8), B(&amp;bool), }        // error
+enum Bar&lt;'a&gt; { A(u8), B(&amp;'a bool), } // correct
+
+type MyStr = &amp;str;        // error
+type MyStr&lt;'a&gt; = &amp;'a str; //correct
+...
+
+</code></pre>
+<p>That uh... that didn't really clarify much (these docs assume we understand
+Rust better than we currently do). But it looks like we should add
+those <code>'a</code> things to our struct? Let's try that.</p>
+<pre><code class="language-rust ignore">pub struct Iter&lt;'a, T&gt; {
+    next: Option&lt;&amp;'a Node&lt;T&gt;&gt;,
+}
+</code></pre>
+<pre><code class="language-text">&gt; cargo build
+
+error[E0106]: missing lifetime specifier
+  --&gt; src/second.rs:83:22
+   |
+83 | impl&lt;T&gt; Iterator for Iter&lt;T&gt; {
+   |                      ^^^^^^^ expected lifetime parameter
+
+error[E0106]: missing lifetime specifier
+  --&gt; src/second.rs:84:17
+   |
+84 |     type Item = &amp;T;
+   |                 ^ expected lifetime parameter
+
+error: aborting due to 2 previous errors
+</code></pre>
+<p>Alright I'm starting to see a pattern here... let's just add these little guys
+to everything we can:</p>
+<pre><code class="language-rust ignore">pub struct Iter&lt;'a, T&gt; {
+    next: Option&lt;&amp;'a Node&lt;T&gt;&gt;,
+}
+
+impl&lt;'a, T&gt; List&lt;T&gt; {
+    pub fn iter(&amp;'a self) -&gt; Iter&lt;'a, T&gt; {
+        Iter { next: self.head.map(|node| &amp;'a node) }
+    }
+}
+
+impl&lt;'a, T&gt; Iterator for Iter&lt;'a, T&gt; {
+    type Item = &amp;'a T;
+    fn next(&amp;'a mut self) -&gt; Option&lt;Self::Item&gt; {
+        self.next.map(|node| {
+            self.next = node.next.map(|node| &amp;'a node);
+            &amp;'a node.elem
+        })
+    }
+}
+</code></pre>
+<pre><code class="language-text">&gt; cargo build
+
+error: expected `:`, found `node`
+  --&gt; src/second.rs:77:47
+   |
+77 |         Iter { next: self.head.map(|node| &amp;'a node) }
+   |         ---- while parsing this struct        ^^^^ expected `:`
+
+error: expected `:`, found `node`
+  --&gt; src/second.rs:85:50
+   |
+85 |             self.next = node.next.map(|node| &amp;'a node);
+   |                                                  ^^^^ expected `:`
+
+error[E0063]: missing field `next` in initializer of `second::Iter&lt;'_, _&gt;`
+  --&gt; src/second.rs:77:9
+   |
+77 |         Iter { next: self.head.map(|node| &amp;'a node) }
+   |         ^^^^ missing `next`
+</code></pre>
+<p>Oh god. We broke Rust.</p>
+<p>Maybe we should actually figure out what the heck this <code>'a</code> lifetime stuff
+even means.</p>
+<p>Lifetimes can scare off a lot of people because
+they're a change to something we've known and loved since the dawn of
+programming. We've actually managed to dodge lifetimes so far, even though
+they've been tangled throughout our programs this whole time.</p>
+<p>Lifetimes are unnecessary in garbage collected languages because the garbage
+collector ensures that everything magically lives as long as it needs to. Most
+data in Rust is <em>manually</em> managed, so that data needs another solution. C and
+C++ give us a clear example what happens if you just let people take pointers
+to random data on the stack: pervasive unmanageable unsafety. This can be
+roughly separated into two classes of error:</p>
+<ul>
+<li>Holding a pointer to something that went out of scope</li>
+<li>Holding a pointer to something that got mutated away</li>
+</ul>
+<p>Lifetimes solve both of these problems, and 99% of the time, they do this in
+a totally transparent way.</p>
+<p>So what's a lifetime?</p>
+<p>Quite simply, a lifetime is the name of a region (~block/scope) of code somewhere in a program.
+That's it. When a reference is tagged with a lifetime, we're saying that it
+has to be valid for that <em>entire</em> region. Different things place requirements on
+how long a reference must and can be valid for. The entire lifetime system is in
+turn just a constraint-solving system that tries to minimize the region of every
+reference. If it successfully finds a set of lifetimes that satisfies all the
+constraints, your program compiles! Otherwise you get an error back saying that
+something didn't live long enough.</p>
+<p>Within a function body you generally can't talk about lifetimes, and wouldn't
+want to <em>anyway</em>. The compiler has full information and can infer all the
+constraints to find the minimum lifetimes. However at the type and API-level,
+the compiler <em>doesn't</em> have all the information. It requires you to tell it
+about the relationship between different lifetimes so it can figure out what
+you're doing.</p>
+<p>In principle, those lifetimes <em>could</em> also be left out, but
+then checking all the borrows would be a huge whole-program analysis that would
+produce mind-bogglingly non-local errors. Rust's system means all borrow
+checking can be done in each function body independently, and all your errors
+should be fairly local (or your types have incorrect signatures).</p>
+<p>But we've written references in function signatures before, and it was fine!
+That's because there are certain cases that are so common that Rust will
+automatically pick the lifetimes for you. This is <em>lifetime elision</em>.</p>
+<p>In particular:</p>
+<pre><code class="language-rust ignore">// Only one reference in input, so the output must be derived from that input
+fn foo(&amp;A) -&gt; &amp;B; // sugar for:
+fn foo&lt;'a&gt;(&amp;'a A) -&gt; &amp;'a B;
+
+// Many inputs, assume they're all independent
+fn foo(&amp;A, &amp;B, &amp;C); // sugar for:
+fn foo&lt;'a, 'b, 'c&gt;(&amp;'a A, &amp;'b B, &amp;'c C);
+
+// Methods, assume all output lifetimes are derived from `self`
+fn foo(&amp;self, &amp;B, &amp;C) -&gt; &amp;D; // sugar for:
+fn foo&lt;'a, 'b, 'c&gt;(&amp;'a self, &amp;'b B, &amp;'c C) -&gt; &amp;'a D;
+</code></pre>
+<p>So what does <code>fn foo&lt;'a&gt;(&amp;'a A) -&gt; &amp;'a B</code> <em>mean</em>? In practical terms, all it
+means is that the input must live at least as long as the output. So if you keep
+the output around for a long time, this will expand the region that the input must
+be valid for. Once you stop using the output, the compiler will know it's ok for
+the input to become invalid too.</p>
+<p>With this system set up, Rust can ensure nothing is used after free, and nothing
+is mutated while outstanding references exist. It just makes sure the
+constraints all work out!</p>
+<p>Alright. So. Iter.</p>
+<p>Let's roll back to the no lifetimes state:</p>
+<pre><code class="language-rust ignore">pub struct Iter&lt;T&gt; {
+    next: Option&lt;&amp;Node&lt;T&gt;&gt;,
+}
+
+impl&lt;T&gt; List&lt;T&gt; {
+    pub fn iter(&amp;self) -&gt; Iter&lt;T&gt; {
+        Iter { next: self.head.map(|node| &amp;node) }
+    }
+}
+
+impl&lt;T&gt; Iterator for Iter&lt;T&gt; {
+    type Item = &amp;T;
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        self.next.map(|node| {
+            self.next = node.next.map(|node| &amp;node);
+            &amp;node.elem
+        })
+    }
+}
+</code></pre>
+<p>We need to add lifetimes only in function and type signatures:</p>
+<pre><code class="language-rust ignore">// Iter is generic over *some* lifetime, it doesn't care
+pub struct Iter&lt;'a, T&gt; {
+    next: Option&lt;&amp;'a Node&lt;T&gt;&gt;,
+}
+
+// No lifetime here, List doesn't have any associated lifetimes
+impl&lt;T&gt; List&lt;T&gt; {
+    // We declare a fresh lifetime here for the *exact* borrow that
+    // creates the iter. Now &amp;self needs to be valid as long as the
+    // Iter is around.
+    pub fn iter&lt;'a&gt;(&amp;'a self) -&gt; Iter&lt;'a, T&gt; {
+        Iter { next: self.head.map(|node| &amp;node) }
+    }
+}
+
+// We *do* have a lifetime here, because Iter has one that we need to define
+impl&lt;'a, T&gt; Iterator for Iter&lt;'a, T&gt; {
+    // Need it here too, this is a type declaration
+    type Item = &amp;'a T;
+
+    // None of this needs to change, handled by the above.
+    // Self continues to be incredibly hype and amazing
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        self.next.map(|node| {
+            self.next = node.next.map(|node| &amp;node);
+            &amp;node.elem
+        })
+    }
+}
+</code></pre>
+<p>Alright, I think we got it this time y'all.</p>
+<pre><code class="language-text">cargo build
+
+error[E0308]: mismatched types
+  --&gt; src/second.rs:77:22
+   |
+77 |         Iter { next: self.head.map(|node| &amp;node) }
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected struct `second::Node`, found struct `std::boxed::Box`
+   |
+   = note: expected type `std::option::Option&lt;&amp;second::Node&lt;T&gt;&gt;`
+              found type `std::option::Option&lt;&amp;std::boxed::Box&lt;second::Node&lt;T&gt;&gt;&gt;`
+
+error[E0308]: mismatched types
+  --&gt; src/second.rs:85:25
+   |
+85 |             self.next = node.next.map(|node| &amp;node);
+   |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected struct `second::Node`, found struct `std::boxed::Box`
+   |
+   = note: expected type `std::option::Option&lt;&amp;'a second::Node&lt;T&gt;&gt;`
+              found type `std::option::Option&lt;&amp;std::boxed::Box&lt;second::Node&lt;T&gt;&gt;&gt;`
+</code></pre>
+<p>(╯°□°)╯︵ ┻━┻</p>
+<p>OK. SO. We fixed our lifetime errors but now we're getting some new type errors.</p>
+<p>We want to be storing <code>&amp;Node</code>'s, but we're getting <code>&amp;Box&lt;Node&gt;</code>s. Ok, that's easy
+enough, we just need to dereference the Box before we take our reference:</p>
+<pre><code class="language-rust ignore">impl&lt;T&gt; List&lt;T&gt; {
+    pub fn iter&lt;'a&gt;(&amp;'a self) -&gt; Iter&lt;'a, T&gt; {
+        Iter { next: self.head.map(|node| &amp;*node) }
+    }
+}
+
+impl&lt;'a, T&gt; Iterator for Iter&lt;'a, T&gt; {
+    type Item = &amp;'a T;
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        self.next.map(|node| {
+            self.next = node.next.map(|node| &amp;*node);
+            &amp;node.elem
+        })
+    }
+}
+</code></pre>
+<pre><code class="language-text">cargo build
+   Compiling lists v0.1.0 (/Users/ADesires/dev/temp/lists)
+error[E0515]: cannot return reference to local data `*node`
+  --&gt; src/second.rs:77:43
+   |
+77 |         Iter { next: self.head.map(|node| &amp;*node) }
+   |                                           ^^^^^^ returns a reference to data owned by the current function
+
+error[E0507]: cannot move out of borrowed content
+  --&gt; src/second.rs:77:22
+   |
+77 |         Iter { next: self.head.map(|node| &amp;*node) }
+   |                      ^^^^^^^^^ cannot move out of borrowed content
+
+error[E0515]: cannot return reference to local data `*node`
+  --&gt; src/second.rs:85:46
+   |
+85 |             self.next = node.next.map(|node| &amp;*node);
+   |                                              ^^^^^^ returns a reference to data owned by the current function
+
+error[E0507]: cannot move out of borrowed content
+  --&gt; src/second.rs:85:25
+   |
+85 |             self.next = node.next.map(|node| &amp;*node);
+   |                         ^^^^^^^^^ cannot move out of borrowed content
+</code></pre>
+<p>(ﾉಥ益ಥ）ﾉ﻿ ┻━┻</p>
+<p>We forgot <code>as_ref</code>, so we're moving the box into <code>map</code>, which means it would
+be dropped, which means our references would be dangling:</p>
+<pre><code class="language-rust ignore">pub struct Iter&lt;'a, T&gt; {
+    next: Option&lt;&amp;'a Node&lt;T&gt;&gt;,
+}
+
+impl&lt;T&gt; List&lt;T&gt; {
+    pub fn iter&lt;'a&gt;(&amp;'a self) -&gt; Iter&lt;'a, T&gt; {
+        Iter { next: self.head.as_ref().map(|node| &amp;*node) }
+    }
+}
+
+impl&lt;'a, T&gt; Iterator for Iter&lt;'a, T&gt; {
+    type Item = &amp;'a T;
+
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        self.next.map(|node| {
+            self.next = node.next.as_ref().map(|node| &amp;*node);
+            &amp;node.elem
+        })
+    }
+}
+</code></pre>
+<pre><code class="language-text">cargo build
+   Compiling lists v0.1.0 (/Users/ADesires/dev/temp/lists)
+error[E0308]: mismatched types
+  --&gt; src/second.rs:77:22
+   |
+77 |         Iter { next: self.head.as_ref().map(|node| &amp;*node) }
+   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected struct `second::Node`, found struct `std::boxed::Box`
+   |
+   = note: expected type `std::option::Option&lt;&amp;second::Node&lt;T&gt;&gt;`
+              found type `std::option::Option&lt;&amp;std::boxed::Box&lt;second::Node&lt;T&gt;&gt;&gt;`
+
+error[E0308]: mismatched types
+  --&gt; src/second.rs:85:25
+   |
+85 |             self.next = node.next.as_ref().map(|node| &amp;*node);
+   |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected struct `second::Node`, found struct `std::boxed::Box`
+   |
+   = note: expected type `std::option::Option&lt;&amp;'a second::Node&lt;T&gt;&gt;`
+              found type `std::option::Option&lt;&amp;std::boxed::Box&lt;second::Node&lt;T&gt;&gt;&gt;`
+
+</code></pre>
+<p>😭</p>
+<p><code>as_ref</code> added another layer of indirection we need to remove:</p>
+<pre><code class="language-rust ignore">pub struct Iter&lt;'a, T&gt; {
+    next: Option&lt;&amp;'a Node&lt;T&gt;&gt;,
+}
+
+impl&lt;T&gt; List&lt;T&gt; {
+    pub fn iter&lt;'a&gt;(&amp;'a self) -&gt; Iter&lt;'a, T&gt; {
+        Iter { next: self.head.as_deref() }
+    }
+}
+
+impl&lt;'a, T&gt; Iterator for Iter&lt;'a, T&gt; {
+    type Item = &amp;'a T;
+
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        self.next.map(|node| {
+            self.next = node.next.as_deref();
+            &amp;node.elem
+        })
+    }
+}
+</code></pre>
+<pre><code class="language-text">cargo build
+
+</code></pre>
+<p>🎉 🎉 🎉</p>
+<p>The as_deref and as_deref_mut functions are stable as of Rust 1.40. Before that you
+would need to do <code>map(|node| &amp;**node)</code> and <code>map(|node| &amp;mut**node)</code>.
+You may be thinking &quot;wow that <code>&amp;**</code> thing is really janky&quot;, and you're not wrong,
+but like a fine wine Rust gets better over time and we no longer need to do such.
+Normally Rust is very good at doing this kind of conversion implicitly, through
+a process called <em>deref coercion</em>, where basically it can insert *'s
+throughout your code to make it type-check. It can do this because we have the
+borrow checker to ensure we never mess up pointers!</p>
+<p>But in this case the closure in conjunction with the fact that we
+have an <code>Option&lt;&amp;T&gt;</code> instead of <code>&amp;T</code> is a bit too complicated for it to work
+out, so we need to help it by being explicit. Thankfully this is pretty rare, in my experience.</p>
+<p>Just for completeness' sake, we <em>could</em> give it a <em>different</em> hint with the <em>turbofish</em>:</p>
+<pre><code class="language-rust ignore">    self.next = node.next.as_ref().map::&lt;&amp;Node&lt;T&gt;, _&gt;(|node| &amp;node);
+</code></pre>
+<p>See, map is a generic function:</p>
+<pre><code class="language-rust ignore">pub fn map&lt;U, F&gt;(self, f: F) -&gt; Option&lt;U&gt;
+</code></pre>
+<p>The turbofish, <code>::&lt;&gt;</code>, lets us tell the compiler what we think the types of those
+generics should be. In this case <code>::&lt;&amp;Node&lt;T&gt;, _&gt;</code> says &quot;it should return a
+<code>&amp;Node&lt;T&gt;</code>, and I don't know/care about that other type&quot;.</p>
+<p>This in turn lets the compiler know that <code>&amp;node</code> should have deref coercion
+applied to it, so we don't need to manually apply all those *'s!</p>
+<p>But in this case I don't think it's really an improvement, this was just a
+thinly veiled excuse to show off deref coercion and the sometimes-useful turbofish. 😅</p>
+<p>Let's write a test to be sure we didn't no-op it or anything:</p>
+<pre><code class="language-rust ignore">#[test]
+fn iter() {
+    let mut list = List::new();
+    list.push(1); list.push(2); list.push(3);
+
+    let mut iter = list.iter();
+    assert_eq!(iter.next(), Some(&amp;3));
+    assert_eq!(iter.next(), Some(&amp;2));
+    assert_eq!(iter.next(), Some(&amp;1));
+}
+</code></pre>
+<pre><code class="language-text">&gt; cargo test
+
+     Running target/debug/lists-5c71138492ad4b4a
+
+running 5 tests
+test first::test::basics ... ok
+test second::test::basics ... ok
+test second::test::into_iter ... ok
+test second::test::iter ... ok
+test second::test::peek ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured
+
+</code></pre>
+<p>Heck yeah.</p>
+<p>Finally, it should be noted that we <em>can</em> actually apply lifetime elision here:</p>
+<pre><code class="language-rust ignore">impl&lt;T&gt; List&lt;T&gt; {
+    pub fn iter&lt;'a&gt;(&amp;'a self) -&gt; Iter&lt;'a, T&gt; {
+        Iter { next: self.head.as_deref() }
+    }
+}
+</code></pre>
+<p>is equivalent to:</p>
+<pre><code class="language-rust ignore">impl&lt;T&gt; List&lt;T&gt; {
+    pub fn iter(&amp;self) -&gt; Iter&lt;T&gt; {
+        Iter { next: self.head.as_deref() }
+    }
+}
+</code></pre>
+<p>Yay fewer lifetimes!</p>
+<p>Or, if you're not comfortable &quot;hiding&quot; that a struct contains a lifetime,
+you can use the Rust 2018 &quot;explicitly elided lifetime&quot; syntax,  <code>'_</code>:</p>
+<pre><code class="language-rust ignore">impl&lt;T&gt; List&lt;T&gt; {
+    pub fn iter(&amp;self) -&gt; Iter&lt;'_, T&gt; {
+        Iter { next: self.head.as_deref() }
+    }
+}
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="second-into-iter.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="second-iter-mut.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="second-into-iter.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="second-iter-mut.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

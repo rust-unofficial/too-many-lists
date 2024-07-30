@@ -1,0 +1,984 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Testing Stacked Borrows - Learning Rust With Entirely Too Many Linked Lists</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Learning Rust With Entirely Too Many Linked Lists">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="first.html"><strong aria-hidden="true">2.</strong> A Bad Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="first-layout.html"><strong aria-hidden="true">2.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="first-new.html"><strong aria-hidden="true">2.2.</strong> New</a></li><li class="chapter-item expanded "><a href="first-ownership.html"><strong aria-hidden="true">2.3.</strong> Ownership 101</a></li><li class="chapter-item expanded "><a href="first-push.html"><strong aria-hidden="true">2.4.</strong> Push</a></li><li class="chapter-item expanded "><a href="first-pop.html"><strong aria-hidden="true">2.5.</strong> Pop</a></li><li class="chapter-item expanded "><a href="first-test.html"><strong aria-hidden="true">2.6.</strong> Testing</a></li><li class="chapter-item expanded "><a href="first-drop.html"><strong aria-hidden="true">2.7.</strong> Drop</a></li><li class="chapter-item expanded "><a href="first-final.html"><strong aria-hidden="true">2.8.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="second.html"><strong aria-hidden="true">3.</strong> An Ok Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="second-option.html"><strong aria-hidden="true">3.1.</strong> Option</a></li><li class="chapter-item expanded "><a href="second-generic.html"><strong aria-hidden="true">3.2.</strong> Generic</a></li><li class="chapter-item expanded "><a href="second-peek.html"><strong aria-hidden="true">3.3.</strong> Peek</a></li><li class="chapter-item expanded "><a href="second-into-iter.html"><strong aria-hidden="true">3.4.</strong> IntoIter</a></li><li class="chapter-item expanded "><a href="second-iter.html"><strong aria-hidden="true">3.5.</strong> Iter</a></li><li class="chapter-item expanded "><a href="second-iter-mut.html"><strong aria-hidden="true">3.6.</strong> IterMut</a></li><li class="chapter-item expanded "><a href="second-final.html"><strong aria-hidden="true">3.7.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="third.html"><strong aria-hidden="true">4.</strong> A Persistent Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="third-layout.html"><strong aria-hidden="true">4.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="third-basics.html"><strong aria-hidden="true">4.2.</strong> Basics</a></li><li class="chapter-item expanded "><a href="third-drop.html"><strong aria-hidden="true">4.3.</strong> Drop</a></li><li class="chapter-item expanded "><a href="third-arc.html"><strong aria-hidden="true">4.4.</strong> Arc</a></li><li class="chapter-item expanded "><a href="third-final.html"><strong aria-hidden="true">4.5.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="fourth.html"><strong aria-hidden="true">5.</strong> A Bad Safe Deque</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fourth-layout.html"><strong aria-hidden="true">5.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="fourth-building.html"><strong aria-hidden="true">5.2.</strong> Building</a></li><li class="chapter-item expanded "><a href="fourth-breaking.html"><strong aria-hidden="true">5.3.</strong> Breaking</a></li><li class="chapter-item expanded "><a href="fourth-peek.html"><strong aria-hidden="true">5.4.</strong> Peek</a></li><li class="chapter-item expanded "><a href="fourth-symmetry.html"><strong aria-hidden="true">5.5.</strong> Symmetric Cases</a></li><li class="chapter-item expanded "><a href="fourth-iteration.html"><strong aria-hidden="true">5.6.</strong> Iteration</a></li><li class="chapter-item expanded "><a href="fourth-final.html"><strong aria-hidden="true">5.7.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="fifth.html"><strong aria-hidden="true">6.</strong> An Ok Unsafe Queue</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fifth-layout.html"><strong aria-hidden="true">6.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="fifth-unsafe.html"><strong aria-hidden="true">6.2.</strong> Unsafe</a></li><li class="chapter-item expanded "><a href="fifth-basics.html"><strong aria-hidden="true">6.3.</strong> Basics</a></li><li class="chapter-item expanded "><a href="fifth-miri.html"><strong aria-hidden="true">6.4.</strong> Miri</a></li><li class="chapter-item expanded "><a href="fifth-stacked-borrows.html"><strong aria-hidden="true">6.5.</strong> Stacked Borrows</a></li><li class="chapter-item expanded "><a href="fifth-testing-stacked-borrows.html" class="active"><strong aria-hidden="true">6.6.</strong> Testing Stacked Borrows</a></li><li class="chapter-item expanded "><a href="fifth-layout-basics-redux.html"><strong aria-hidden="true">6.7.</strong> Layout + Basics Redux</a></li><li class="chapter-item expanded "><a href="fifth-extras.html"><strong aria-hidden="true">6.8.</strong> Extras</a></li><li class="chapter-item expanded "><a href="fifth-final.html"><strong aria-hidden="true">6.9.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="sixth.html"><strong aria-hidden="true">7.</strong> A Production Unsafe Deque</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="sixth-layout.html"><strong aria-hidden="true">7.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="sixth-variance.html"><strong aria-hidden="true">7.2.</strong> Variance and Subtyping</a></li><li class="chapter-item expanded "><a href="sixth-basics.html"><strong aria-hidden="true">7.3.</strong> Basics</a></li><li class="chapter-item expanded "><a href="sixth-panics.html"><strong aria-hidden="true">7.4.</strong> Panic Safety</a></li><li class="chapter-item expanded "><a href="sixth-combinatorics.html"><strong aria-hidden="true">7.5.</strong> Boring Combinatorics</a></li><li class="chapter-item expanded "><a href="sixth-random-bits.html"><strong aria-hidden="true">7.6.</strong> Filling In Random Bits</a></li><li class="chapter-item expanded "><a href="sixth-testing.html"><strong aria-hidden="true">7.7.</strong> Testing</a></li><li class="chapter-item expanded "><a href="sixth-send-sync.html"><strong aria-hidden="true">7.8.</strong> Send, Sync, and Compile Tests</a></li><li class="chapter-item expanded "><a href="sixth-cursors-intro.html"><strong aria-hidden="true">7.9.</strong> An Introduction To Cursors</a></li><li class="chapter-item expanded "><a href="sixth-cursors-impl.html"><strong aria-hidden="true">7.10.</strong> Implementing Cursors</a></li><li class="chapter-item expanded "><a href="sixth-cursors-testing.html"><strong aria-hidden="true">7.11.</strong> Testing Cursors</a></li><li class="chapter-item expanded "><a href="sixth-final.html"><strong aria-hidden="true">7.12.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="infinity.html"><strong aria-hidden="true">8.</strong> A Bunch of Silly Lists</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="infinity-double-single.html"><strong aria-hidden="true">8.1.</strong> The Double Single</a></li><li class="chapter-item expanded "><a href="infinity-stack-allocated.html"><strong aria-hidden="true">8.2.</strong> The Stack-Allocated Linked List</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Learning Rust With Entirely Too Many Linked Lists</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/rust-unofficial/too-many-lists" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#testing-stacked-borrows" id="testing-stacked-borrows">Testing Stacked Borrows</a></h1>
+<blockquote>
+<p>TL;DR of the previous section's (simplified) memory model for Rust:</p>
+<ul>
+<li>Rust conceptually handles reborrows by maintaining a &quot;borrow stack&quot;</li>
+<li>Only the one on the top of the stack is &quot;live&quot; (has exclusive access)</li>
+<li>When you access a lower one it becomes &quot;live&quot; and the ones above it get popped</li>
+<li>You're not allowed to use pointers that have been popped from the borrow stack</li>
+<li>The borrowchecker ensures safe code code obeys this</li>
+<li>Miri theoretically checks that raw pointers obey this at runtime</li>
+</ul>
+</blockquote>
+<p>That was a lot of theory and ideas -- let's move on to the true heart and soul of this book: writing some bad code and getting our tools to scream at us. We're going to go through a <em>ton</em> of examples to try to see if our mental model makes sense, and to try to get an intuitive feel for stacked borrows.</p>
+<blockquote>
+<p><strong>NARRATOR:</strong> Catching Undefined Behaviour in practice is a hairy business. After all, you're dealing with situations that the compiler literally <em>assumes</em> don't happen.</p>
+<p>If you're lucky, things will &quot;seem to work&quot; today, but they'll be a ticking time bomb for a Smarter Compiler or slight change to the code. If you're <em>really</em> lucky things will reliably crash so you can just catch the mistake and fix it. But if you're unlucky, then things will be broken in weird and baffling ways.</p>
+<p>Miri tries to work around this by getting rustc's most naive and unoptimized view of the program and tracking extra state as it interprets. As far as &quot;sanitizers&quot; go, this is a fairly deterministic and robust approach but it will never be <em>perfect</em>. You need your test program to actually have an execution with that UB, and for a large enough program it's very easy to introduce all sorts of non-determinism (HashMaps use RNG by default!).</p>
+<p>We can never take miri approving of our program's execution as an absolute certain statement there's no UB. It's also possible for miri to <em>think</em> something's UB when it really isn't. But if we have a mental model of how things work, and miri seems to agree with us, that's a good sign that we're on the right track.</p>
+</blockquote>
+<h1><a class="header" href="#basic-borrows" id="basic-borrows">Basic Borrows</a></h1>
+<p>In previous sections we saw that the borrowchecker didn't like this code:</p>
+<pre><code class="language-rust ignore">let mut data = 10;
+let ref1 = &amp;mut data;
+let ref2 = &amp;mut *ref1;
+
+// ORDER SWAPPED!
+*ref1 += 1;
+*ref2 += 2;
+
+println!(&quot;{}&quot;, data);
+</code></pre>
+<p>Let's see what happens when we replace <code>ref2</code> with <code>*mut</code>:</p>
+<pre><code class="language-rust ignore">unsafe {
+    let mut data = 10;
+    let ref1 = &amp;mut data;
+    let ptr2 = ref1 as *mut _;
+
+    // ORDER SWAPPED!
+    *ref1 += 1;
+    *ptr2 += 2;
+
+    println!(&quot;{}&quot;, data);
+}
+</code></pre>
+<pre><code class="language-text">cargo run
+   Compiling miri-sandbox v0.1.0
+    Finished dev [unoptimized + debuginfo] target(s) in 0.71s
+     Running `target\debug\miri-sandbox.exe`
+13
+</code></pre>
+<p>Rustc seems perfectly happy with this: no warnings and the program produced the result we expected! Now let's look at what miri (in strict mode) thinks of it: </p>
+<pre><code class="language-text">MIRIFLAGS=&quot;-Zmiri-tag-raw-pointers&quot; cargo +nightly-2022-01-21 miri run
+
+    Finished dev [unoptimized + debuginfo] target(s) in 0.00s
+     Running cargo-miri.exe target\miri
+
+error: Undefined Behavior: no item granting read access 
+to tag &lt;untagged&gt; at alloc748 found in borrow stack.
+
+ --&gt; src\main.rs:9:9
+  |
+9 |         *ptr2 += 2;
+  |         ^^^^^^^^^^ no item granting read access to tag &lt;untagged&gt; 
+  |                    at alloc748 found in borrow stack.
+  |
+  = help: this indicates a potential bug in the program: 
+    it performed an invalid operation, but the rules it 
+    violated are still experimental
+ 
+</code></pre>
+<p>Nice! Our intuitive model of how things work held up: although the compiler couldn't catch the issue for us, miri did.</p>
+<p>Let's try something more complicated, the <code>&amp;mut -&gt; *mut -&gt; &amp;mut -&gt; *mut</code> case we alluded to before:</p>
+<pre><code class="language-rust ignore">unsafe {
+    let mut data = 10;
+    let ref1 = &amp;mut data;
+    let ptr2 = ref1 as *mut _;
+    let ref3 = &amp;mut *ptr2;
+    let ptr4 = ref3 as *mut _;
+
+    // Access the first raw pointer first
+    *ptr2 += 2;
+
+    // Then access things in &quot;borrow stack&quot; order
+    *ptr4 += 4;
+    *ref3 += 3;
+    *ptr2 += 2;
+    *ref1 += 1;
+
+    println!(&quot;{}&quot;, data);
+}
+</code></pre>
+<pre><code class="language-text">cargo run
+22
+
+MIRIFLAGS=&quot;-Zmiri-tag-raw-pointers&quot; cargo +nightly-2022-01-21 miri run
+
+error: Undefined Behavior: no item granting read access 
+to tag &lt;1621&gt; at alloc748 found in borrow stack.
+
+  --&gt; src\main.rs:13:5
+   |
+13 |     *ptr4 += 4;
+   |     ^^^^^^^^^^ no item granting read access to tag &lt;1621&gt; 
+   |                at alloc748 found in borrow stack.
+   |
+</code></pre>
+<p>Wow yep! In strict mode miri can &quot;tell apart&quot; the two raw pointers and have using the second one invalidate the first one. Let's see if everything works when we remove the first use that messes everything up:</p>
+<pre><code class="language-rust ignore">unsafe {
+    let mut data = 10;
+    let ref1 = &amp;mut data;
+    let ptr2 = ref1 as *mut _;
+    let ref3 = &amp;mut *ptr2;
+    let ptr4 = ref3 as *mut _;
+
+    // Access things in &quot;borrow stack&quot; order
+    *ptr4 += 4;
+    *ref3 += 3;
+    *ptr2 += 2;
+    *ref1 += 1;
+
+    println!(&quot;{}&quot;, data);
+}
+</code></pre>
+<pre><code class="language-text">cargo run
+20
+
+MIRIFLAGS=&quot;-Zmiri-tag-raw-pointers&quot; cargo +nightly-2022-01-21 miri run
+20
+</code></pre>
+<p>NICE.</p>
+<p>Yeah I'm pretty sure at this point we can all get PhD's in programming language memory model design and implementation. Who even <em>needs</em> compilers, this stuff is <em>easy</em>.</p>
+<blockquote>
+<p><strong>NARRATOR:</strong> it was not, but I'm proud of you nonetheless.</p>
+</blockquote>
+<h1><a class="header" href="#testing-arrays" id="testing-arrays">Testing Arrays</a></h1>
+<p>Let's mess with some arrays and pointer offsets (<code>add</code> and <code>sub</code>). This should work, right?</p>
+<pre><code class="language-rust ignore">unsafe {
+    let mut data = [0; 10];
+    let ref1_at_0 = &amp;mut data[0];           // Reference to 0th element
+    let ptr2_at_0 = ref1_at_0 as *mut i32;  // Ptr to 0th element
+    let ptr3_at_1 = ptr2_at_0.add(1);       // Ptr to 1st element
+
+    *ptr3_at_1 += 3;
+    *ptr2_at_0 += 2;
+    *ref1_at_0 += 1;
+
+    // Should be [3, 3, 0, ...]
+    println!(&quot;{:?}&quot;, &amp;data[..]);
+}
+</code></pre>
+<pre><code class="language-text">cargo run
+[3, 3, 0, 0, 0, 0, 0, 0, 0, 0]
+
+MIRIFLAGS=&quot;-Zmiri-tag-raw-pointers&quot; cargo +nightly-2022-01-21 miri run
+
+error: Undefined Behavior: no item granting read access 
+to tag &lt;1619&gt; at alloc748+0x4 found in borrow stack.
+ --&gt; src\main.rs:8:5
+  |
+8 |     *ptr3_at_1 += 3;
+  |     ^^^^^^^^^^^^^^^ no item granting read access to tag &lt;1619&gt;
+  |                     at alloc748+0x4 found in borrow stack.
+</code></pre>
+<p><em>Rips up gradschool application</em></p>
+<p>What happened? We're using the borrow stack perfectly fine! Does something weird happen when we go <code>ptr -&gt; ptr</code>? What if we just copy the pointer so they all go to the same location:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>unsafe {
+    let mut data = [0; 10];
+    let ref1_at_0 = &amp;mut data[0];           // Reference to 0th element
+    let ptr2_at_0 = ref1_at_0 as *mut i32;  // Ptr to 0th element
+    let ptr3_at_0 = ptr2_at_0;              // Ptr to 0th element
+
+    *ptr3_at_0 += 3;
+    *ptr2_at_0 += 2;
+    *ref1_at_0 += 1;
+
+    // Should be [6, 0, 0, ...]
+    println!(&quot;{:?}&quot;, &amp;data[..]);
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-text">cargo run
+[6, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+MIRIFLAGS=&quot;-Zmiri-tag-raw-pointers&quot; cargo +nightly-2022-01-21 miri run
+[6, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+</code></pre>
+<p>Nope, that works fine. Maybe we're getting lucky, let's just make a real big mess of pointers:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>unsafe {
+    let mut data = [0; 10];
+    let ref1_at_0 = &amp;mut data[0];            // Reference to 0th element
+    let ptr2_at_0 = ref1_at_0 as *mut i32;   // Ptr to 0th element
+    let ptr3_at_0 = ptr2_at_0;               // Ptr to 0th element
+    let ptr4_at_0 = ptr2_at_0.add(0);        // Ptr to 0th element
+    let ptr5_at_0 = ptr3_at_0.add(1).sub(1); // Ptr to 0th element
+
+    // An absolute jumbled hash of ptr usages
+    *ptr3_at_0 += 3;
+    *ptr2_at_0 += 2;
+    *ptr4_at_0 += 4;
+    *ptr5_at_0 += 5;
+    *ptr3_at_0 += 3;
+    *ptr2_at_0 += 2;
+    *ref1_at_0 += 1;
+
+    // Should be [20, 0, 0, ...]
+    println!(&quot;{:?}&quot;, &amp;data[..]);
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-text">cargo run
+[20, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+MIRIFLAGS=&quot;-Zmiri-tag-raw-pointers&quot; cargo +nightly-2022-01-21 miri run
+[20, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+</code></pre>
+<p>Nope! Miri is actually <em>way</em> more permissive when it comes to raw pointers that are derived from other raw pointers. They all share the same &quot;borrow&quot; (or miri calls it, a <em>tag</em>).</p>
+<p>Once you start using raw pointers they can freely split into their own tiny angry men and mess with themselves. This is ok because the compiler understands that and won't optimize the reads and writes the same it does with references.</p>
+<blockquote>
+<p><strong>NARRATOR:</strong> If the code is simple enough, the compiler can keep track of all the derived pointers and still optimize things where possible, but it's going to be a lot more brittle than the reasoning it can use for references.</p>
+</blockquote>
+<p>So what's the <em>real</em> problem?</p>
+<p>Even though <code>data</code> is one &quot;allocation&quot; (local variable), <code>ref1_at_0</code> is only borrowing the first element. Rust allows borrows to be broken up so that they only apply to particular parts of the allocation! Let's try it out:</p>
+<pre><code class="language-rust ignore">unsafe {
+    let mut data = [0; 10];
+    let ref1_at_0 = &amp;mut data[0];           // Reference to 0th element
+    let ref2_at_1 = &amp;mut data[1];           // Reference to 1th element
+    let ptr3_at_0 = ref1_at_0 as *mut i32;  // Ptr to 0th element
+    let ptr4_at_1 = ref2_at_1 as *mut i32;   // Ptr to 1th element
+
+    *ptr4_at_1 += 4;
+    *ptr3_at_0 += 3;
+    *ref2_at_1 += 2;
+    *ref1_at_0 += 1;
+
+    // Should be [3, 3, 0, ...]
+    println!(&quot;{:?}&quot;, &amp;data[..]);
+}
+</code></pre>
+<pre><code class="language-text">error[E0499]: cannot borrow `data[_]` as mutable more than once at a time
+ --&gt; src\main.rs:5:21
+  |
+4 |     let ref1_at_0 = &amp;mut data[0];           // Reference to 0th element
+  |                     ------------ first mutable borrow occurs here
+5 |     let ref2_at_1 = &amp;mut data[1];           // Reference to 1th element
+  |                     ^^^^^^^^^^^^ second mutable borrow occurs here
+6 |     let ptr3_at_0 = ref1_at_0 as *mut i32;  // Ptr to 0th element
+  |                     --------- first borrow later used here
+  |
+  = help: consider using `.split_at_mut(position)` or similar method 
+    to obtain two mutable non-overlapping sub-slices
+</code></pre>
+<p>Shoot! Rust doesn't track array indices to prove these borrows are disjoint, but it does give us <code>split_at_mut</code> to break a slice into multiple parts in a way that is safe to assume works:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>unsafe {
+    let mut data = [0; 10];
+
+    let slice1 = &amp;mut data[..];
+    let (slice2_at_0, slice3_at_1) = slice1.split_at_mut(1); 
+    
+    let ref4_at_0 = &amp;mut slice2_at_0[0];    // Reference to 0th element
+    let ref5_at_1 = &amp;mut slice3_at_1[0];    // Reference to 1th element
+    let ptr6_at_0 = ref4_at_0 as *mut i32;  // Ptr to 0th element
+    let ptr7_at_1 = ref5_at_1 as *mut i32;  // Ptr to 1th element
+
+    *ptr7_at_1 += 7;
+    *ptr6_at_0 += 6;
+    *ref5_at_1 += 5;
+    *ref4_at_0 += 4;
+
+    // Should be [10, 12, 0, ...]
+    println!(&quot;{:?}&quot;, &amp;data[..]);
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-text">cargo run
+[10, 12, 0, 0, 0, 0, 0, 0, 0, 0]
+
+MIRIFLAGS=&quot;-Zmiri-tag-raw-pointers&quot; cargo +nightly-2022-01-21 miri run
+[10, 12, 0, 0, 0, 0, 0, 0, 0, 0]
+</code></pre>
+<p>Hey, that works! Slices properly tell the compiler and miri &quot;hey I'm taking a huge loan on all of the memory in my range&quot;, so they know all of the elements can be mutated.</p>
+<p>Also note that operations like <code>split_at_mut</code> being allowed tells us that borrows can be less of a <em>stack</em> and more of a <em>tree</em>, because we can break one big borrow into a bunch of disjoint smaller ones, and everything still works.</p>
+<p>(I think in the actual stacked borrows model everything's still stacks because the stacks are conceptually tracking permissions for each byte of the program..?)</p>
+<p>What if we <em>directly</em> turn a slice into a pointer? Will that pointer have access to the full slice?</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>unsafe {
+    let mut data = [0; 10];
+
+    let slice1_all = &amp;mut data[..];         // Slice for the entire array
+    let ptr2_all = slice1_all.as_mut_ptr(); // Pointer for the entire array
+    
+    let ptr3_at_0 = ptr2_all;               // Pointer to 0th elem (the same)
+    let ptr4_at_1 = ptr2_all.add(1);        // Pointer to 1th elem
+    let ref5_at_0 = &amp;mut *ptr3_at_0;        // Reference to 0th elem
+    let ref6_at_1 = &amp;mut *ptr4_at_1;        // Reference to 1th elem
+
+    *ref6_at_1 += 6;
+    *ref5_at_0 += 5;
+    *ptr4_at_1 += 4;
+    *ptr3_at_0 += 3;
+
+    // Just for fun, modify all the elements in a loop
+    // (Could use any of the raw pointers for this, they share a borrow!)
+    for idx in 0..10 {
+        *ptr2_all.add(idx) += idx;
+    }
+
+    // Safe version of this same code for fun
+    for (idx, elem_ref) in slice1_all.iter_mut().enumerate() {
+        *elem_ref += idx; 
+    }
+
+    // Should be [8, 12, 4, 6, 8, 10, 12, 14, 16, 18]
+    println!(&quot;{:?}&quot;, &amp;data[..]);
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-text">cargo run
+[8, 12, 4, 6, 8, 10, 12, 14, 16, 18]
+
+MIRIFLAGS=&quot;-Zmiri-tag-raw-pointers&quot; cargo +nightly-2022-01-21 miri run
+[8, 12, 4, 6, 8, 10, 12, 14, 16, 18]
+</code></pre>
+<p>Nice! Pointers aren't just integers: they have a range of memory associated with them, and with Rust we're allowed to narrow that range!</p>
+<h1><a class="header" href="#testing-shared-references" id="testing-shared-references">Testing Shared References</a></h1>
+<p>In all of these examples I have been very carefully only using mutable references and doing read-modify-write operations (<code>+=</code>) to keep things as simple as possible.</p>
+<p>But Rust has shared references that are read-only and can be freely copied, how should those work? Well we've seen that raw pointers can be freely copied and we can handle that by saying they &quot;share&quot; a single borrow. Maybe we think of shared references the same way?</p>
+<p>Let's test that out with a function that reads a value (<code>println!</code> can be a little magical with auto-ref/deref stuff, so I'm wrapping it in a function to make sure we're testing what we want to be):</p>
+<pre><code class="language-rust ignore">fn opaque_read(val: &amp;i32) {
+    println!(&quot;{}&quot;, val);
+}
+
+unsafe {
+    let mut data = 10;
+    let mref1 = &amp;mut data;
+    let sref2 = &amp;mref1;
+    let sref3 = sref2;
+    let sref4 = &amp;*sref2;
+
+    // Random hash of shared reference reads
+    opaque_read(sref3);
+    opaque_read(sref2);
+    opaque_read(sref4);
+    opaque_read(sref2);
+    opaque_read(sref3);
+
+    *mref1 += 1;
+
+    opaque_read(&amp;data);
+}
+</code></pre>
+<pre><code class="language-text">cargo run
+
+warning: unnecessary `unsafe` block
+ --&gt; src\main.rs:6:1
+  |
+6 | unsafe {
+  | ^^^^^^ unnecessary `unsafe` block
+  |
+  = note: `#[warn(unused_unsafe)]` on by default
+
+warning: `miri-sandbox` (bin &quot;miri-sandbox&quot;) generated 1 warning
+
+10
+10
+10
+10
+10
+11
+</code></pre>
+<p>Oh yeah we forgot to do anything with raw pointers, but at least we can see that it's fine for all the shared references to be used interchangeably. Now let's mix in some raw pointers:</p>
+<pre><code class="language-rust ignore">fn opaque_read(val: &amp;i32) {
+    println!(&quot;{}&quot;, val);
+}
+
+unsafe {
+    let mut data = 10;
+    let mref1 = &amp;mut data;
+    let ptr2 = mref1 as *mut i32;
+    let sref3 = &amp;mref1;
+    let ptr4 = sref3 as *mut i32;
+
+    *ptr4 += 4;
+    opaque_read(sref3);
+    *ptr2 += 2;
+    *mref1 += 1;
+
+    opaque_read(&amp;data);
+}
+</code></pre>
+<pre><code class="language-text">cargo run
+
+error[E0606]: casting `&amp;&amp;mut i32` as `*mut i32` is invalid
+  --&gt; src\main.rs:11:16
+   |
+11 |     let ptr4 = sref3 as *mut i32;
+   |                ^^^^^^^^^^^^^^^^^
+</code></pre>
+<p>Oh whoops, we were actually messing around with <code>&amp; &amp;mut</code> instead of <code>&amp;</code>! Rust is very good at papering over that when it doesn't matter. Let's properly reborrow it with <code>let sref3 = &amp;*mref1</code>:</p>
+<pre><code class="language-text">cargo run
+
+error[E0606]: casting `&amp;i32` as `*mut i32` is invalid
+  --&gt; src\main.rs:11:16
+   |
+11 |     let ptr4 = sref3 as *mut i32;
+   |                ^^^^^^^^^^^^^^^^^
+</code></pre>
+<p>Nope, Rust still doesn't like that! You can only cast a shared reference to a <code>*const</code> which can only read. But what if we just... do... this...?</p>
+<pre><code class="language-rust ignore">    let ptr4 = sref3 as *const i32 as *mut i32;
+</code></pre>
+<pre><code class="language-text">cargo run
+
+14
+17
+</code></pre>
+<p>WHAT. OK SURE FINE? Great cast system there Rust. It's almost like the <code>*const</code> is a pretty useless type that only really exists to describe C APIs and to vaguely suggest correct usage (it is, it does). What does miri think?</p>
+<pre><code class="language-text">MIRIFLAGS=&quot;-Zmiri-tag-raw-pointers&quot; cargo +nightly-2022-01-21 miri run
+
+error: Undefined Behavior: no item granting write access to 
+tag &lt;1621&gt; at alloc742 found in borrow stack.
+  --&gt; src\main.rs:13:5
+   |
+13 |     *ptr4 += 4;
+   |     ^^^^^^^^^^ no item granting write access to tag &lt;1621&gt;
+   |                at alloc742 found in borrow stack.
+</code></pre>
+<p>Alas, though we can get around the compiler complaining with a double cast, it doesn't actually make this operation <em>allowed</em>. When we take the shared reference, we're promising not to modify the value. </p>
+<p>This is important because that means when the shared borrow is popped off the borrow stack, the mutable pointers below it <em>can</em> assume the memory hasn't changed. There may have been some tiny angry men <em>reading</em> the memory (so writes had to be comitted) but they weren't able to modify it and the mutable pointers can assume the last value they wrote is still there!</p>
+<p><strong>Once a shared reference is on the borrow-stack, everything that gets pushed on top of it only has read permissions.</strong></p>
+<p>We can however do this:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn opaque_read(val: &amp;i32) {
+    println!(&quot;{}&quot;, val);
+}
+
+unsafe {
+    let mut data = 10;
+    let mref1 = &amp;mut data;
+    let ptr2 = mref1 as *mut i32;
+    let sref3 = &amp;*mref1;
+    let ptr4 = sref3 as *const i32 as *mut i32;
+
+    opaque_read(&amp;*ptr4);
+    opaque_read(sref3);
+    *ptr2 += 2;
+    *mref1 += 1;
+
+    opaque_read(&amp;data);
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Note how it was still &quot;fine&quot; to create a mutable raw pointer as long as we only actually read from it!</p>
+<pre><code class="language-text">cargo run
+10
+10
+13
+
+MIRIFLAGS=&quot;-Zmiri-tag-raw-pointers&quot; cargo +nightly-2022-01-21 miri run
+10
+10
+13
+</code></pre>
+<p>And just to be sure, let's check that a shared reference gets popped like normal:</p>
+<pre><code class="language-rust ignore">fn opaque_read(val: &amp;i32) {
+    println!(&quot;{}&quot;, val);
+}
+
+unsafe {
+    let mut data = 10;
+    let mref1 = &amp;mut data;
+    let ptr2 = mref1 as *mut i32;
+    let sref3 = &amp;*mref1;
+
+    *ptr2 += 2;
+    opaque_read(sref3); // Read in the wrong order?
+    *mref1 += 1;
+
+    opaque_read(&amp;data);
+}
+</code></pre>
+<pre><code class="language-text">cargo run
+12
+13
+
+MIRIFLAGS=&quot;-Zmiri-tag-raw-pointers&quot; cargo +nightly-2022-01-21 miri run
+
+error: Undefined Behavior: trying to reborrow for SharedReadOnly 
+at alloc742, but parent tag &lt;1620&gt; does not have an appropriate 
+item in the borrow stack
+
+  --&gt; src\main.rs:13:17
+   |
+13 |     opaque_read(sref3); // Read in the wrong order?
+   |                 ^^^^^ trying to reborrow for SharedReadOnly 
+   |                       at alloc742, but parent tag &lt;1620&gt; 
+   |                       does not have an appropriate item 
+   |                       in the borrow stack
+   |
+</code></pre>
+<p>Hey, we even got a slightly different error message about SharedReadOnly instead of some specific tag. That makes sense: once there's <em>any</em> shared references, basically everything else is just a big SharedReadOnly soup so there's no need to distinguish any of them!</p>
+<h1><a class="header" href="#testing-interior-mutability" id="testing-interior-mutability">Testing Interior Mutability</a></h1>
+<p>Remember that really horrible chapter of the book where we tried to make a linked list with RefCell and Rc and everything was even worse than usual when trying to write this godforsaken linked lists?</p>
+<p>We've been insisting shared references can't be used for mutation but that chapter was all about how you could actually mutate through shared references with <em>interior mutability</em>. Let's try the nice and simple <a href="https://doc.rust-lang.org/std/cell/struct.Cell.html">std::cell::Cell</a> type:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::cell::Cell;
+
+unsafe {
+    let mut data = Cell::new(10);
+    let mref1 = &amp;mut data;
+    let ptr2 = mref1 as *mut Cell&lt;i32&gt;;
+    let sref3 = &amp;*mref1;
+
+    sref3.set(sref3.get() + 3);
+    (*ptr2).set((*ptr2).get() + 2);
+    mref1.set(mref1.get() + 1);
+
+    println!(&quot;{}&quot;, data.get());
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Ah, such a beautiful mess. It will be lovely to see miri spit on it.</p>
+<pre><code class="language-text">cargo run
+16
+
+MIRIFLAGS=&quot;-Zmiri-tag-raw-pointers&quot; cargo +nightly-2022-01-21 miri run
+16
+</code></pre>
+<p>Wait, really? <em>That's</em> fine? Why? How? What even is a <em>Cell</em>?</p>
+<p><em>Smashes the padlock on the stdlib</em></p>
+<pre><code class="language-rust ignore">pub struct Cell&lt;T: ?Sized&gt; {
+    value: UnsafeCell&lt;T&gt;,
+}
+</code></pre>
+<p>What the heck is <code>UnsafeCell</code>?</p>
+<p><em>Smashes another padlock just to really show the stdlib we mean business</em></p>
+<pre><code class="language-rust ignore">#[lang = &quot;unsafe_cell&quot;]
+#[repr(transparent)]
+#[repr(no_niche)]
+pub struct UnsafeCell&lt;T: ?Sized&gt; {
+    value: T,
+}
+</code></pre>
+<p>Oh it's wizard magic. Ok. I guess. <code>#[lang = &quot;unsafe_cell&quot;]</code> is literally just saying UnsafeCell is UnsafeCell. Let's stop breaking locks and check the actual documentation of <a href="https://doc.rust-lang.org/std/cell/struct.UnsafeCell.html">std::cell::UnsafeCell</a>.</p>
+<blockquote>
+<p>The core primitive for interior mutability in Rust.</p>
+<p>If you have a reference <code>&amp;T</code>, then normally in Rust the compiler performs optimizations based on the knowledge that <code>&amp;T</code> points to immutable data. Mutating that data, for example through an alias or by transmuting an <code>&amp;T</code> into an <code>&amp;mut T</code>, is considered undefined behavior. <code>UnsafeCell&lt;T&gt;</code> opts-out of the immutability guarantee for <code>&amp;T</code>: a shared reference <code>&amp;UnsafeCell&lt;T&gt;</code> may point to data that is being mutated. This is called “interior mutability”.</p>
+</blockquote>
+<p>Oh it <em>really is</em> just wizard magic.</p>
+<p>UnsafeCell basically tells the compiler &quot;hey listen, we're gonna get goofy with this memory, don't make any of the usual aliasing assumptions about it&quot;. Like putting up a big &quot;CAUTION: TINY ANGRY MEN CROSSING&quot; sign.</p>
+<p>Let's see how adding UnsafeCell makes miri happy:</p>
+<pre><code class="language-rust ignore">use std::cell::UnsafeCell;
+
+fn opaque_read(val: &amp;i32) {
+    println!(&quot;{}&quot;, val);
+}
+
+unsafe {
+    let mut data = UnsafeCell::new(10);
+    let mref1 = data.get_mut();      // Get a mutable ref to the contents
+    let ptr2 = mref1 as *mut i32;
+    let sref3 = &amp;*ptr2;
+
+    *ptr2 += 2;
+    opaque_read(sref3);
+    *mref1 += 1;
+
+    println!(&quot;{}&quot;, *data.get());
+}
+</code></pre>
+<pre><code class="language-text">cargo run
+12
+13
+
+MIRIFLAGS=&quot;-Zmiri-tag-raw-pointers&quot; cargo +nightly-2022-01-21 miri run
+
+error: Undefined Behavior: trying to reborrow for SharedReadOnly
+at alloc748, but parent tag &lt;1629&gt; does not have an appropriate
+item in the borrow stack
+
+  --&gt; src\main.rs:15:17
+   |
+15 |     opaque_read(sref3);
+   |                 ^^^^^ trying to reborrow for SharedReadOnly 
+   |                       at alloc748, but parent tag &lt;1629&gt; does
+   |                       not have an appropriate item in the
+   |                       borrow stack
+   |
+
+</code></pre>
+<p>Wait, what? We spoke the magic words! What am I going to do with all this federally approved ritual-enhancing goat blood?</p>
+<p>Well, we did, but then we completely discarded the spell by using <code>get_mut</code> which peeks inside the UnsafeCell and makes a proper <code>&amp;mut i32</code> to it anyway!</p>
+<p>Think about it: if the compiler had to assume <code>&amp;mut i32</code> <em>could</em> be looking inside an <code>UnsafeCell</code>, then it would never be able to make any assumptions about aliasing at all! Everything could be full of tiny angry men.</p>
+<p>So what we need to do is keep the <code>UnsafeCell</code> in our pointer types so that the compiler understands what we're doing.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::cell::UnsafeCell;
+
+fn opaque_read(val: &amp;i32) {
+    println!(&quot;{}&quot;, val);
+}
+
+unsafe {
+    let mut data = UnsafeCell::new(10);
+    let mref1 = &amp;mut data;              // Mutable ref to the *outside*
+    let ptr2 = mref1.get();             // Get a raw pointer to the insides
+    let sref3 = &amp;*mref1;                // Get a shared ref to the *outside*
+
+    *ptr2 += 2;                         // Mutate with the raw pointer
+    opaque_read(&amp;*sref3.get());         // Read from the shared ref
+    *sref3.get() += 3;                  // Write through the shared ref
+    *mref1.get() += 1;                  // Mutate with the mutable ref
+
+    println!(&quot;{}&quot;, *data.get());
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-text">cargo run
+12
+16
+
+MIRIFLAGS=&quot;-Zmiri-tag-raw-pointers&quot; cargo +nightly-2022-01-21 miri run
+12
+16
+</code></pre>
+<p>It works! I won't have to throw out all this blood after all.</p>
+<p>Actually, hey wait. We're still being a bit goofy with the order here. We made ptr2 first, and then made sref3 from the mutable pointer. And then we used the raw pointer before the shared pointer. That all seems... wrong.</p>
+<p>Actually wait we did that with the Cell example too. HMMM.</p>
+<p>We're forced to conclude one of two things:</p>
+<ul>
+<li>Miri is imperfect and this is actually still UB.</li>
+<li>Our simplified model is in fact an oversimplication.</li>
+</ul>
+<p>I'd put my money on the second one, but just to be safe let's make a version that's definitely airtight in our simplified model of stacked borrows:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::cell::UnsafeCell;
+
+fn opaque_read(val: &amp;i32) {
+    println!(&quot;{}&quot;, val);
+}
+
+unsafe {
+    let mut data = UnsafeCell::new(10);
+    let mref1 = &amp;mut data;
+    // These two are swapped so the borrows are *definitely* totally stacked
+    let sref2 = &amp;*mref1;
+    // Derive the ptr from the shared ref to be super safe!
+    let ptr3 = sref2.get();             
+
+    *ptr3 += 3;
+    opaque_read(&amp;*sref2.get());
+    *sref2.get() += 2;
+    *mref1.get() += 1;
+
+    println!(&quot;{}&quot;, *data.get());
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-text">cargo run
+13
+16
+
+MIRIFLAGS=&quot;-Zmiri-tag-raw-pointers&quot; cargo +nightly-2022-01-21 miri run
+13
+16
+</code></pre>
+<p>Now, one reason why the first implementation we had <em>might</em> actually be correct is because if you <em>really</em> think about it <code>&amp;UnsafeCell&lt;T&gt;</code> really is no different from <code>*mut T</code> as far as aliasing is concerned. You can infinitely copy it and mutate through it!</p>
+<p>So in some sense we just created two raw pointers and used them interchangeably like normal. It's <em>a little</em> sketchy that both were derived from the mutable reference, so maybe the second one's creation should still pop the first one off the borrow stack, but that's not really necessary since we're not <em>actually</em> accessing the contents of the mutable reference, just copying its address.</p>
+<p>A line like <code>let sref2 = &amp;*mref1</code> is a tricksy thing. <em>Syntactically</em> it looks like we're dereferencing it, but dereferencing on it's own isn't actually a <em>thing</em>? Consider <code>&amp;my_tuple.0</code>: you aren't actually doing anything to <code>my_tuple</code> or <code>.0</code>, you're just using them to refer to a location in memory and putting <code>&amp;</code> in front of it that says &quot;don't load this, just write the address down&quot;. </p>
+<p><code>&amp;*</code> is the same thing: the <code>*</code> is just saying &quot;hey let's talk about the location this pointer points to&quot; and the <code>&amp;</code> is just saying &quot;now write that address down&quot;. Which is of course the same value the original pointer had. But the type of the pointer has changed, because, uh, types!</p>
+<p>That said, if you do <code>&amp;**</code> then you are in fact loading a value with the first <code>*</code>! <code>*</code> is weird!</p>
+<blockquote>
+<p><strong>NARRATOR:</strong> No one cares that you know the word &quot;lvalue&quot;, <em>Jonathan</em>. In Rust we call them <em>places</em>, which is totally different and <em>so</em> much cooler?</p>
+</blockquote>
+<h1><a class="header" href="#testing-box" id="testing-box">Testing Box</a></h1>
+<p>Hey remember why we started this extremely long aside? You don't? Weird.</p>
+<p>Well it was because we mixed Box and raw pointers. Box is <em>kind of</em> like <code>&amp;mut</code>, because it claims unique ownership of the memory it points to. Let's test that claim out:</p>
+<pre><code class="language-rust ignore">unsafe {
+    let mut data = Box::new(10);
+    let ptr1 = (&amp;mut *data) as *mut i32;
+
+    *data += 10;
+    *ptr1 += 1;
+
+    // Should be 21
+    println!(&quot;{}&quot;, data);
+}
+</code></pre>
+<pre><code class="language-text">cargo run
+21
+
+MIRIFLAGS=&quot;-Zmiri-tag-raw-pointers&quot; cargo +nightly-2022-01-21 miri run
+
+error: Undefined Behavior: no item granting read access 
+       to tag &lt;1707&gt; at alloc763 found in borrow stack.
+
+ --&gt; src\main.rs:7:5
+  |
+7 |     *ptr1 += 1;
+  |     ^^^^^^^^^^ no item granting read access to tag &lt;1707&gt; 
+  |                at alloc763 found in borrow stack.
+  |
+</code></pre>
+<p>Yep, miri hates that. Let's check that doing things in the right order is ok:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>unsafe {
+    let mut data = Box::new(10);
+    let ptr1 = (&amp;mut *data) as *mut i32;
+
+    *ptr1 += 1;
+    *data += 10;
+
+    // Should be 21
+    println!(&quot;{}&quot;, data);
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-text">cargo run
+21
+
+MIRIFLAGS=&quot;-Zmiri-tag-raw-pointers&quot; cargo +nightly-2022-01-21 miri run
+21
+</code></pre>
+<p>Yep!</p>
+<p>Whelp that's all folks, we're finally done talking and thinking about stacked borrows!</p>
+<p>...wait how do we solve this problem with Box? Like, sure we can write toy programs like this but we need to store the Box somewhere and hold onto our raw pointers for a potentially long time. Surely stuff will get mixed up and invalidated?</p>
+<p>Great question! To answer that we'll finally be returning to our true calling: writing some god damn linked lists.</p>
+<p>Wait, I need to write linked lists again? Let's not be hasty folks. Be reasonable. Just hold on I'm sure there's some other interesting issues for me to discu—</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="fifth-stacked-borrows.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="fifth-layout-basics-redux.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="fifth-stacked-borrows.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="fifth-layout-basics-redux.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Stacked Borrows - Learning Rust With Entirely Too Many Linked Lists</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Learning Rust With Entirely Too Many Linked Lists">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="first.html"><strong aria-hidden="true">2.</strong> A Bad Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="first-layout.html"><strong aria-hidden="true">2.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="first-new.html"><strong aria-hidden="true">2.2.</strong> New</a></li><li class="chapter-item expanded "><a href="first-ownership.html"><strong aria-hidden="true">2.3.</strong> Ownership 101</a></li><li class="chapter-item expanded "><a href="first-push.html"><strong aria-hidden="true">2.4.</strong> Push</a></li><li class="chapter-item expanded "><a href="first-pop.html"><strong aria-hidden="true">2.5.</strong> Pop</a></li><li class="chapter-item expanded "><a href="first-test.html"><strong aria-hidden="true">2.6.</strong> Testing</a></li><li class="chapter-item expanded "><a href="first-drop.html"><strong aria-hidden="true">2.7.</strong> Drop</a></li><li class="chapter-item expanded "><a href="first-final.html"><strong aria-hidden="true">2.8.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="second.html"><strong aria-hidden="true">3.</strong> An Ok Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="second-option.html"><strong aria-hidden="true">3.1.</strong> Option</a></li><li class="chapter-item expanded "><a href="second-generic.html"><strong aria-hidden="true">3.2.</strong> Generic</a></li><li class="chapter-item expanded "><a href="second-peek.html"><strong aria-hidden="true">3.3.</strong> Peek</a></li><li class="chapter-item expanded "><a href="second-into-iter.html"><strong aria-hidden="true">3.4.</strong> IntoIter</a></li><li class="chapter-item expanded "><a href="second-iter.html"><strong aria-hidden="true">3.5.</strong> Iter</a></li><li class="chapter-item expanded "><a href="second-iter-mut.html"><strong aria-hidden="true">3.6.</strong> IterMut</a></li><li class="chapter-item expanded "><a href="second-final.html"><strong aria-hidden="true">3.7.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="third.html"><strong aria-hidden="true">4.</strong> A Persistent Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="third-layout.html"><strong aria-hidden="true">4.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="third-basics.html"><strong aria-hidden="true">4.2.</strong> Basics</a></li><li class="chapter-item expanded "><a href="third-drop.html"><strong aria-hidden="true">4.3.</strong> Drop</a></li><li class="chapter-item expanded "><a href="third-arc.html"><strong aria-hidden="true">4.4.</strong> Arc</a></li><li class="chapter-item expanded "><a href="third-final.html"><strong aria-hidden="true">4.5.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="fourth.html"><strong aria-hidden="true">5.</strong> A Bad Safe Deque</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fourth-layout.html"><strong aria-hidden="true">5.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="fourth-building.html"><strong aria-hidden="true">5.2.</strong> Building</a></li><li class="chapter-item expanded "><a href="fourth-breaking.html"><strong aria-hidden="true">5.3.</strong> Breaking</a></li><li class="chapter-item expanded "><a href="fourth-peek.html"><strong aria-hidden="true">5.4.</strong> Peek</a></li><li class="chapter-item expanded "><a href="fourth-symmetry.html"><strong aria-hidden="true">5.5.</strong> Symmetric Cases</a></li><li class="chapter-item expanded "><a href="fourth-iteration.html"><strong aria-hidden="true">5.6.</strong> Iteration</a></li><li class="chapter-item expanded "><a href="fourth-final.html"><strong aria-hidden="true">5.7.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="fifth.html"><strong aria-hidden="true">6.</strong> An Ok Unsafe Queue</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fifth-layout.html"><strong aria-hidden="true">6.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="fifth-unsafe.html"><strong aria-hidden="true">6.2.</strong> Unsafe</a></li><li class="chapter-item expanded "><a href="fifth-basics.html"><strong aria-hidden="true">6.3.</strong> Basics</a></li><li class="chapter-item expanded "><a href="fifth-miri.html"><strong aria-hidden="true">6.4.</strong> Miri</a></li><li class="chapter-item expanded "><a href="fifth-stacked-borrows.html" class="active"><strong aria-hidden="true">6.5.</strong> Stacked Borrows</a></li><li class="chapter-item expanded "><a href="fifth-testing-stacked-borrows.html"><strong aria-hidden="true">6.6.</strong> Testing Stacked Borrows</a></li><li class="chapter-item expanded "><a href="fifth-layout-basics-redux.html"><strong aria-hidden="true">6.7.</strong> Layout + Basics Redux</a></li><li class="chapter-item expanded "><a href="fifth-extras.html"><strong aria-hidden="true">6.8.</strong> Extras</a></li><li class="chapter-item expanded "><a href="fifth-final.html"><strong aria-hidden="true">6.9.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="sixth.html"><strong aria-hidden="true">7.</strong> A Production Unsafe Deque</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="sixth-layout.html"><strong aria-hidden="true">7.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="sixth-variance.html"><strong aria-hidden="true">7.2.</strong> Variance and Subtyping</a></li><li class="chapter-item expanded "><a href="sixth-basics.html"><strong aria-hidden="true">7.3.</strong> Basics</a></li><li class="chapter-item expanded "><a href="sixth-panics.html"><strong aria-hidden="true">7.4.</strong> Panic Safety</a></li><li class="chapter-item expanded "><a href="sixth-combinatorics.html"><strong aria-hidden="true">7.5.</strong> Boring Combinatorics</a></li><li class="chapter-item expanded "><a href="sixth-random-bits.html"><strong aria-hidden="true">7.6.</strong> Filling In Random Bits</a></li><li class="chapter-item expanded "><a href="sixth-testing.html"><strong aria-hidden="true">7.7.</strong> Testing</a></li><li class="chapter-item expanded "><a href="sixth-send-sync.html"><strong aria-hidden="true">7.8.</strong> Send, Sync, and Compile Tests</a></li><li class="chapter-item expanded "><a href="sixth-cursors-intro.html"><strong aria-hidden="true">7.9.</strong> An Introduction To Cursors</a></li><li class="chapter-item expanded "><a href="sixth-cursors-impl.html"><strong aria-hidden="true">7.10.</strong> Implementing Cursors</a></li><li class="chapter-item expanded "><a href="sixth-cursors-testing.html"><strong aria-hidden="true">7.11.</strong> Testing Cursors</a></li><li class="chapter-item expanded "><a href="sixth-final.html"><strong aria-hidden="true">7.12.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="infinity.html"><strong aria-hidden="true">8.</strong> A Bunch of Silly Lists</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="infinity-double-single.html"><strong aria-hidden="true">8.1.</strong> The Double Single</a></li><li class="chapter-item expanded "><a href="infinity-stack-allocated.html"><strong aria-hidden="true">8.2.</strong> The Stack-Allocated Linked List</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Learning Rust With Entirely Too Many Linked Lists</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/rust-unofficial/too-many-lists" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#attempting-to-understand-stacked-borrows" id="attempting-to-understand-stacked-borrows">Attempting To Understand Stacked Borrows</a></h1>
+<p>In the previous section we tried running our unsafe singly-linked queue under miri, and it said we had broken the rules of <em>stacked borrows</em>, and linked us some documentation.</p>
+<p>Normally I'd give a guided tour of the docs, but we're not really the target audience of that documentation. It's more designed for compiler developers and academics who are working on the semantics of Rust. </p>
+<p>So I'm going to just give you the high level <em>idea</em> of &quot;stacked borrows&quot;, and then give you a simple strategy for following the rules.</p>
+<blockquote>
+<p><strong>NARRATOR:</strong> Stacked borrows are still &quot;experimental&quot; as a semantic model for Rust, so breaking these rules may not actually mean your program is &quot;wrong&quot;. But unless you literally work on the compiler, you should just fix your program when miri complains. Better safe than sorry when it comes to Undefined Behaviour.</p>
+</blockquote>
+<h1><a class="header" href="#the-motivation-pointer-aliasing" id="the-motivation-pointer-aliasing">The Motivation: Pointer Aliasing</a></h1>
+<p>Before we get into <em>what</em> rules we've broken, it will help to understand <em>why</em> the rules exist in the first place. There are a few different motivating problems, but I think the most important one is <em>pointer aliasing</em>.</p>
+<p>We say two pointers <em>alias</em> when the pieces of memory they point to overlap. Just as someone who &quot;goes by an alias&quot; can be referred to by two different names, that overlapping piece of memory can be referred to by two different pointers. This can lead to problems.</p>
+<p>The compiler uses information about pointer aliasing to optimize accesses to memory, so if the information it has is <em>wrong</em> then the program will be miscompiled and do random garbage. </p>
+<blockquote>
+<p><strong>NARRATOR:</strong> Practically speaking, aliasing is more concerned with memory accesses than the pointers themselves, and only really matters when one of the accesses is mutating. Pointers are emphasized because they're a convenient thing to attach rules to.</p>
+</blockquote>
+<p>To understand why pointer aliasing information is important, let's consider <em>The Parable of the Tiny Angry Man</em>. </p>
+<hr />
+<p>Michiel was looking through their bookshelf one day when they saw a book they didn't remember. They pulled it from the bookcase and looked at the cover. </p>
+<p>&quot;Oh yes, my old copy of <em>War and Peace</em>, a book I definitely have read. I loved the part with all the Peace.&quot;</p>
+<p>Suddenly there was a knock at the door. Michiel returned the book to its shelf and opened the door -- it was their sworn nemesis <strong>Hamslaw</strong>. As Hamslaw prepared a devastating remark about Michiel's clearly inferior codegolfing skills, they sensed an opening: </p>
+<p>&quot;Hey Hamslaw, have you ever read War and Peace?&quot;</p>
+<p>&quot;Pfft, no one's <em>actually</em> read War and Peace.&quot;</p>
+<p>&quot;Well I have, look it's right there in my bookcase, which <em>obviously</em> means I've read it.&quot;</p>
+<p>Hamslaw couldn't believe it. Her face shifted from its usual smug demeanor to an iron mask of rage and determination. Hamslaw pushed Michiel aside and power-walked to the book shelf, cleaving the tome from its resting place with the fury of a thousand Valkyries. She turned the ancient text over in her hands, and the instant she saw the cover she began to shake.</p>
+<p>Michiel prepared to boast of their clearly unparalleled brilliance, but was interrupted by the sudden laughter of Hamslaw.</p>
+<p>&quot;This isn't War and Peace, this is War and <em>Feet</em>!&quot;</p>
+<p>Tears were rolling down Hamslaw's face. This was clearly the greatest moment of her life.</p>
+<p>&quot;N-no! I just looked at it!&quot;</p>
+<p>They grabbed the book from Hamslaw and checked the cover. Indeed, the word &quot;Peace&quot; had been scratched out and replaced with &quot;Feet&quot;. Michiel was mortified. This was clearly the worst moment of their life.</p>
+<p>They fell to their knees and stared blankly at the bookcase. How could this have happened? They had checked the cover only a moment ago!</p>
+<p>And then they saw a bit of motion in the bookcase. It was a tiny man. A tiny many with the angriest scowl Michiel had ever seen. The tiny man flipped Michiel off and mouthed the words &quot;no one will believe you&quot; and disappeared back between the books.</p>
+<p>Michiel's plan <em>had</em> been perfect, but they had failed to account for the possibility of a tiny angry man with a sharpie and the desire for destruction. They thought they knew what the cover of the book said, and they thought that no one could have possibly changed it. But alas, they were wrong.</p>
+<p>Hamslaw was already working on a zine commemorating her incredible victory — Michiel's reputation at the local Internet Cafe would never recover.</p>
+<hr />
+<p>No one wants to be like Michiel, but no one wants to live in constant fear of the tiny angry man either. We want to know when the tiny angry man could be playing tricks on us. When he is, we will be very careful and paranoid about checking everything before we use it. But when the tiny angry man is gone, we want to be able to remember things.</p>
+<p>That's the (very simplified) crux of pointer aliasing: when can the compiler assume it's safe to &quot;remember&quot; (cache) values instead of loading them over and over? To know that, the compiler needs to know whenever there <em>could</em> be little angry men mutating the memory behind your back.</p>
+<blockquote>
+<p><strong>NARRATOR:</strong> the compiler also uses this information to cache stores, which just means it can avoid committing things to memory if it thinks no one will notice. In this case the problem is still tiny angry men, but they only need to read the memory for it to be a problem.</p>
+</blockquote>
+<h1><a class="header" href="#safe-stacked-borrows" id="safe-stacked-borrows">Safe Stacked Borrows</a></h1>
+<p>Ok so we want the compiler to have good pointer aliasing information, can we do that? Well, seemingly Rust is <em>designed</em> for it. Mutable references aren't aliased by definition, and although shared references <em>can</em> alias eachother, they can't mutate. Perfect! Ship it!</p>
+<p>Except it's more complicated than that. We can &quot;reborrow&quot; mutable pointers like this:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let mut data = 10;
+let ref1 = &amp;mut data;
+let ref2 = &amp;mut *ref1;
+
+*ref2 += 2;
+*ref1 += 1;
+
+println!(&quot;{}&quot;, data);
+<span class="boring">}
+</span></code></pre></pre>
+<p>The compiles and runs fine. What's the deal? </p>
+<p>Well we can see what's going on by swapping the two uses:</p>
+<pre><code class="language-rust ignore">let mut data = 10;
+let ref1 = &amp;mut data;
+let ref2 = &amp;mut *ref1;
+
+// ORDER SWAPPED!
+*ref1 += 1;
+*ref2 += 2;
+
+println!(&quot;{}&quot;, data);
+</code></pre>
+<pre><code class="language-text">error[E0503]: cannot use `*ref1` because it was mutably borrowed
+ --&gt; src/main.rs:6:5
+  |
+4 |     let ref2 = &amp;mut *ref1;
+  |                ---------- borrow of `*ref1` occurs here
+5 |     
+6 |     *ref1 += 1;
+  |     ^^^^^^^^^^ use of borrowed `*ref1`
+7 |     *ref2 += 2;
+  |     ---------- borrow later used here
+
+For more information about this error, try `rustc --explain E0503`.
+error: could not compile `playground` due to previous error
+</code></pre>
+<p>It's suddenly a compiler error!</p>
+<p>When we reborrow a mutable pointer, the original pointer can't be used anymore until the borrower is done with it (no more uses). </p>
+<p>In the code that works, there's a nice little nesting of the uses. We reborrow the pointer, use the new pointer for a while, and then stop using it before using the older pointer again. In the code that <em>doesn't</em> work, that doesn't happen. We just interleave the uses arbitrarily.</p>
+<p>This is how we can have reborrows and still have aliasing information: all of our reborrows clearly nest, so we can consider only one of them &quot;live&quot; at any given time.</p>
+<p>Hey, you know what's a great way to represent cleanly nested things? A stack. A stack of borrows.</p>
+<p>Oh hey it's <em>Stacked Borrows</em>!</p>
+<p>Whatever's at the top of the borrow stack is &quot;live&quot; and knows it's effectively unaliased. When you reborrow a pointer, the new pointer is pushed onto the stack, becoming <em>the</em> live pointer. When you use an older pointer it's brought back to life by popping everything on the borrow stack above it. At this point the pointer &quot;knows&quot; it was reborrowed and that the memory might have been modified, but that it once more has exclusive access -- no need to worry about little angry men.</p>
+<p>So it's actually <em>always</em> ok to access a reborrowed pointer, because we can always pop everything above it. The real trouble is accessing a pointer that has already been popped off of the borrow stack -- then you've messed up.</p>
+<p>Thankfully the design of the borrowchecker ensures that safe Rust programs follow these rules, as we saw in the above example, but the compiler generally views this problem &quot;backwards&quot; from the stacked borrows perspective. Instead of saying using <code>ref1</code> invalidates <code>ref2</code>, it insists that <code>ref2</code> <em>must</em> be valid for all its uses, and that <code>ref1</code> is the one messing things up by going out of turn.</p>
+<p>Hence &quot;cannot use <code>*ref1</code> because it was mutably borrowed&quot;. It's the same result (especially with non-lexical lifetimes), but framed in a way that's probably more intuitive.</p>
+<p>But the borrowchecker can't help us when we start using unsafe pointers!</p>
+<h1><a class="header" href="#unsafe-stacked-borrows" id="unsafe-stacked-borrows">Unsafe Stacked Borrows</a></h1>
+<p>So we want to somehow have a way for unsafe pointers to participate in this stacked borrows system, even though the compiler can't track them properly. And we also want the system to be fairly permissive so that it's not <em>too</em> easy to mess it up and cause UB.</p>
+<p>That's a hard problem, and I don't know how to solve it, but the folks who worked on Stacked Borrows came up with something plausible, and miri tries to implement it.</p>
+<p>The very high-level concept is that when you convert a reference (or any other safe pointer) into an raw pointer it's <em>basically</em> like taking a reborrow. So now the raw pointer is allowed to do whatever it wants with that memory, and when the reborrow expires it's just like when that happens with normal reborrows.</p>
+<p>But the question is, when does that reborrow expire? Well, probably a good time to expire it is when you start using the original reference again. Otherwise things aren't a nice nested stack.</p>
+<p>But wait, you can turn a raw pointer <em>into</em> a reference! And you can copy raw pointers! What if you go <code>&amp;mut -&gt; *mut -&gt; &amp;mut -&gt; *mut</code> and then access the first <code>*mut</code>? How the heck do the stacked borrows work then?</p>
+<p>I genuinely don't know! That's why things are complicated. In fact they're <em>extra</em> complicated because stacked borrows are <em>trying</em> to be more permissive and let more unsafe code work the way you'd expect it to. This is why I run things under miri to try to help me catch mistakes.</p>
+<p>In fact, this messiness is why there is an extra-experimental extra-strict mode of miri: <code>-Zmiri-tag-raw-pointers</code>.</p>
+<p>To enable it, we need to pass it via a MIRIFLAGS environment variable like this:</p>
+<pre><code class="language-text">MIRIFLAGS=&quot;-Zmiri-tag-raw-pointers&quot; cargo +nightly-2022-01-21 miri test
+</code></pre>
+<p>Or like this on Windows, where you need to just set the variable globally:</p>
+<pre><code class="language-text">$env:MIRIFLAGS=&quot;-Zmiri-tag-raw-pointers&quot;
+cargo +nightly-2022-01-21 miri test
+</code></pre>
+<p>We'll generally be trying to conform to this extra-strict mode just to be <em>extra</em> confident in our work. It's also in some sense &quot;simpler&quot;, so it's actually better for messing around and getting an intuition for stacked borrows.</p>
+<h1><a class="header" href="#managing-stacked-borrows" id="managing-stacked-borrows">Managing Stacked Borrows</a></h1>
+<p>So when using raw pointers we're going to try to stick to a heuristic that's simple and blunt and will hopefully have a large margin of error: </p>
+<p><strong>Once you start using raw pointers, try to ONLY use raw pointers.</strong></p>
+<p>This makes it as unlikely as possible to accidentally lose the raw pointer's &quot;permission&quot; to access the memory.</p>
+<blockquote>
+<p><strong>NARRATOR:</strong> this is oversimplified in two regards:</p>
+<ol>
+<li>
+<p>Safe pointers often assert more properties than just aliasing: the memory is allocated, it's aligned, it's large enough to fit the type of the pointee, the pointee is properly initialized, etc. So it's even more dangerous to wildly throw them around when things are in a dubious state.</p>
+</li>
+<li>
+<p>Even if you stay in raw pointer land, you can't just wildly alias any memory. Pointers are conceptually tied to specific &quot;allocations&quot; (which can be as granular as a local variable on the stack), and you're not supposed to take a pointer from one allocation, offset it, and then access memory in a different allocation. If this was allowed, there would <em>always</em> be the threat of tiny angry men <em>everywhere</em>. This is part of the reason &quot;pointers are just integers&quot; is a <em>problematic</em> viewpoint.</p>
+</li>
+</ol>
+</blockquote>
+<p>Now, we still want safe references in our <em>interface</em>, because we want to build a nice <em>safe abstraction</em> so the user of our list doesn't have to know or worry about. </p>
+<p>So what we're going to do is:</p>
+<ol>
+<li>At the start of a method, use the input references to get our raw pointers</li>
+<li>Do our best to only use unsafe pointers from this point on</li>
+<li>Convert our raw pointers back to safe pointers at the end if needed</li>
+</ol>
+<p>But the fields of our types are private so we're going to keep those <em>entirely</em> as raw pointers.</p>
+<p>In fact, part of the big mistake we made was continuing to use Box! Box has a special annotation in it that tells the compiler &quot;hey this is a lot like <code>&amp;mut</code>, because it uniquely owns that pointer&quot;. Which is true!</p>
+<p>But the raw pointer we were keeping to the end of the list was pointing into a Box, so whenever we access the Box normally we're probably invalidating that raw pointer's &quot;reborrow&quot;! ☠</p>
+<p>In the next section we'll return to our true form and hit our heads against a bunch of examples.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="fifth-miri.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="fifth-testing-stacked-borrows.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="fifth-miri.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="fifth-testing-stacked-borrows.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

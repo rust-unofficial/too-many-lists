@@ -1,0 +1,791 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Boring Combinatorics - Learning Rust With Entirely Too Many Linked Lists</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Learning Rust With Entirely Too Many Linked Lists">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="first.html"><strong aria-hidden="true">2.</strong> A Bad Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="first-layout.html"><strong aria-hidden="true">2.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="first-new.html"><strong aria-hidden="true">2.2.</strong> New</a></li><li class="chapter-item expanded "><a href="first-ownership.html"><strong aria-hidden="true">2.3.</strong> Ownership 101</a></li><li class="chapter-item expanded "><a href="first-push.html"><strong aria-hidden="true">2.4.</strong> Push</a></li><li class="chapter-item expanded "><a href="first-pop.html"><strong aria-hidden="true">2.5.</strong> Pop</a></li><li class="chapter-item expanded "><a href="first-test.html"><strong aria-hidden="true">2.6.</strong> Testing</a></li><li class="chapter-item expanded "><a href="first-drop.html"><strong aria-hidden="true">2.7.</strong> Drop</a></li><li class="chapter-item expanded "><a href="first-final.html"><strong aria-hidden="true">2.8.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="second.html"><strong aria-hidden="true">3.</strong> An Ok Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="second-option.html"><strong aria-hidden="true">3.1.</strong> Option</a></li><li class="chapter-item expanded "><a href="second-generic.html"><strong aria-hidden="true">3.2.</strong> Generic</a></li><li class="chapter-item expanded "><a href="second-peek.html"><strong aria-hidden="true">3.3.</strong> Peek</a></li><li class="chapter-item expanded "><a href="second-into-iter.html"><strong aria-hidden="true">3.4.</strong> IntoIter</a></li><li class="chapter-item expanded "><a href="second-iter.html"><strong aria-hidden="true">3.5.</strong> Iter</a></li><li class="chapter-item expanded "><a href="second-iter-mut.html"><strong aria-hidden="true">3.6.</strong> IterMut</a></li><li class="chapter-item expanded "><a href="second-final.html"><strong aria-hidden="true">3.7.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="third.html"><strong aria-hidden="true">4.</strong> A Persistent Stack</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="third-layout.html"><strong aria-hidden="true">4.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="third-basics.html"><strong aria-hidden="true">4.2.</strong> Basics</a></li><li class="chapter-item expanded "><a href="third-drop.html"><strong aria-hidden="true">4.3.</strong> Drop</a></li><li class="chapter-item expanded "><a href="third-arc.html"><strong aria-hidden="true">4.4.</strong> Arc</a></li><li class="chapter-item expanded "><a href="third-final.html"><strong aria-hidden="true">4.5.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="fourth.html"><strong aria-hidden="true">5.</strong> A Bad Safe Deque</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fourth-layout.html"><strong aria-hidden="true">5.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="fourth-building.html"><strong aria-hidden="true">5.2.</strong> Building</a></li><li class="chapter-item expanded "><a href="fourth-breaking.html"><strong aria-hidden="true">5.3.</strong> Breaking</a></li><li class="chapter-item expanded "><a href="fourth-peek.html"><strong aria-hidden="true">5.4.</strong> Peek</a></li><li class="chapter-item expanded "><a href="fourth-symmetry.html"><strong aria-hidden="true">5.5.</strong> Symmetric Cases</a></li><li class="chapter-item expanded "><a href="fourth-iteration.html"><strong aria-hidden="true">5.6.</strong> Iteration</a></li><li class="chapter-item expanded "><a href="fourth-final.html"><strong aria-hidden="true">5.7.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="fifth.html"><strong aria-hidden="true">6.</strong> An Ok Unsafe Queue</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fifth-layout.html"><strong aria-hidden="true">6.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="fifth-unsafe.html"><strong aria-hidden="true">6.2.</strong> Unsafe</a></li><li class="chapter-item expanded "><a href="fifth-basics.html"><strong aria-hidden="true">6.3.</strong> Basics</a></li><li class="chapter-item expanded "><a href="fifth-miri.html"><strong aria-hidden="true">6.4.</strong> Miri</a></li><li class="chapter-item expanded "><a href="fifth-stacked-borrows.html"><strong aria-hidden="true">6.5.</strong> Stacked Borrows</a></li><li class="chapter-item expanded "><a href="fifth-testing-stacked-borrows.html"><strong aria-hidden="true">6.6.</strong> Testing Stacked Borrows</a></li><li class="chapter-item expanded "><a href="fifth-layout-basics-redux.html"><strong aria-hidden="true">6.7.</strong> Layout + Basics Redux</a></li><li class="chapter-item expanded "><a href="fifth-extras.html"><strong aria-hidden="true">6.8.</strong> Extras</a></li><li class="chapter-item expanded "><a href="fifth-final.html"><strong aria-hidden="true">6.9.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="sixth.html"><strong aria-hidden="true">7.</strong> A Production Unsafe Deque</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="sixth-layout.html"><strong aria-hidden="true">7.1.</strong> Layout</a></li><li class="chapter-item expanded "><a href="sixth-variance.html"><strong aria-hidden="true">7.2.</strong> Variance and Subtyping</a></li><li class="chapter-item expanded "><a href="sixth-basics.html"><strong aria-hidden="true">7.3.</strong> Basics</a></li><li class="chapter-item expanded "><a href="sixth-panics.html"><strong aria-hidden="true">7.4.</strong> Panic Safety</a></li><li class="chapter-item expanded "><a href="sixth-combinatorics.html" class="active"><strong aria-hidden="true">7.5.</strong> Boring Combinatorics</a></li><li class="chapter-item expanded "><a href="sixth-random-bits.html"><strong aria-hidden="true">7.6.</strong> Filling In Random Bits</a></li><li class="chapter-item expanded "><a href="sixth-testing.html"><strong aria-hidden="true">7.7.</strong> Testing</a></li><li class="chapter-item expanded "><a href="sixth-send-sync.html"><strong aria-hidden="true">7.8.</strong> Send, Sync, and Compile Tests</a></li><li class="chapter-item expanded "><a href="sixth-cursors-intro.html"><strong aria-hidden="true">7.9.</strong> An Introduction To Cursors</a></li><li class="chapter-item expanded "><a href="sixth-cursors-impl.html"><strong aria-hidden="true">7.10.</strong> Implementing Cursors</a></li><li class="chapter-item expanded "><a href="sixth-cursors-testing.html"><strong aria-hidden="true">7.11.</strong> Testing Cursors</a></li><li class="chapter-item expanded "><a href="sixth-final.html"><strong aria-hidden="true">7.12.</strong> Final Code</a></li></ol></li><li class="chapter-item expanded "><a href="infinity.html"><strong aria-hidden="true">8.</strong> A Bunch of Silly Lists</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="infinity-double-single.html"><strong aria-hidden="true">8.1.</strong> The Double Single</a></li><li class="chapter-item expanded "><a href="infinity-stack-allocated.html"><strong aria-hidden="true">8.2.</strong> The Stack-Allocated Linked List</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Learning Rust With Entirely Too Many Linked Lists</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        <a href="https://github.com/rust-unofficial/too-many-lists" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#boring-combinatorics" id="boring-combinatorics">Boring Combinatorics</a></h1>
+<p>Ok, back to our regularly scheduled linked lists!</p>
+<p>First let's knock out <code>Drop</code> which is trivial with pop:</p>
+<pre><code class="language-rust ignore">impl&lt;T&gt; Drop for LinkedList&lt;T&gt; {
+    fn drop(&amp;mut self) {
+        // Pop until we have to stop
+        while let Some(_) = self.pop_front() { }
+    }
+}
+</code></pre>
+<p>We've got to fill in a bunch of really boring combinatoric implementations like front, front_mut, back, back_mut, iter, iter_mut, into_iter, ...</p>
+<p>You could do them with macros or whatever but honestly, that's a worse fate than copy-pasting. We're just going to do a lot of copy-pasting. I have <em>very carefully</em> crafted the previous push/pop implementations so that we should be able to <em>literally</em> just swap front and back and the code does/says the right thing! Hooray for painful experience! (It's so tempting to talk about &quot;prev and next&quot; for nodes, but I find it's really worth it to just consistently talk about &quot;front&quot; and &quot;back&quot; as much as possible to avoid mistakes.)</p>
+<p>Alright, first up, <code>front</code>:</p>
+<pre><code class="language-rust ignore">pub fn front(&amp;self) -&gt; Option&lt;&amp;T&gt; {
+    unsafe {
+        self.front.map(|node| &amp;(*node.as_ptr()).elem)
+    }
+}
+</code></pre>
+<p>Hey actually, this book is really old and some nice new things have been added like the <code>?</code> operator which does an early return on Option::None, does that make our code nicer?</p>
+<pre><code class="language-rust ignore">pub fn front(&amp;self) -&gt; Option&lt;&amp;T&gt; {
+    unsafe {
+        Some(&amp;(*self.front?.as_ptr()).elem)
+    }
+}
+</code></pre>
+<p>Maybe? It's kind of a wash for something this simple, and the previous section was all about how early returns are kinda spooky for us, so maybe we should prefer being a bit more explicit here (I'm sticking to the <code>map</code> implementation).  On to front_mut:</p>
+<pre><code class="language-rust ignore">pub fn front_mut(&amp;mut self) -&gt; Option&lt;&amp;mut T&gt; {
+    unsafe {
+        self.front.map(|node| &amp;mut (*node.as_ptr()).elem)
+    }
+}
+</code></pre>
+<p>I'll just dump all the <code>back</code> versions at the end. </p>
+<p>Next up, iterators. Unlike all of our previous lists we've <em>finally</em> unlocked the ability to do <a href="https://doc.rust-lang.org/std/iter/trait.DoubleEndedIterator.html">DoubleEndedIterator</a>, and if we're going for production quality we're gonna do <a href="https://doc.rust-lang.org/std/iter/trait.ExactSizeIterator.html">ExactSizeIterator</a> too.</p>
+<p>So in addition to <code>next</code> and <code>size_hint</code>, we're going to support <code>next_back</code> and <code>len</code>.</p>
+<p>The vigilant among you might notice that IterMut seems a lot more sketchy with double-ended iteration, but it's actually still sound!</p>
+<p>... god this is gonna be a lot of boilerplate. Maybe I should really write a macro... no, no, that's still a worse fate.</p>
+<pre><code class="language-rust ignore">pub struct Iter&lt;'a, T&gt; {
+    front: Link&lt;T&gt;,
+    back: Link&lt;T&gt;,
+    len: usize,
+    _boo: PhantomData&lt;&amp;'a T&gt;,
+}
+
+impl&lt;T&gt; LinkedList&lt;T&gt; {
+    pub fn iter(&amp;self) -&gt; Iter&lt;T&gt; {
+        Iter { 
+            front: self.front, 
+            back: self.back,
+            len: self.len,
+            _boo: PhantomData,
+        }
+    }
+}
+
+
+impl&lt;'a, T&gt; IntoIterator for &amp;'a LinkedList&lt;T&gt; {
+    type IntoIter = Iter&lt;'a, T&gt;;
+    type Item = &amp;'a T;
+
+    fn into_iter(self) -&gt; Self::IntoIter {
+        self.iter()
+    }
+}
+
+impl&lt;'a, T&gt; Iterator for Iter&lt;'a, T&gt; {
+    type Item = &amp;'a T;
+    
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        // While self.front == self.back is a tempting condition to check here,
+        // it won't do the right for yielding the last element! That sort of
+        // thing only works for arrays because of &quot;one-past-the-end&quot; pointers.
+        if self.len &gt; 0 {
+            // We could unwrap front, but this is safer and easier
+            self.front.map(|node| unsafe {
+                self.len -= 1;
+                self.front = (*node.as_ptr()).back;
+                &amp;(*node.as_ptr()).elem
+            })
+        } else {
+            None
+        }
+    }
+
+    fn size_hint(&amp;self) -&gt; (usize, Option&lt;usize&gt;) {
+        (self.len, Some(self.len))
+    }
+}
+
+impl&lt;'a, T&gt; DoubleEndedIterator for Iter&lt;'a, T&gt; {
+    fn next_back(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        if self.len &gt; 0 {
+            self.back.map(|node| unsafe {
+                self.len -= 1;
+                self.back = (*node.as_ptr()).front;
+                &amp;(*node.as_ptr()).elem
+            })
+        } else {
+            None
+        }
+    }
+}
+
+impl&lt;'a, T&gt; ExactSizeIterator for Iter&lt;'a, T&gt; {
+    fn len(&amp;self) -&gt; usize {
+        self.len
+    }
+}
+</code></pre>
+<p>...that's just <code>.iter()</code>...</p>
+<p>we'll paste IterMut at the end, it's literally the exact same code with <code>mut</code> in a lot of places, let's just knock out <code>into_iter</code> first. We can mercifully still lean on our tried-and-true solution of just making it wrap our collection and using pop for next:</p>
+<pre><code class="language-rust ignore">pub struct IntoIter&lt;T&gt; {
+    list: LinkedList&lt;T&gt;,
+}
+
+impl&lt;T&gt; LinkedList&lt;T&gt; {
+    pub fn into_iter(self) -&gt; IntoIter&lt;T&gt; {
+        IntoIter { 
+            list: self
+        }
+    }
+}
+
+
+impl&lt;T&gt; IntoIterator for LinkedList&lt;T&gt; {
+    type IntoIter = IntoIter&lt;T&gt;;
+    type Item = T;
+
+    fn into_iter(self) -&gt; Self::IntoIter {
+        self.into_iter()
+    }
+}
+
+impl&lt;T&gt; Iterator for IntoIter&lt;T&gt; {
+    type Item = T;
+
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        self.list.pop_front()
+    }
+
+    fn size_hint(&amp;self) -&gt; (usize, Option&lt;usize&gt;) {
+        (self.list.len, Some(self.list.len))
+    }
+}
+
+impl&lt;T&gt; DoubleEndedIterator for IntoIter&lt;T&gt; {
+    fn next_back(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        self.list.pop_back()
+    }
+}
+
+impl&lt;T&gt; ExactSizeIterator for IntoIter&lt;T&gt; {
+    fn len(&amp;self) -&gt; usize {
+        self.list.len
+    }
+}
+</code></pre>
+<p>Still a crapload of boiler plate, but at least it's <em>satisfying</em> boilerplate.</p>
+<p>Alright, here's all of our code with all the combinatorics filled in:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::ptr::NonNull;
+use std::marker::PhantomData;
+
+pub struct LinkedList&lt;T&gt; {
+    front: Link&lt;T&gt;,
+    back: Link&lt;T&gt;,
+    len: usize,
+    _boo: PhantomData&lt;T&gt;,
+}
+
+type Link&lt;T&gt; = Option&lt;NonNull&lt;Node&lt;T&gt;&gt;&gt;;
+
+struct Node&lt;T&gt; {
+    front: Link&lt;T&gt;,
+    back: Link&lt;T&gt;,
+    elem: T, 
+}
+
+pub struct Iter&lt;'a, T&gt; {
+    front: Link&lt;T&gt;,
+    back: Link&lt;T&gt;,
+    len: usize,
+    _boo: PhantomData&lt;&amp;'a T&gt;,
+}
+
+pub struct IterMut&lt;'a, T&gt; {
+    front: Link&lt;T&gt;,
+    back: Link&lt;T&gt;,
+    len: usize,
+    _boo: PhantomData&lt;&amp;'a mut T&gt;,
+}
+
+pub struct IntoIter&lt;T&gt; {
+    list: LinkedList&lt;T&gt;,
+}
+
+impl&lt;T&gt; LinkedList&lt;T&gt; {
+    pub fn new() -&gt; Self {
+        Self {
+            front: None,
+            back: None,
+            len: 0,
+            _boo: PhantomData,
+        }
+    }
+
+    pub fn push_front(&amp;mut self, elem: T) {
+        // SAFETY: it's a linked-list, what do you want?
+        unsafe {
+            let new = NonNull::new_unchecked(Box::into_raw(Box::new(Node {
+                front: None,
+                back: None,
+                elem,
+            })));
+            if let Some(old) = self.front {
+                // Put the new front before the old one
+                (*old.as_ptr()).front = Some(new);
+                (*new.as_ptr()).back = Some(old);
+            } else {
+                // If there's no front, then we're the empty list and need 
+                // to set the back too.
+                self.back = Some(new);
+            }
+            // These things always happen!
+            self.front = Some(new);
+            self.len += 1;
+        }
+    }
+
+    pub fn push_back(&amp;mut self, elem: T) {
+        // SAFETY: it's a linked-list, what do you want?
+        unsafe {
+            let new = NonNull::new_unchecked(Box::into_raw(Box::new(Node {
+                back: None,
+                front: None,
+                elem,
+            })));
+            if let Some(old) = self.back {
+                // Put the new back before the old one
+                (*old.as_ptr()).back = Some(new);
+                (*new.as_ptr()).front = Some(old);
+            } else {
+                // If there's no back, then we're the empty list and need 
+                // to set the front too.
+                self.front = Some(new);
+            }
+            // These things always happen!
+            self.back = Some(new);
+            self.len += 1;
+        }
+    }
+
+    pub fn pop_front(&amp;mut self) -&gt; Option&lt;T&gt; {
+        unsafe {
+            // Only have to do stuff if there is a front node to pop.
+            self.front.map(|node| {
+                // Bring the Box back to life so we can move out its value and
+                // Drop it (Box continues to magically understand this for us).
+                let boxed_node = Box::from_raw(node.as_ptr());
+                let result = boxed_node.elem;
+
+                // Make the next node into the new front.
+                self.front = boxed_node.back;
+                if let Some(new) = self.front {
+                    // Cleanup its reference to the removed node
+                    (*new.as_ptr()).front = None;
+                } else {
+                    // If the front is now null, then this list is now empty!
+                    self.back = None;
+                }
+
+                self.len -= 1;
+                result
+                // Box gets implicitly freed here, knows there is no T.
+            })
+        }
+    }
+
+    pub fn pop_back(&amp;mut self) -&gt; Option&lt;T&gt; {
+        unsafe {
+            // Only have to do stuff if there is a back node to pop.
+            self.back.map(|node| {
+                // Bring the Box front to life so we can move out its value and
+                // Drop it (Box continues to magically understand this for us).
+                let boxed_node = Box::from_raw(node.as_ptr());
+                let result = boxed_node.elem;
+
+                // Make the next node into the new back.
+                self.back = boxed_node.front;
+                if let Some(new) = self.back {
+                    // Cleanup its reference to the removed node
+                    (*new.as_ptr()).back = None;
+                } else {
+                    // If the back is now null, then this list is now empty!
+                    self.front = None;
+                }
+
+                self.len -= 1;
+                result
+                // Box gets implicitly freed here, knows there is no T.
+            })
+        }
+    }
+
+    pub fn front(&amp;self) -&gt; Option&lt;&amp;T&gt; {
+        unsafe {
+            self.front.map(|node| &amp;(*node.as_ptr()).elem)
+        }
+    }
+
+    pub fn front_mut(&amp;mut self) -&gt; Option&lt;&amp;mut T&gt; {
+        unsafe {
+            self.front.map(|node| &amp;mut (*node.as_ptr()).elem)
+        }
+    }
+
+    pub fn back(&amp;self) -&gt; Option&lt;&amp;T&gt; {
+        unsafe {
+            self.back.map(|node| &amp;(*node.as_ptr()).elem)
+        }
+    }
+
+    pub fn back_mut(&amp;mut self) -&gt; Option&lt;&amp;mut T&gt; {
+        unsafe {
+            self.back.map(|node| &amp;mut (*node.as_ptr()).elem)
+        }
+    }
+
+    pub fn len(&amp;self) -&gt; usize {
+        self.len
+    }
+
+    pub fn iter(&amp;self) -&gt; Iter&lt;T&gt; {
+        Iter { 
+            front: self.front, 
+            back: self.back,
+            len: self.len,
+            _boo: PhantomData,
+        }
+    }
+
+    pub fn iter_mut(&amp;mut self) -&gt; IterMut&lt;T&gt; {
+        IterMut { 
+            front: self.front, 
+            back: self.back,
+            len: self.len,
+            _boo: PhantomData,
+        }
+    }
+
+    pub fn into_iter(self) -&gt; IntoIter&lt;T&gt; {
+        IntoIter { 
+            list: self
+        }
+    }
+}
+
+impl&lt;T&gt; Drop for LinkedList&lt;T&gt; {
+    fn drop(&amp;mut self) {
+        // Pop until we have to stop
+        while let Some(_) = self.pop_front() { }
+    }
+}
+
+impl&lt;'a, T&gt; IntoIterator for &amp;'a LinkedList&lt;T&gt; {
+    type IntoIter = Iter&lt;'a, T&gt;;
+    type Item = &amp;'a T;
+
+    fn into_iter(self) -&gt; Self::IntoIter {
+        self.iter()
+    }
+}
+
+impl&lt;'a, T&gt; Iterator for Iter&lt;'a, T&gt; {
+    type Item = &amp;'a T;
+
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        // While self.front == self.back is a tempting condition to check here,
+        // it won't do the right for yielding the last element! That sort of
+        // thing only works for arrays because of &quot;one-past-the-end&quot; pointers.
+        if self.len &gt; 0 {
+            // We could unwrap front, but this is safer and easier
+            self.front.map(|node| unsafe {
+                self.len -= 1;
+                self.front = (*node.as_ptr()).back;
+                &amp;(*node.as_ptr()).elem
+            })
+        } else {
+            None
+        }
+    }
+
+    fn size_hint(&amp;self) -&gt; (usize, Option&lt;usize&gt;) {
+        (self.len, Some(self.len))
+    }
+}
+
+impl&lt;'a, T&gt; DoubleEndedIterator for Iter&lt;'a, T&gt; {
+    fn next_back(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        if self.len &gt; 0 {
+            self.back.map(|node| unsafe {
+                self.len -= 1;
+                self.back = (*node.as_ptr()).front;
+                &amp;(*node.as_ptr()).elem
+            })
+        } else {
+            None
+        }
+    }
+}
+
+impl&lt;'a, T&gt; ExactSizeIterator for Iter&lt;'a, T&gt; {
+    fn len(&amp;self) -&gt; usize {
+        self.len
+    }
+}
+
+impl&lt;'a, T&gt; IntoIterator for &amp;'a mut LinkedList&lt;T&gt; {
+    type IntoIter = IterMut&lt;'a, T&gt;;
+    type Item = &amp;'a mut T;
+
+    fn into_iter(self) -&gt; Self::IntoIter {
+        self.iter_mut()
+    }
+}
+
+impl&lt;'a, T&gt; Iterator for IterMut&lt;'a, T&gt; {
+    type Item = &amp;'a mut T;
+
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        // While self.front == self.back is a tempting condition to check here,
+        // it won't do the right for yielding the last element! That sort of
+        // thing only works for arrays because of &quot;one-past-the-end&quot; pointers.
+        if self.len &gt; 0 {
+            // We could unwrap front, but this is safer and easier
+            self.front.map(|node| unsafe {
+                self.len -= 1;
+                self.front = (*node.as_ptr()).back;
+                &amp;mut (*node.as_ptr()).elem
+            })
+        } else {
+            None
+        }
+    }
+
+    fn size_hint(&amp;self) -&gt; (usize, Option&lt;usize&gt;) {
+        (self.len, Some(self.len))
+    }
+}
+
+impl&lt;'a, T&gt; DoubleEndedIterator for IterMut&lt;'a, T&gt; {
+    fn next_back(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        if self.len &gt; 0 {
+            self.back.map(|node| unsafe {
+                self.len -= 1;
+                self.back = (*node.as_ptr()).front;
+                &amp;mut (*node.as_ptr()).elem
+            })
+        } else {
+            None
+        }
+    }
+}
+
+impl&lt;'a, T&gt; ExactSizeIterator for IterMut&lt;'a, T&gt; {
+    fn len(&amp;self) -&gt; usize {
+        self.len
+    }
+}
+
+impl&lt;T&gt; IntoIterator for LinkedList&lt;T&gt; {
+    type IntoIter = IntoIter&lt;T&gt;;
+    type Item = T;
+
+    fn into_iter(self) -&gt; Self::IntoIter {
+        self.into_iter()
+    }
+}
+
+impl&lt;T&gt; Iterator for IntoIter&lt;T&gt; {
+    type Item = T;
+
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        self.list.pop_front()
+    }
+
+    fn size_hint(&amp;self) -&gt; (usize, Option&lt;usize&gt;) {
+        (self.list.len, Some(self.list.len))
+    }
+}
+
+impl&lt;T&gt; DoubleEndedIterator for IntoIter&lt;T&gt; {
+    fn next_back(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        self.list.pop_back()
+    }
+}
+
+impl&lt;T&gt; ExactSizeIterator for IntoIter&lt;T&gt; {
+    fn len(&amp;self) -&gt; usize {
+        self.list.len
+    }
+}
+
+
+#[cfg(test)]
+mod test {
+    use super::LinkedList;
+
+    #[test]
+    fn test_basic_front() {
+        let mut list = LinkedList::new();
+
+        // Try to break an empty list
+        assert_eq!(list.len(), 0);
+        assert_eq!(list.pop_front(), None);
+        assert_eq!(list.len(), 0);
+
+        // Try to break a one item list
+        list.push_front(10);
+        assert_eq!(list.len(), 1);
+        assert_eq!(list.pop_front(), Some(10));
+        assert_eq!(list.len(), 0);
+        assert_eq!(list.pop_front(), None);
+        assert_eq!(list.len(), 0);
+
+        // Mess around
+        list.push_front(10);
+        assert_eq!(list.len(), 1);
+        list.push_front(20);
+        assert_eq!(list.len(), 2);
+        list.push_front(30);
+        assert_eq!(list.len(), 3);
+        assert_eq!(list.pop_front(), Some(30));
+        assert_eq!(list.len(), 2);
+        list.push_front(40);
+        assert_eq!(list.len(), 3);
+        assert_eq!(list.pop_front(), Some(40));
+        assert_eq!(list.len(), 2);
+        assert_eq!(list.pop_front(), Some(20));
+        assert_eq!(list.len(), 1);
+        assert_eq!(list.pop_front(), Some(10));
+        assert_eq!(list.len(), 0);
+        assert_eq!(list.pop_front(), None);
+        assert_eq!(list.len(), 0);
+        assert_eq!(list.pop_front(), None);
+        assert_eq!(list.len(), 0);
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="sixth-panics.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="sixth-random-bits.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="sixth-panics.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="sixth-random-bits.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
