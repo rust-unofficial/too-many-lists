@@ -178,7 +178,7 @@ pub fn pop(&mut self) -> Option<i32> {
 
 ```text
 > cargo build
-   Compiling lists v0.1.0 (/Users/ABeingessner/dev/temp/lists)
+   Compiling lists v0.1.0 (/Users/ADesires/dev/temp/lists)
 error[E0507]: cannot move out of borrowed content
   --> src/first.rs:35:29
    |

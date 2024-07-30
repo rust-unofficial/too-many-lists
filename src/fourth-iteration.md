@@ -195,7 +195,7 @@ fn next(&mut self) -> Option<Self::Item> {
 
 ```text
 cargo build
-   Compiling lists v0.1.0 (/Users/ABeingessner/dev/temp/lists)
+   Compiling lists v0.1.0 (/Users/ADesires/dev/temp/lists)
 error[E0521]: borrowed data escapes outside of closure
    --> src/fourth.rs:159:13
     |

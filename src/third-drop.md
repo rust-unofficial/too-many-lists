@@ -49,9 +49,9 @@ impl<T> Drop for List<T> {
 
 ```text
 cargo test
-   Compiling lists v0.1.0 (/Users/ABeingessner/dev/too-many-lists/lists)
+   Compiling lists v0.1.0 (/Users/ADesires/dev/too-many-lists/lists)
     Finished dev [unoptimized + debuginfo] target(s) in 1.10s
-     Running /Users/ABeingessner/dev/too-many-lists/lists/target/debug/deps/lists-86544f1d97438f1f
+     Running /Users/ADesires/dev/too-many-lists/lists/target/debug/deps/lists-86544f1d97438f1f
 
 running 8 tests
 test first::test::basics ... ok

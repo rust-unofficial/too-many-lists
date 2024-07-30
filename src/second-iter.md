@@ -336,7 +336,7 @@ impl<'a, T> Iterator for Iter<'a, T> {
 
 ```text
 cargo build
-   Compiling lists v0.1.0 (/Users/ABeingessner/dev/temp/lists)
+   Compiling lists v0.1.0 (/Users/ADesires/dev/temp/lists)
 error[E0515]: cannot return reference to local data `*node`
   --> src/second.rs:77:43
    |
@@ -392,7 +392,7 @@ impl<'a, T> Iterator for Iter<'a, T> {
 
 ```text
 cargo build
-   Compiling lists v0.1.0 (/Users/ABeingessner/dev/temp/lists)
+   Compiling lists v0.1.0 (/Users/ADesires/dev/temp/lists)
 error[E0308]: mismatched types
   --> src/second.rs:77:22
    |

@@ -27,9 +27,9 @@ And we invoke it with `cargo test`.
 
 ```text
 > cargo test
-   Compiling lists v0.1.0 (/Users/ABeingessner/dev/temp/lists)
+   Compiling lists v0.1.0 (/Users/ADesires/dev/temp/lists)
     Finished dev [unoptimized + debuginfo] target(s) in 1.00s
-     Running /Users/ABeingessner/dev/lists/target/debug/deps/lists-86544f1d97438f1f
+     Running /Users/ADesires/dev/lists/target/debug/deps/lists-86544f1d97438f1f
 
 running 1 test
 test first::test::basics ... ok
@@ -110,7 +110,7 @@ warning: unused import: `super::List`
    = note: #[warn(unused_imports)] on by default
 
     Finished dev [unoptimized + debuginfo] target(s) in 0.43s
-     Running /Users/ABeingessner/dev/lists/target/debug/deps/lists-86544f1d97438f1f
+     Running /Users/ADesires/dev/lists/target/debug/deps/lists-86544f1d97438f1f
 
 running 1 test
 test first::test::basics ... ok
