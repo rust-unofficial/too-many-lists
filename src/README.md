@@ -41,7 +41,7 @@ reference, here's what we're going to be making:
 6. [TODO: An Ok Unsafe Doubly-Linked Deque](sixth.md)
 7. [Bonus: A Bunch of Silly Lists](infinity.md)
 
-Just so we're all the same page, I'll be writing out all the commands that I
+Just so we're all on the same page, I'll be writing out all the commands that I
 feed into my terminal. I'll also be using Rust's standard package manager, Cargo,
 to develop the project. Cargo isn't necessary to write a Rust program, but it's
 *so much* better than using rustc directly. If you just want to futz around you
