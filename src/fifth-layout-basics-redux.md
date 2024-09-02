@@ -52,7 +52,7 @@ Remember: Option isn't as nice or useful when we're using raw pointers, so we're
 List::new is basically the same.
 
 ```rust ,ignore
-use ptr;
+use std::ptr;
 
 impl<T> List<T> {
     pub fn new() -> Self {
