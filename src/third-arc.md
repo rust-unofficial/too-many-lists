@@ -12,8 +12,8 @@ list could get freed too soon!
 In order to get thread safety, we have to use *Arc*. Arc is completely identical
 to Rc except for the fact that reference counts are modified atomically. This
 has a bit of overhead if you don't need it, so Rust exposes both.
-All we need to do to make our list is replace every reference to Rc with
-`std::sync::Arc`. That's it. We're thread safe. Done!
+All we need to do to make our list thread safe is replace every reference to Rc
+with `std::sync::Arc`. That's it. We're thread safe. Done!
 
 But this raises an interesting question: how do we *know* if a type is
 thread-safe or not? Can we accidentally mess up?
