@@ -258,7 +258,7 @@ Just one more boss to fight, splice_before and splice_after, which I expect to b
 * If their list is empty, we don't need to do anything. 
 * If our list is empty, then our list just becomes their list.
 * If we're pointing at the ghost, then this appends to the back (change list.back)
-* If we're pointing at the first element (0), this this appends to the front (change list.front)
+* If we're pointing at the first element (0), then this appends to the front (change list.front)
 * In the general case, we do a whole lot of pointer fuckery.
 
 The general case is this:
