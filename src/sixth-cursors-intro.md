@@ -60,7 +60,7 @@ Sorry what? There was an [RFC in 2018 to add Cursors to Rust's LinkedList](https
 
 > With a Cursor one can seek back and forth through a list and get the current element. With a CursorMut One can seek back and forth and get mutable references to elements, and it can insert and delete elements before and behind the current element (along with performing several list operations such as splitting and splicing).
 
-*Current element*? This cursor is *on* elements, not between them! I can't believe they didn't accept my totally rock-solid argument! So yeah you can just go use the Cursor in std... wait, it's [2022, and Rust 1.60 still has Cursor marked as unstable](https://doc.rust-lang.org/1.60.0/std/collections/linked_list/struct.CursorMut.html)?
+*Current element*? This cursor is *on* elements, not between them! I can't believe they didn't accept my totally rock-solid argument! So yeah you can just go use the Cursor in std... wait, it's [2023, and Rust 1.71 still has Cursor marked as unstable](https://doc.rust-lang.org/1.71.0/std/collections/linked_list/struct.CursorMut.html)?
 
 Hey wait:
 
