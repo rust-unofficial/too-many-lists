@@ -75,7 +75,7 @@ Well, we *could* with `std::alloc::alloc`, but that's like bringing a katana int
 
 We want to *have* boxes, but, *not*. One completely wild but *maybe* viable option would be to do something like this:
 
-```
+```rust ,ignore
 struct Node<T> {
     elem: T,
     real_next: Option<Box<Node<T>>>,
