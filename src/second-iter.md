@@ -2,10 +2,11 @@
 
 Alright, let's try to implement Iter. This time we won't be able to rely on
 List giving us all the features we want. We'll need to roll our own. The
-basic logic we want is to hold a pointer to the current node we want to yield
-next. Because that node may not exist (the list is empty or we're otherwise
-done iterating), we want that reference to be an Option. When we yield an
-element, we want to proceed to the current node's `next` node.
+basic logic we want is to hold a pointer to the current node in the list, and
+every time we ask for the next element, it will return the current node’s value
+and move to the next node in the list. Because that node may not exist (the list
+is empty or we're otherwise done iterating), we want that reference to be an 
+Option. When we yield an element, we want to proceed to the current node's `next` node.
 
 Alright, let's try that:
 
