@@ -471,6 +471,8 @@ See, map is a generic function:
 
 ```rust ,ignore
 pub fn map<U, F>(self, f: F) -> Option<U>
+where
+  F: FnOnce(T) -> U
 ```
 
 The turbofish, `::<>`, lets us tell the compiler what we think the types of those
