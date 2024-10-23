@@ -464,7 +464,7 @@ out, so we need to help it by being explicit. Thankfully this is pretty rare, in
 Just for completeness' sake, we *could* give it a *different* hint with the *turbofish*:
 
 ```rust ,ignore
-    self.next = node.next.as_ref().map::<&Node<T>, _>(|node| &node);
+    self.next = node.next.as_ref().map::<&Node<T>, _>(|node| node);
 ```
 
 See, map is a generic function:
@@ -477,8 +477,10 @@ The turbofish, `::<>`, lets us tell the compiler what we think the types of thos
 generics should be. In this case `::<&Node<T>, _>` says "it should return a
 `&Node<T>`, and I don't know/care about that other type".
 
-This in turn lets the compiler know that `&node` should have deref coercion
-applied to it, so we don't need to manually apply all those \*'s!
+This in turn lets the compiler know that `node` should have deref coercion
+applied to it, so we don't need to manually apply all those \*'s! In this way,
+it automatically dereferences from `&Box<Node<T, _>>` to `Box<Node<T, _>>`, and
+then to `&Node<T, _>`, which is the type we specified using the turbofish syntax.
 
 But in this case I don't think it's really an improvement, this was just a
 thinly veiled excuse to show off deref coercion and the sometimes-useful turbofish. 😅
