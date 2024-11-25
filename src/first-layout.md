@@ -264,7 +264,7 @@ C-like: structs!
 
 While enums let us declare a type that can contain *one* of several values,
 structs let us declare a type that contains *many* values at once. Let's break
-our List into two types: A List, and a Node.
+our List into two types: a List, and a Node.
 
 As before, a List is either Empty or has an element followed by another List.
 By representing the "has an element followed by another List" case by an
