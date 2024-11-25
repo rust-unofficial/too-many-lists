@@ -157,7 +157,7 @@ test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 
 Yay! I recommend always making the test without compile_fail so that you can confirm that it fails to compile *for the right reason*. For instance, that test will also fail (and therefore pass) if you forget the `use`, which, is not what we want! While it's conceptually appealing to be able to "require" a specific error from the compiler, this would be an absolute nightmare that would effectively make it a breaking change *for the compiler to produce better errors*. We want the compiler to get better, so, no you don't get to have that.
 
-(Oh wait, we can actually just specify the error code we want next to the compile_fail **but this only works on nightly and is a bad idea to rely on for the reasons state above. It will be silently ignored on not-nightly.**)
+(Oh wait, we can actually just specify the error code we want next to the compile_fail **but this only works on nightly and is a bad idea to rely on for the reasons stated above. It will be silently ignored on not-nightly.**)
 
 ```rust ,ignore
     /// ```compile_fail,E0308

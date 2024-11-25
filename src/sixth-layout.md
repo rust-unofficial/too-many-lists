@@ -58,7 +58,7 @@ Problem 1: An extra indirection and allocation, especially for the empty list, w
 
 * Store the dummy node on the stack - not practical in a language without C++-style move-constructors. I'm sure there's something weird thing we could do here with [pinning](https://doc.rust-lang.org/std/pin/index.html) but we're not gonna.
 
-Problem 2: What *value* is stored in the dummy node? Sure if it's an integer it's fine, but what if we're storing a list full of `Box`? It may be impossible for us to initialized this value! Potential solutions include:
+Problem 2: What *value* is stored in the dummy node? Sure if it's an integer it's fine, but what if we're storing a list full of `Box`? It may be impossible for us to initialize this value! Potential solutions include:
 
 * Make every node store `Option<T>`: simple and effective, but also bloated and annoying.
 
