@@ -50,7 +50,7 @@ They grabbed the book from Hamslaw and checked the cover. Indeed, the word "Peac
 
 They fell to their knees and stared blankly at the bookcase. How could this have happened? They had checked the cover only a moment ago!
 
-And then they saw a bit of motion in the bookcase. It was a tiny man. A tiny many with the angriest scowl Michiel had ever seen. The tiny man flipped Michiel off and mouthed the words "no one will believe you" and disappeared back between the books.
+And then they saw a bit of motion in the bookcase. It was a tiny man. A tiny man with the angriest scowl Michiel had ever seen. The tiny man flipped Michiel off and mouthed the words "no one will believe you" and disappeared back between the books.
 
 Michiel's plan *had* been perfect, but they had failed to account for the possibility of a tiny angry man with a sharpie and the desire for destruction. They thought they knew what the cover of the book said, and they thought that no one could have possibly changed it. But alas, they were wrong.
 
