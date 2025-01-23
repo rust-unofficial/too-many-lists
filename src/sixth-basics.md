@@ -15,7 +15,7 @@ impl<T> LinkedList<T> {
 }
 ```
 
-PhantomData is a weird type with no fields so you just make one by, saying its type name. *shrug*
+PhantomData is a weird type with no fields, so you just make one by saying its type name. *shrug*
 
 ```rust ,ignore
 pub fn push_front(&mut self, elem: T) {

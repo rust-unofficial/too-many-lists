@@ -130,7 +130,7 @@ This is extremely annoying for Exactly Me as a person who has spent a lot of tim
 
 > Unlike `*mut T`, `NonNull<T>` was chosen to be covariant over `T`. This makes it possible to use `NonNull<T>` when building covariant types, but introduces the risk of unsoundness if used in a type that shouldn’t actually be covariant.
 
-But hey, it's interface is built around `*mut T`, what's the deal! Is it just magic?! Let's look:
+But hey, its interface is built around `*mut T`, what's the deal! Is it just magic?! Let's look:
 
 ```rust
 pub struct NonNull<T> {
